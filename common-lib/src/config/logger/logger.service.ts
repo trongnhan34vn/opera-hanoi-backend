@@ -24,7 +24,7 @@ export class LoggerFactory implements LoggerService {
       this.logger.error(`${message}`);
       return;
     }
-    this.logger.error(`${message} - Trace: ${trace}`);
+    this.logger.error(`${message} - ${trace}`);
   }
 
   warn(message: any) {

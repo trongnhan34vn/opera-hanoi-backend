@@ -16,21 +16,21 @@ export class HttpServiceFactory implements IHttpService {
   /**
    * Call API common
    * @param method
-   * @param host
+   * @param url
    * @param path
    * @param data
    * @param headers
    */
   async call(
     method: HttpMethod,
-    host: string,
+    url: string,
     path: string,
     data?: any,
     headers?: HttpHeaders,
   ): Promise<AxiosResponse<any>> {
     this.logger.log(`Start call api...`);
     this.logger.log(
-      `host: [${host}];
+      `url: [${url}];
       path: [${path}];
       method: [${method}];
       data: [${data}];
@@ -41,19 +41,19 @@ export class HttpServiceFactory implements IHttpService {
       switch (method) {
         case HttpMethod.GET:
           // get method
-          response = await getInstance(host, headers).get(path);
+          response = await getInstance(url, headers).get(path);
           break;
         case HttpMethod.PATCH:
           // patch method
-          response = await getInstance(host, headers).patch(path, data);
+          response = await getInstance(url, headers).patch(path, data);
           break;
         case HttpMethod.POST:
           // post method
-          response = await getInstance(host, headers).post(path, data);
+          response = await getInstance(url, headers).post(path, data);
           break;
         case HttpMethod.PUT:
           // post method
-          response = await getInstance(host, headers).put(path, data);
+          response = await getInstance(url, headers).put(path, data);
           break;
         default:
           throw new ResourceError(
@@ -66,7 +66,7 @@ export class HttpServiceFactory implements IHttpService {
     } catch (e) {
       const error: AxiosError = e;
       this.logger.error(
-        `Error occurred when calling API. ${error}. Cause: ${error.cause}. Response: ${JSON.stringify(error.response.data)}.`,
+        `Error occurred when calling API. ${error}. Response: ${JSON.stringify(error.response.data)}.`,
       );
       this.handleAxiosError(error);
       // General error
@@ -103,6 +103,11 @@ export class HttpServiceFactory implements IHttpService {
         throw new ResourceError(ErrorMessage.CONFLICT.getCode, error.message);
       case 404:
         throw new ResourceError(ErrorMessage.NOT_FOUND.getCode, error.message);
+      default:
+        throw new ResourceError(
+          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
+          error.message,
+        );
     }
   }
 }
