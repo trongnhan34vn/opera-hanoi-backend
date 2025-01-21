@@ -6,9 +6,10 @@ import {
   HttpServiceModule,
   LoggerFactory,
 } from 'common-lib';
+import { KeycloakModule } from './keycloak.module';
 
 @Module({
-  imports: [HttpServiceModule],
+  imports: [HttpServiceModule, KeycloakModule],
   providers: [
     AuthService,
     HttpResponseFactory,

@@ -1,5 +1,10 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { ErrorMessage, ResourceError, HttpResponseFactory } from 'common-lib';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpStatus,
+} from '@nestjs/common';
+import { ErrorMessage, HttpResponseFactory, ResourceError } from 'common-lib';
 import { Response } from 'express';
 
 @Catch()
@@ -12,15 +17,24 @@ export class AuthErrorController implements ExceptionFilter {
    * @param host
    * @return ErrorResponse
    */
-  catch(error: ResourceError, host: ArgumentsHost) {
+  catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
+    if (error instanceof ResourceError) {
+      return this.responseFactory.sendErrorResponse(
+        response,
+        this.getStatus(error),
+        error.getErrorCode,
+        ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
+        error.message,
+      );
+    }
     return this.responseFactory.sendErrorResponse(
       response,
-      this.getStatus(error),
-      error.getErrorCode,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
+      ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
       error.message,
-      error.stack,
     );
   }
 
