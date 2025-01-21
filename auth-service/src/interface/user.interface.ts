@@ -1,6 +1,7 @@
 export interface UserSignUp extends UserSignIn {
   phone: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface UserSignIn {
