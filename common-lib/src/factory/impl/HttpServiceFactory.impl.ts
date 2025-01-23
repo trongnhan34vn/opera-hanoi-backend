@@ -3,7 +3,7 @@ import { HttpHeaders, IHttpService } from '../interface/HttpService.interface';
 import { getInstance } from '../../config/axios/instance.config';
 import { Injectable } from '@nestjs/common';
 import { LoggerFactory } from '../../config/logger/logger.service';
-import { ResourceError } from '../error/ResourceError.error';
+import { ResourceException } from '../error/ResourceException.error';
 import { ErrorMessage } from '../message/ErrorMessage.entity';
 import { AxiosError, AxiosResponse } from 'axios';
 
@@ -18,23 +18,23 @@ export class HttpServiceFactory implements IHttpService {
    * @param method
    * @param url
    * @param path
-   * @param data
    * @param headers
+   * @param data
    */
-  async call(
+  async call<T>(
     method: HttpMethod,
     url: string,
     path: string,
-    data?: any,
     headers?: HttpHeaders,
-  ): Promise<AxiosResponse<any>> {
+    data?: any,
+  ): Promise<AxiosResponse<T>> {
     this.logger.log(`Start call api...`);
     this.logger.log(
       `url: [${url}];
       path: [${path}];
       method: [${method}];
-      data: [${data}];
-      headers:[${headers}]`,
+      headers:[${headers}];
+      data: [${data}];`,
     );
     try {
       let response: AxiosResponse;
@@ -56,8 +56,8 @@ export class HttpServiceFactory implements IHttpService {
           response = await getInstance(url, headers).put(path, data);
           break;
         default:
-          throw new ResourceError(
-            ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
+          throw new ResourceException(
+            ErrorMessage.BAD_REQUEST.getCode,
             'Method is invalid',
           );
       }
@@ -70,7 +70,7 @@ export class HttpServiceFactory implements IHttpService {
       );
       this.handleAxiosError(error);
       // General error
-      throw new ResourceError(
+      throw new ResourceException(
         ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
         'Unexpected error occurred',
       );
@@ -88,25 +88,40 @@ export class HttpServiceFactory implements IHttpService {
     const statusError = error.status;
     switch (statusError) {
       case 400:
-        throw new ResourceError(
+        throw new ResourceException(
           ErrorMessage.BAD_REQUEST.getCode,
           error.message,
+          JSON.stringify(error.response.data),
         );
       case 401:
-        throw new ResourceError(
+        throw new ResourceException(
           ErrorMessage.UNAUTHORIZED.getCode,
           error.message,
+          JSON.stringify(error.response.data),
         );
       case 403:
-        throw new ResourceError(ErrorMessage.FORBIDDEN.getCode, error.message);
+        throw new ResourceException(
+          ErrorMessage.FORBIDDEN.getCode,
+          error.message,
+          JSON.stringify(error.response.data),
+        );
       case 409:
-        throw new ResourceError(ErrorMessage.CONFLICT.getCode, error.message);
+        throw new ResourceException(
+          ErrorMessage.CONFLICT.getCode,
+          error.message,
+          JSON.stringify(error.response.data),
+        );
       case 404:
-        throw new ResourceError(ErrorMessage.NOT_FOUND.getCode, error.message);
+        throw new ResourceException(
+          ErrorMessage.NOT_FOUND.getCode,
+          error.message,
+          JSON.stringify(error.response.data),
+        );
       default:
-        throw new ResourceError(
+        throw new ResourceException(
           ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
           error.message,
+          JSON.stringify(error.response.data),
         );
     }
   }
