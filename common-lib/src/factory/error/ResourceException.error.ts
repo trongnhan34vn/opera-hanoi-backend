@@ -1,8 +1,10 @@
-export class ResourceError extends Error {
+export class ResourceException extends Error {
   private errorCode: string;
-  constructor(errorCode: string, message: string) {
+  private details?: string;
+  constructor(errorCode: string, message: string, details?: string) {
     super(message);
     this.errorCode = errorCode;
+    this.details = details;
   }
 
   toJson() {
@@ -14,5 +16,9 @@ export class ResourceError extends Error {
 
   get getErrorCode() {
     return this.errorCode;
+  }
+
+  get getDetails() {
+    return this.details;
   }
 }

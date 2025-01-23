@@ -24,7 +24,7 @@ export * from './factory/module/HttpService.module';
 export * from './factory/enum/http.content.type';
 
 // error
-export * from './factory/error/ResourceError.error';
+export * from './factory/error/ResourceException.error';
 
 // security
 export * from './config/guard/KeycloakConfig';
