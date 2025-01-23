@@ -9,6 +9,7 @@ import { AuthErrorController } from './controller/auth.error.controller';
 import * as dotenv from 'dotenv';
 import * as path from 'node:path';
 import * as process from 'node:process';
+import { ValidationPipe } from '@nestjs/common';
 
 const envFilePath = '../../env/.env.dev';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
@@ -32,6 +33,15 @@ async function bootstrap() {
 
   // config ConfigService
   logger.log(`Nest app started with port [${process.env.AUTH_SERVICE_PORT}]`);
+
+  // config validation
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Loại bỏ các field không được định nghĩa trong DTO
+      forbidNonWhitelisted: true, // Ném lỗi nếu có field không hợp lệ
+      transform: true, // Tự động chuyển đổi payload sang DTO
+    }),
+  );
   await app.listen(process.env.AUTH_SERVICE_PORT);
 }
 
