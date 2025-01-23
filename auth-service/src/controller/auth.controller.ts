@@ -1,9 +1,10 @@
-import { Controller, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { HttpResponseFactory, SuccessMessage } from 'common-lib';
-import { Request, Response } from 'express';
-import { UserSignIn, UserSignUp } from '../interface/user.interface';
+import { Response } from 'express';
 import { AuthService } from '../service/auth.service';
 import { SkipAuth } from '../config/SkipAuthGuardAnnotationConfig';
+import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
+import { UserSignInDto } from '../dto/request/UserSignIn.dto';
 
 @Controller('/api/v1/auth')
 export class AuthController {
@@ -15,9 +16,8 @@ export class AuthController {
 
   @Post('/sign-in')
   @SkipAuth()
-  async signIn(@Res() res: Response, @Req() req: Request) {
-    const userLogin: UserSignIn = req.body;
-    const response = await this.authService.signIn(userLogin);
+  async signIn(@Res() res: Response, @Body() userSignInDto: UserSignInDto) {
+    const response = await this.authService.signIn(userSignInDto);
     return this.responseFactory.sendSuccessResponse(
       res,
       HttpStatus.OK,
@@ -29,9 +29,8 @@ export class AuthController {
 
   @Post('/sign-up')
   @SkipAuth()
-  async signUp(@Res() res: Response, @Req() req: Request) {
-    const userLogin: UserSignUp = req.body;
-    const response = await this.authService.signUp(userLogin);
+  async signUp(@Res() res: Response, @Body() userDto: UserSignUpDto) {
+    const response = await this.authService.signUp(userDto);
     return this.responseFactory.sendSuccessResponse(
       res,
       HttpStatus.OK,

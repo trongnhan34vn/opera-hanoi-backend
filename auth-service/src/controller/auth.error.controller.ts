@@ -1,15 +1,11 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpStatus,
-} from '@nestjs/common';
-import { ErrorMessage, HttpResponseFactory, ResourceError } from 'common-lib';
+import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import { ErrorMessage, HttpResponseFactory, ResourceException } from 'common-lib';
 import { Response } from 'express';
 
 @Catch()
 export class AuthErrorController implements ExceptionFilter {
-  constructor(private readonly responseFactory: HttpResponseFactory) {}
+  constructor(private readonly responseFactory: HttpResponseFactory) {
+  }
 
   /**
    * catch resource error
@@ -20,22 +16,49 @@ export class AuthErrorController implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    if (error instanceof ResourceError) {
+
+    // in case resource error
+    if (error instanceof ResourceException) {
+      const resourceError: ResourceException = error;
+      const status = this.getStatus(error);
       return this.responseFactory.sendErrorResponse(
         response,
-        this.getStatus(error),
-        error.getErrorCode,
-        ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-        error.message,
+        status,
+        resourceError.getErrorCode,
+        resourceError.message,
+        resourceError.getDetails,
       );
     }
+    // in case not resource error
     return this.responseFactory.sendErrorResponse(
       response,
-      HttpStatus.INTERNAL_SERVER_ERROR,
-      ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-      ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
+      error['status'],
+      this.getErrorMessage(error['status']).getCode,
+      this.getErrorMessage(error['status']).getMessage,
       error.message,
     );
+  }
+
+  /**
+   * get ErrorMessage
+   * @param status
+   * @private
+   */
+  private getErrorMessage(status: number) {
+    switch (status) {
+      case 404:
+        return ErrorMessage.NOT_FOUND;
+      case 400:
+        return ErrorMessage.BAD_REQUEST;
+      case 409:
+        return ErrorMessage.CONFLICT;
+      case 401:
+        return ErrorMessage.UNAUTHORIZED;
+      case 403:
+        return ErrorMessage.FORBIDDEN;
+      default:
+        return ErrorMessage.INTERNAL_SERVER_ERROR;
+    }
   }
 
   /**
@@ -44,7 +67,7 @@ export class AuthErrorController implements ExceptionFilter {
    * @private
    * @return status
    */
-  private getStatus(error: ResourceError) {
+  private getStatus(error: ResourceException) {
     const code = error.getErrorCode;
     switch (code) {
       case ErrorMessage.BAD_REQUEST.getCode:
