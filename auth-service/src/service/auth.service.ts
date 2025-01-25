@@ -39,7 +39,10 @@ export class AuthService {
   @Log()
   async signUp(userSignUp: UserSignUpDto): Promise<boolean> {
     try {
+      // 1. sign up with Keycloak server
       return await this.keycloakService.signUp(userSignUp);
+
+      // 2. save user info into account-service
     } catch (error) {
       this.logger.error(
         `Error occurred while signing up user [${userSignUp.email}].`,

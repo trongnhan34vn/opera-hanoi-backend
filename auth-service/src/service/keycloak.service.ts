@@ -33,7 +33,7 @@ export class KeycloakService {
   ) {}
 
   /**
-   * sign in with keycloak api
+   * Sign in with Keycloak API
    * @param userLogin
    * @return Promise<KeycloakTokenResponse>
    */
@@ -77,7 +77,7 @@ export class KeycloakService {
   }
 
   /**
-   * sign up with keycloak api
+   * Sign up with Keycloak API
    * 1. get admin access
    * 2. create user
    * 3. find role
@@ -89,16 +89,78 @@ export class KeycloakService {
   async signUp(userSignUp: UserSignUpDto) {
     // 1. get admin access. sign in with admin account by keycloak api
     const token = await this.getAdminAccess();
-
-    // 2. create user with admin access by keycloak api
-    await this.createUser(userSignUp, token);
-    await this.mappingRoleToUser(token, userSignUp);
-    // 3. assign role
-    return true;
+    try {
+      // 2. create user with admin access by keycloak api
+      await this.createUser(userSignUp, token);
+      await this.mappingRoleToUser(token, userSignUp);
+      // 3. assign role
+      return true;
+    } catch (error) {
+      // TRANSACTION
+      await this.signUpTransaction(userSignUp, token);
+      // TRANSACTION
+      throw error;
+    }
   }
 
   /**
-   * create user with keycloak api
+   * Transaction for sign up process (Keycloak Server)
+   * @param user
+   * @param token
+   * @private
+   */
+  private async signUpTransaction(user: UserSignUpDto, token: string) {
+    this.logger.log('Start transaction for sign up process...');
+    // find user was created by email
+    const createdUser: UserKc = await this.findUserByEmail(user.email, token);
+    // delete user from Keycloak Server
+    await this.deleteUser(createdUser, token);
+    this.logger.log('End transaction.');
+  }
+
+  /**
+   * Delete user in Keycloak Server
+   * @param user
+   * @param token
+   * @private
+   */
+  private async deleteUser(user: UserKc, token: string) {
+    try {
+      this.logger.log(`Start delete user [${user.email}]...`);
+      const endpointDeleteUser = `/users/${user.id}`;
+      const pathDeleteUser =
+        KEYCLOAK_SERVICE_ADMIN_PATH_URI + endpointDeleteUser;
+
+      const headers: HttpHeaders = {
+        token,
+      };
+
+      const response = await this.httpService.call(
+        HttpMethod.DELETE,
+        KEYCLOAK_SERVICE_URL,
+        pathDeleteUser,
+        headers,
+      );
+
+      if (!response) {
+        throw new ResourceException(
+          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
+          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
+          'response from Keycloak is null',
+        );
+      }
+
+      this.logger.log(`User [${user.email}] is deleted`);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    } finally {
+      this.logger.log('End delete user.');
+    }
+  }
+
+  /**
+   * Create user in Keycloak Server
    * @param userSignUp
    * @param token
    * @private
@@ -164,7 +226,7 @@ export class KeycloakService {
   }
 
   /**
-   * mapping role to user
+   * Mapping role to user (Keycloak Server)
    * @param token
    * @param userDto
    * @private
@@ -189,7 +251,7 @@ export class KeycloakService {
   }
 
   /**
-   * assign role to user
+   * Assign role to user
    * @param user
    * @param role
    * @param token
@@ -236,7 +298,7 @@ export class KeycloakService {
   }
 
   /**
-   * Find user by email
+   * Find user by email in Keycloak Server
    * @param email
    * @param token
    * @private
@@ -276,7 +338,7 @@ export class KeycloakService {
   }
 
   /**
-   * Find role Keycloak by role name
+   * Find role by role name in Keycloak Server
    * @param roleName
    * @param token
    * @private
@@ -317,7 +379,7 @@ export class KeycloakService {
   }
 
   /**
-   * get admin access by signing in admin account
+   * Get admin access by signing in admin account
    * @private
    * @return token
    */
