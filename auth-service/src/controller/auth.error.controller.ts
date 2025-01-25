@@ -1,11 +1,14 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { ErrorMessage, HttpResponseFactory, ResourceException } from 'common-lib';
+import {
+  ErrorMessage,
+  HttpResponseFactory,
+  ResourceException,
+} from 'common-lib';
 import { Response } from 'express';
 
 @Catch()
 export class AuthErrorController implements ExceptionFilter {
-  constructor(private readonly responseFactory: HttpResponseFactory) {
-  }
+  constructor(private readonly responseFactory: HttpResponseFactory) {}
 
   /**
    * catch resource error
