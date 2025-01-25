@@ -40,20 +40,24 @@ export class HttpServiceFactory implements IHttpService {
       let response: AxiosResponse;
       switch (method) {
         case HttpMethod.GET:
-          // get method
+          // GET method
           response = await getInstance(url, headers).get(path);
           break;
         case HttpMethod.PATCH:
-          // patch method
+          // PATCH method
           response = await getInstance(url, headers).patch(path, data);
           break;
         case HttpMethod.POST:
-          // post method
+          // POST method
           response = await getInstance(url, headers).post(path, data);
           break;
         case HttpMethod.PUT:
-          // post method
+          // PUT method
           response = await getInstance(url, headers).put(path, data);
+          break;
+        case HttpMethod.DELETE:
+          // DELETE method
+          response = await getInstance(url, headers).delete(path);
           break;
         default:
           throw new ResourceException(
