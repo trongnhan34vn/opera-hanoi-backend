@@ -35,7 +35,7 @@ export class AuthErrorController implements ExceptionFilter {
     // in case not resource error
     return this.responseFactory.sendErrorResponse(
       response,
-      error['status'],
+      error['status'] && this.getStatus(ErrorMessage.INTERNAL_SERVER_ERROR.getCode),
       this.getErrorMessage(error['status']).getCode,
       this.getErrorMessage(error['status']).getMessage,
       error.message,

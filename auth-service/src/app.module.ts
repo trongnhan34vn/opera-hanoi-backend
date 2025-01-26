@@ -17,7 +17,7 @@ import { GlobalAuthGuard } from './config/GlobalAuthGuard';
 import { APP_GUARD } from '@nestjs/core';
 import { SkipAuthGuard } from './config/SkipAuthGuard';
 
-const envFilePath = '../../env/.env.dev';
+const envFilePath = '../.env.dev';
 
 @Module({
   imports: [
