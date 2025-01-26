@@ -1,16 +1,21 @@
 version: '3.9'
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:26.0.5
     container_name: keycloak
     command:
-      - start-dev
+      start-dev
     environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak  # Dùng tên service keycloak-db thay vì localhost
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
-      KC_HOSTNAME: your-domain-or-ip
     ports:
       - 8080:8080
     depends_on:
