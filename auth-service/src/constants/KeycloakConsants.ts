@@ -2,7 +2,7 @@ import * as process from 'node:process';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-const envFilePath = '../../../env/.env.dev';
+const envFilePath = '../../.env.dev';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 
 export const KEYCLOAK_SERVICE_HOST = process.env.KEYCLOAK_SERVICE_HOST;

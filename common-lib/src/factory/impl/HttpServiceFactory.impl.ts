@@ -10,7 +10,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 @Injectable()
 export class HttpServiceFactory implements IHttpService {
   constructor(
-    private readonly logger: LoggerFactory = new LoggerFactory('common'),
+    private readonly logger: LoggerFactory,
   ) {}
 
   /**
@@ -67,12 +67,10 @@ export class HttpServiceFactory implements IHttpService {
       }
       this.logger.log('Call API successfully.');
       return response;
-    } catch (e) {
-      const error: AxiosError = e;
-      this.logger.error(
-        `Error occurred when calling API. ${error}. Response: ${JSON.stringify(error.response.data)}.`,
-      );
-      this.handleAxiosError(error);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        this.handleAxiosError(error);
+      }
       // General error
       throw new ResourceException(
         ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
@@ -90,6 +88,16 @@ export class HttpServiceFactory implements IHttpService {
    */
   private handleAxiosError(error: AxiosError) {
     const statusError = error.status;
+    if (!statusError) {
+      throw new ResourceException(
+        ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
+        ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
+        error.cause.message,
+      );
+    }
+    this.logger.error(
+      `Error occurred when calling API. ${error}. Response: ${JSON.stringify(error.response?.data)}.`,
+    );
     switch (statusError) {
       case 400:
         throw new ResourceException(
