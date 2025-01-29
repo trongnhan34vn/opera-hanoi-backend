@@ -7,6 +7,7 @@ export interface ConsulOptions {
   service: {
     id: string; // ID của service
     name: string; // Tên của service
+    host: string;
     port: number; // Cổng của service
     healthCheckPath: string; // Endpoint health check
     interval?: string; // Tần suất kiểm tra
@@ -22,10 +23,7 @@ export class ConsulService implements OnModuleInit {
     private readonly logger: LoggerService,
     options: ConsulOptions,
   ) {
-    this.consul = new Consul({
-      host: options.host,
-      port: options.port,
-    });
+    this.consul = new Consul({ host: options.host, port: options.port });
     this.options = options;
   }
 
@@ -37,6 +35,7 @@ export class ConsulService implements OnModuleInit {
     const {
       id,
       name,
+      host,
       port,
       healthCheckPath,
       interval = '10s',
@@ -50,7 +49,7 @@ export class ConsulService implements OnModuleInit {
         check: {
           checkid: id + '-health-check',
           name: `${name}-health-check`,
-          http: `http://localhost:${port}${healthCheckPath}`,
+          http: `http://${host}:${port}${healthCheckPath}`,
           interval,
           timeout,
         },

@@ -68,6 +68,7 @@ export class HttpServiceFactory implements IHttpService {
       this.logger.log('Call API successfully.');
       return response;
     } catch (error) {
+      console.log('Error', error);
       if (error instanceof AxiosError) {
         this.handleAxiosError(error);
       }
@@ -103,37 +104,37 @@ export class HttpServiceFactory implements IHttpService {
         throw new ResourceException(
           ErrorMessage.BAD_REQUEST.getCode,
           error.message,
-          JSON.stringify(error.response.data),
+          error.response.data['message'],
         );
       case 401:
         throw new ResourceException(
           ErrorMessage.UNAUTHORIZED.getCode,
           error.message,
-          JSON.stringify(error.response.data),
+          error.response.data['message'],
         );
       case 403:
         throw new ResourceException(
           ErrorMessage.FORBIDDEN.getCode,
           error.message,
-          JSON.stringify(error.response.data),
+          error.response.data['message'],
         );
       case 409:
         throw new ResourceException(
           ErrorMessage.CONFLICT.getCode,
           error.message,
-          JSON.stringify(error.response.data),
+          error.response.data['message'],
         );
       case 404:
         throw new ResourceException(
           ErrorMessage.NOT_FOUND.getCode,
           error.message,
-          JSON.stringify(error.response.data),
+          error.response.data['message'],
         );
       default:
         throw new ResourceException(
           ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
           error.message,
-          JSON.stringify(error.response.data),
+          error.response.data['message'],
         );
     }
   }
