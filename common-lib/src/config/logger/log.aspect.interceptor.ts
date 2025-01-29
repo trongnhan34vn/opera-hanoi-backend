@@ -30,8 +30,11 @@ export class LogAspectInterceptor implements NestInterceptor {
       catchError((error) => {
         const endTime = Date.now();
         const duration = endTime - startTime;
+        if (error.response) {
+          this.logger.error('Error: ' + JSON.stringify(error.response.message));
+        }
         this.logger.error(
-          `Logging finished: ${methodName} failed after ${duration}ms with error: ${error.message}`,
+          `Logging finished: ${methodName} failed after ${duration}ms with error: ${error.stack}.`,
         );
         throw error; // Tiếp tục ném lỗi để các handler khác xử lý
       }),

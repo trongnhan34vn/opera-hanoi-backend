@@ -10,6 +10,7 @@ export class MiddlewareModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(ApiKeyMiddleware) // Áp dụng middleware ApiKeyMiddleware
+      .exclude('/actuator/health')
       .forRoutes('*'); // Áp dụng middleware cho tất cả các route
   }
 }

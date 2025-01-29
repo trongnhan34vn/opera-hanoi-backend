@@ -3,6 +3,12 @@ import { HttpHeaders } from '../../factory/interface/HttpService.interface';
 import { HttpContentType } from '../../factory/enum/http.content.type';
 
 export const getInstance = (host: string, headers?: HttpHeaders) => {
+  if (!headers) {
+    return axios.create({
+      baseURL: host,
+    });
+  }
+
   const { token, apiKey, contentType } = headers;
   return axios.create({
     baseURL: host,
