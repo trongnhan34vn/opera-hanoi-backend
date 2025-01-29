@@ -1,34 +1,35 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {
-  AuthGuard,
-  KeycloakConnectModule,
-  ResourceGuard,
-  RoleGuard,
-} from 'nest-keycloak-connect';
-
+import * as path from 'node:path';
 import {
   HttpResponseFactory,
   LoggerFactory,
   LogModule,
   MiddlewareModule,
 } from 'common-lib';
-import { ConfigModule } from '@nestjs/config';
-import * as path from 'node:path';
 import { KeycloakConfig } from './config/KeycloakConfig';
+import {
+  AuthGuard,
+  KeycloakConnectModule,
+  ResourceGuard,
+  RoleGuard,
+} from 'nest-keycloak-connect';
+import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { GlobalAuthGuard } from './config/GlobalAuthGuard';
-import { SkipAuthGuard } from './config/SkipAuthGuard';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './entity/user.entity';
+import { UserController } from './controller/user.controller';
+import { SkipAuthGuard } from './config/SkipAuthGuard';
+import { UserModule } from './module/user.module';
 
-const envFilePath = '../../env/.env.dev';
+const envFilePath = '../.env.dev';
 
 @Module({
   imports: [
     // import auth module
-    // AuthModule,
+    UserModule,
     // import config interceptor
     LogModule,
     // import config .env.dev
@@ -43,20 +44,24 @@ const envFilePath = '../../env/.env.dev';
     MiddlewareModule,
 
     // DATABASES
-    // SequelizeModule.forRoot({
-    //   dialect: 'postgres',
-    //   host: 'localhost',
-    //   port: 5432,
-    //   username: 'user',
-    //   password: 'password',
-    //   database: 'database_name',
-    //   models: [User],
-    //   autoLoadModels: true,
-    //   synchronize: true,
-    // }),
+    SequelizeModule.forRoot({
+      dialect: 'postgres',
+      host: 'localhost',
+      port: 5434,
+      username: 'postgres',
+      password: 'Nhantic1998@',
+      database: 'account_service_db',
+      schema: 'account_service_schema',
+      models: [User],
+      define: {
+        timestamps: true,
+      },
+      autoLoadModels: true,
+      synchronize: true,
+    }),
     // DATABASES
   ],
-  controllers: [AppController],
+  controllers: [AppController, UserController],
   providers: [
     AppService,
     // provide http response factory
