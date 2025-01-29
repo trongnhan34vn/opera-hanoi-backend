@@ -26,5 +26,5 @@ export class UserSignUpDto {
   lastName: string;
 
   @IsOptional()
-  roles: Set<string>;
+  roles?: Set<string>;
 }

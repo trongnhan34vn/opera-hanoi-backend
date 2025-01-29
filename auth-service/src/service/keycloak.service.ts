@@ -96,9 +96,6 @@ export class KeycloakService {
       // 3. assign role
       return true;
     } catch (error) {
-      // TRANSACTION
-      await this.signUpTransaction(userSignUp, token);
-      // TRANSACTION
       throw error;
     }
   }
@@ -109,8 +106,10 @@ export class KeycloakService {
    * @param token
    * @private
    */
-  private async signUpTransaction(user: UserSignUpDto, token: string) {
+  public async signUpTransaction(user: UserSignUpDto) {
     this.logger.log('Start transaction for sign up process...');
+    // get admin access
+    const token = await this.getAdminAccess();
     // find user was created by email
     const createdUser: UserKc = await this.findUserByEmail(user.email, token);
     // delete user from Keycloak Server

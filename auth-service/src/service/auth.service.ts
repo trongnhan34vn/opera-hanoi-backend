@@ -4,14 +4,15 @@ import { KeycloakTokenResponse } from '../interface/keycloak.interface';
 import { KeycloakService } from './keycloak.service';
 import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
 import { UserSignInDto } from '../dto/request/UserSignIn.dto';
+import { AccountService } from './account.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly keycloakService: KeycloakService,
     private readonly logger: LoggerFactory,
-  ) {
-  }
+    private readonly accountService: AccountService,
+  ) {}
 
   /**
    * sign in
@@ -40,14 +41,20 @@ export class AuthService {
   async signUp(userSignUp: UserSignUpDto): Promise<boolean> {
     try {
       // 1. sign up with Keycloak server
-      return await this.keycloakService.signUp(userSignUp);
+      await this.keycloakService.signUp(userSignUp);
 
       // 2. save user info into account-service
+      await this.accountService.save(userSignUp);
+
+      return true;
     } catch (error) {
       this.logger.error(
         `Error occurred while signing up user [${userSignUp.email}].`,
         error.stack,
       );
+      // START TRANSACTION
+      await this.keycloakService.signUpTransaction(userSignUp);
+      // START TRANSACTION
       throw error;
     }
   }

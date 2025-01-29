@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HttpResponseFactory, LoggerFactory, LogModule, MiddlewareModule } from 'common-lib';
+import {
+  ConsulService,
+  HttpResponseFactory,
+  LoggerFactory,
+  LogModule,
+  MiddlewareModule,
+} from 'common-lib';
 import { AuthController } from './controller/auth.controller';
 import { AuthModule } from './module/auth.module';
 import { ConfigModule } from '@nestjs/config';
@@ -41,11 +47,29 @@ const envFilePath = '../.env.dev';
     AppService,
     // provide http response factory
     HttpResponseFactory,
-    // provide config log
+    // LOGGER
     {
       provide: LoggerFactory,
       useFactory: () => new LoggerFactory('default'), // Cung cấp category và level mặc định
     },
+    // LOGGER
+    // CONSUL
+    {
+      provide: ConsulService,
+      useFactory: () =>
+        new ConsulService(new LoggerFactory('default'), {
+          host: 'localhost',
+          port: 8500,
+          service: {
+            id: 'consul-auth-service',
+            name: 'auth-service',
+            host: 'localhost',
+            port: 8090,
+            healthCheckPath: '/actuator/health',
+          },
+        }),
+    },
+    // CONSUL
     // START SECURITY PROVIDER
     {
       provide: APP_GUARD,
