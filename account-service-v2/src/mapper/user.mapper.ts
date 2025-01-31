@@ -16,7 +16,7 @@ export class UserMapper implements IUserMapper {
       userDto.address = user.address;
     }
     if (user.birthDate) {
-      userDto.birthDate = user.birthDate?.toDateString();
+      userDto.birthDate = user.birthDate.toDateString();
     }
     userDto.firstName = user.firstName;
     userDto.lastName = user.lastName;
