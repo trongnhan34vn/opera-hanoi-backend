@@ -6,6 +6,7 @@ import { ConcertMapper } from '../../mapper/impl/concert.mapper.impl';
 import { ErrorMessage, LoggerFactory, ResourceException } from 'common-lib';
 import { ConcertDto } from '../../dto/concert.dto';
 import { Sequelize } from 'sequelize-typescript';
+import { Pagination } from '../../dto/pagination.dto';
 
 @Injectable()
 export class ConcertService implements IConcertService {
@@ -31,6 +32,28 @@ export class ConcertService implements IConcertService {
       concertDtos.push(concertDto);
     });
     return concertDtos;
+  }
+
+  /**
+   * find concert with pagination
+   * @param pagination
+   */
+  async findAllPagination(pagination: Pagination) {
+    const { page, size, sortBy, orderBy } = pagination;
+    const limit = size ?? 5;
+    const offset = (page ?? 0) * (size ?? 5);
+    const { rows, count } = await this.concertRepository.findAndCountAll({
+      limit,
+      offset,
+      order: [[sortBy ?? 'id', orderBy]],
+    });
+
+    return {
+      data: rows,
+      total: count,
+      totalPages: Math.ceil(count / (size ?? 5)),
+      currentPage: page,
+    };
   }
 
   /**
