@@ -1,0 +1,34 @@
+[
+    {
+        "title": "Opera Night",
+        "description": "A sophisticated evening of operatic performances.",
+        "art": "Opera",
+        "director": "Maria Clarke",
+        "duration": 160,
+        "price": 250000000,
+        "categories": [
+            "0ecf8b4e-a340-4421-9eea-86a259b476c0",
+            "04b02cdd-06cc-40c3-ae01-53ba93d3a3f9"
+        ],
+        "showTimes": [
+            "2025/03/10 20:00:00",
+            "2025/03/12 18:30:00"
+        ]
+    },
+    {
+        "title": "Opera Night",
+        "description": "A sophisticated evening of operatic performances.",
+        "art": "Opera",
+        "director": "Maria Clarke",
+        "duration": 160,
+        "price": 250000000,
+        "categories": [
+            "0ecf8b4e-a340-4421-9eea-86a259b476c0",
+            "04b02cdd-06cc-40c3-ae01-53ba93d3a3f9"
+        ],
+        "showTimes": [
+            "2025/03/10 20:00:00",
+            "2025/03/12 18:30:00"
+        ]
+    }
+]
