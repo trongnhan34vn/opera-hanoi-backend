@@ -4,32 +4,45 @@ import {
   CreatedAt,
   DataType,
   ForeignKey,
-  HasMany,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Concert } from './concert.entity';
-import { Seat } from './seat.entity';
 
-@Table({ modelName: 'show_times' })
+@Table({
+  tableName: 'show_times',
+})
 export class ShowTime extends Model<ShowTime> {
-  // ID PRIMARY KEY
+  // PK ID
   @PrimaryKey
   @Column({
     type: DataType.UUID,
   })
   id: string;
 
-  // show day
+  // START TIME - END TIME
   @Column({
-    type: 'timestamp',
+    type: DataType.DATE,
   })
-  dateTime: Date;
+  startTime: Date;
 
-  // 1 concert for 1 day =>
-  // 1 show time - 1 concert && 1 concert - n show_time
+  @Column({
+    type: DataType.DATE,
+  })
+  endTime: Date;
+
+  // CREATE AND UPDATE TIME
+  @CreatedAt
+  createdAt: Date;
+
+  @UpdatedAt
+  updatedAt: Date;
+
+  // RELATIONS //
+
+  // CONCERT
   @BelongsTo(() => Concert)
   concert: Concert;
 
@@ -39,16 +52,5 @@ export class ShowTime extends Model<ShowTime> {
   })
   concertId: string;
 
-  // 1 show time has many seat
-  @HasMany(() => Seat)
-  seats: Seat[];
-
-  // create and update time
-  @CreatedAt
-  @Column({ field: 'created_at', type: DataType.DATE })
-  createdAt: Date;
-
-  @UpdatedAt
-  @Column({ field: 'updated_at', type: DataType.DATE })
-  updatedAt: Date;
+  // RELATIONS //
 }

@@ -12,6 +12,7 @@ import { ConcertMapper } from '../mapper/impl/concert.mapper.impl';
 import { ConcertController } from '../controller/concert.controller';
 import { Concert } from '../entity/concert.entity';
 import { CategoryModule } from './category.module';
+import { ConcertRepository } from '../repository/impl/concert.repository.impl';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CategoryModule } from './category.module';
   controllers: [ConcertController],
   providers: [
     ConcertService,
+    ConcertRepository,
     CategoryMapper,
     ConcertMapper,
     HttpResponseFactory,

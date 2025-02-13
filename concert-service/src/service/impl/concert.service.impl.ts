@@ -1,160 +1,149 @@
-import { Concert } from 'src/entity/concert.entity';
-import { IConcertService } from '../concert.service.interface';
+import { ConcertDto } from 'src/dto/request/concert.dto';
+import { ConcertServiceInterface } from '../concert.service.interface';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
+import { ConcertRepository } from '../../repository/impl/concert.repository.impl';
 import { ConcertMapper } from '../../mapper/impl/concert.mapper.impl';
-import { ErrorMessage, LoggerFactory, ResourceException } from 'common-lib';
-import { ConcertDto } from '../../dto/concert.dto';
+import { LoggerFactory } from 'common-lib';
+import { Category } from '../../entity/category.entity';
+import { CategoryService } from './category.service.impl';
+import { CategoryMapper } from '../../mapper/impl/category.mapper.impl';
+import { Image } from '../../entity/image.entity';
+import { ShowTime } from '../../entity/show.time.entity';
+import * as moment from 'moment-timezone';
+import { ConcertSeatCategory } from '../../entity/sub/concert.seat.category.sub.entity';
 import { Sequelize } from 'sequelize-typescript';
-import { Pagination } from '../../dto/pagination.dto';
+import { ConcertSeat } from '../../entity/sub/concert.seat.sub.entity';
+import { Seat } from '../../entity/seat.entity';
+import { v4 as uuidV4 } from 'uuid';
 
 @Injectable()
-export class ConcertService implements IConcertService {
+export class ConcertService implements ConcertServiceInterface {
   constructor(
-    @InjectModel(Concert)
-    private readonly concertRepository: typeof Concert,
+    private readonly concertRepository: ConcertRepository,
     private readonly concertMapper: ConcertMapper,
-    private readonly sequelize: Sequelize,
+    private readonly categoryService: CategoryService,
+    private readonly categoryMapper: CategoryMapper,
     private readonly logger: LoggerFactory,
+    private readonly sequelize: Sequelize,
   ) {}
 
-  /**
-   * find all concert
-   */
-  async findAll(): Promise<ConcertDto[]> {
-    const concerts = await this.concertRepository.findAll();
-    if (concerts.length === 0) {
-      this.logger.warn(`No records found in ${this.concertRepository.name}`);
-    }
-    const concertDtos: ConcertDto[] = [];
-    concerts.forEach((concert) => {
-      const concertDto = this.concertMapper.toDto(concert);
-      concertDtos.push(concertDto);
-    });
-    return concertDtos;
-  }
-
-  /**
-   * find concert with pagination
-   * @param pagination
-   */
-  async findAllPagination(pagination: Pagination) {
-    const { page, size, sortBy, orderBy } = pagination;
-    const limit = size ?? 5;
-    const offset = (page ?? 0) * (size ?? 5);
-    const { rows, count } = await this.concertRepository.findAndCountAll({
-      limit,
-      offset,
-      order: [[sortBy ?? 'id', orderBy]],
-    });
-
-    return {
-      data: rows,
-      total: count,
-      totalPages: Math.ceil(count / (size ?? 5)),
-      currentPage: page,
-    };
-  }
-
-  /**
-   * save concert
-   * @param dto
-   * @return concert
-   */
-  async save(dto: ConcertDto): Promise<ConcertDto> {
+  async create(dto: ConcertDto): Promise<ConcertDto> {
     const transaction = await this.sequelize.transaction();
     try {
       const concert = await this.concertMapper.toEntity(dto);
+      this.logger.log('Start create operation...');
       // CREATE OPERATION
-      if (!dto.id) {
-        this.logger.log('Concert: Executing CREATE operation');
-        const createdConcert = await concert.save({ transaction });
-        await concert.$add('categories', concert.categories, { transaction });
-        // create showtime
-        for (const showTime of concert.showTimes) {
-          await showTime.save({ transaction });
-        }
-        // create showtime
-        await concert.$add('showTimes', concert.showTimes, { transaction });
-        const createConcertDto = this.concertMapper.toDto(createdConcert);
-        await transaction.commit();
-        return createConcertDto;
+      // set categories
+      const categoryIds = dto.categories;
+      const categories: Category[] = [];
+      for (const categoryId of categoryIds) {
+        const categoryDto = await this.categoryService.findById(categoryId);
+        const category = this.categoryMapper.toEntity(categoryDto);
+        categories.push(category);
       }
-      // CREATE OPERATION
-      // UPDATE OPERATION
-      this.logger.log('Concert: Executing UPDATE operation');
-      const updateConcertDto = await this.findById(dto.id);
-      const updateConcert = await this.concertMapper.toEntity(updateConcertDto);
-      const updatedConcert = await updateConcert.update(
-        {
-          ...concert,
-          updatedAt: new Date(Date.now()),
-        },
-        { where: { id: dto.id } },
-      );
-      const updatedConcertDto = this.concertMapper.toDto(updatedConcert);
+
+      concert.categories = categories;
+      this.logger.log('Set categories of concert');
+      // set categories
+
+      // set images
+      const imageUrls = dto.images;
+      const images: Image[] = [];
+      for (const stringUrl of imageUrls) {
+        const image = new Image();
+        image.id = uuidV4();
+        image.concertId = concert.id;
+        image.url = stringUrl;
+        image.concert = concert;
+        images.push(image);
+      }
+      concert.images = images;
+      this.logger.log('Set images of concert');
+      // set images
+
+      // set showtime
+      const showTimes: ShowTime[] = [];
+      const stringShowTimes = dto.showTimes;
+      for (const stringShowTime of stringShowTimes) {
+        const showTime = new ShowTime();
+        showTime.id = uuidV4();
+        showTime.concertId = concert.id;
+        showTime.startTime = moment(
+          stringShowTime.startTime,
+          'YYYY/MM/DD HH:mm:ss',
+        )
+          .tz('Asia/Ho_Chi_Minh')
+          .toDate();
+        showTime.endTime = moment(stringShowTime.endTime, 'YYYY/MM/DD HH:mm:ss')
+          .tz('Asia/Ho_Chi_Minh')
+          .toDate();
+        showTimes.push(showTime);
+      }
+      concert.showTimes = showTimes;
+
+      this.logger.log('Set show times of concert');
+      // set showtime
+
+      const createdConcert = await this.concertRepository.create(concert);
+
+      // set seat category price
+      // const concertSeatCategories: ConcertSeatCategory[] = [];
+      const seatPrices = dto.seatCategoriesPrice;
+      const concertSeatCategories: ConcertSeatCategory[] = [];
+      for (const seatPrice of seatPrices) {
+        const concertSeatCategory = new ConcertSeatCategory();
+        concertSeatCategory.id = uuidV4();
+        concertSeatCategory.concertId = concert.id;
+        concertSeatCategory.seatCategoryId = seatPrice.seatCategoryId;
+        concertSeatCategory.price = seatPrice.price;
+        concertSeatCategories.push(concertSeatCategory.get());
+      }
+
+      await ConcertSeatCategory.bulkCreate(concertSeatCategories, {
+        transaction,
+      });
+      this.logger.log('Set price of seat categories');
+      // set seat category price
+
+      // create concert seat
+      const seats = await Seat.findAll();
+      const concertSeats: ConcertSeat[] = [];
+      for (const seat of seats) {
+        const concertSeat = new ConcertSeat();
+        concertSeat.id = uuidV4();
+        concertSeat.concertId = concert.id;
+        concertSeat.seatId = seat.id;
+        concertSeats.push(concertSeat.get());
+      }
+
+      await ConcertSeat.bulkCreate(concertSeats, { transaction });
+      this.logger.log('Set amount of seat of concert');
+      // create concert seat
+
       await transaction.commit();
-      return updatedConcertDto;
-      // UPDATE OPERATION
+      this.logger.log(`Concert created id [${createdConcert.id}]`);
+      return this.concertMapper.toDto(createdConcert);
+      // CREATE OPERATION
     } catch (error) {
-      this.logger.error(error);
       await transaction.rollback();
+      this.logger.error(error);
       throw error;
     }
   }
 
-  /**
-   * check concert is existed
-   * @param id
-   */
-  async isExistedById(id: string) {
-    try {
-      const concert = await this.findById(id);
-      if (concert) return true;
-      return false;
-    } catch (error) {
-      this.logger.error(error);
-      return false;
-    }
+  save(dto: ConcertDto): Promise<ConcertDto> {
+    throw new Error('Method not implemented.');
   }
 
-  /**
-   * find concert by id
-   * @param id
-   * @return concert
-   */
-  async findById(id: string): Promise<ConcertDto> {
-    const concert = await this.concertRepository.findOne({
-      include: [],
-      where: {
-        id,
-      },
-    });
-    if (!concert) {
-      throw new ResourceException(
-        ErrorMessage.NOT_FOUND.getCode,
-        ErrorMessage.NOT_FOUND.getMessage,
-        `Concert not found with id [${id}]`,
-      );
-    }
-    return this.concertMapper.toDto(concert);
+  findAll(): Promise<ConcertDto[]> {
+    throw new Error('Method not implemented.');
   }
 
-  /**
-   * delete by ID
-   * @param id
-   */
-  async delete(id: string): Promise<void> {
-    const concert = await this.concertRepository.findOne({
-      where: { id },
-    });
-    if (!concert) {
-      throw new ResourceException(
-        ErrorMessage.NOT_FOUND.getCode,
-        ErrorMessage.NOT_FOUND.getMessage,
-        `Concert not found with id [${id}]`,
-      );
-    }
-    await concert.destroy();
+  findById(id: string): Promise<ConcertDto> {
+    throw new Error('Method not implemented.');
+  }
+
+  remove(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 }

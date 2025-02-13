@@ -1,5 +1,7 @@
-import { IGenericService } from './generic.service.interface';
-import { Concert } from '../entity/concert.entity';
-import { ConcertDto } from '../dto/concert.dto';
+import { GenericServiceInterface } from './generic.service.interface';
+import { ConcertDto } from '../dto/request/concert.dto';
 
-export interface IConcertService extends IGenericService<ConcertDto>{}
+export interface ConcertServiceInterface
+  extends GenericServiceInterface<ConcertDto> {
+  create(dto: ConcertDto): Promise<ConcertDto>;
+}

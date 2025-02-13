@@ -1,6 +1,9 @@
-export interface IGenericService<T> {
-  findAll(): Promise<T[]>;
+export interface GenericServiceInterface<T> {
   save(dto: T): Promise<T>;
+
+  findAll(): Promise<T[]>;
+
   findById(id: string): Promise<T>;
-  delete(id: string): Promise<void>;
+
+  remove(id: string): Promise<void>;
 }

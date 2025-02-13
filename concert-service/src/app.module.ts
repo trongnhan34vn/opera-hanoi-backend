@@ -27,9 +27,14 @@ import { APP_GUARD } from '@nestjs/core';
 import { GlobalAuthGuard } from './config/GlobalAuthGuard';
 import { SkipAuthGuard } from './config/SkipAuthGuard';
 import { Concert } from './entity/concert.entity';
-import { Seat } from './entity/seat.entity';
-import { ShowTime } from './entity/show.time.entity';
 import { Category } from './entity/category.entity';
+import { Image } from './entity/image.entity';
+import { Seat } from './entity/seat.entity';
+import { SeatCategory } from './entity/seat.category.entity';
+import { ConcertCategory } from './entity/sub/concert.category.sub.entity';
+import { ConcertSeatCategory } from './entity/sub/concert.seat.category.sub.entity';
+import { ConcertSeat } from './entity/sub/concert.seat.sub.entity';
+import { ShowTime } from './entity/show.time.entity';
 import { CategoryModule } from './module/category.module';
 import { ConcertModule } from './module/concert.module';
 
@@ -37,7 +42,7 @@ const envFilePath = '../.env.dev';
 
 @Module({
   imports: [
-    // import auth module
+    // import modules
     CategoryModule,
     ConcertModule,
     // import config interceptor
@@ -69,7 +74,17 @@ const envFilePath = '../.env.dev';
       password: 'Nhantic1998@',
       database: 'concert_service_db',
       schema: 'concert_service_schema',
-      models: [Concert, Seat, ShowTime, Category],
+      models: [
+        Concert,
+        Category,
+        Image,
+        ShowTime,
+        Seat,
+        SeatCategory,
+        ConcertCategory,
+        ConcertSeatCategory,
+        ConcertSeat,
+      ],
       define: {
         timestamps: true,
       },

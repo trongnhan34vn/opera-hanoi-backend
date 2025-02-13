@@ -1,5 +1,5 @@
-import { IGenericMapper } from './generic.mapper.interface';
+import { GenericMapperInterface } from './generic.mapper';
+import { ConcertDto } from '../dto/request/concert.dto';
 import { Concert } from '../entity/concert.entity';
-import { ConcertDto } from '../dto/concert.dto';
 
-export interface IConcertMapper extends IGenericMapper<Concert, ConcertDto> {}
+export interface ConcertMapperInterface extends GenericMapperInterface<ConcertDto, Concert> {}

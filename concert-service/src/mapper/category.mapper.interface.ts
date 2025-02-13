@@ -1,5 +1,5 @@
-import { IGenericMapper } from './generic.mapper.interface';
+import { GenericMapperInterface } from './generic.mapper';
 import { Category } from '../entity/category.entity';
-import { CategoryDto } from '../dto/category.dto';
+import { CategoryDto } from '../dto/request/category.dto';
 
-export interface ICategoryMapper extends IGenericMapper<Category, CategoryDto> {}
+export interface CategoryMapperInterface extends GenericMapperInterface<CategoryDto, Category> {}

@@ -10,81 +10,77 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Category } from './category.entity';
+import { ConcertCategory } from './sub/concert.category.sub.entity';
+import { Image } from './image.entity';
 import { ShowTime } from './show.time.entity';
+import { Seat } from './seat.entity';
+import { ConcertSeat } from './sub/concert.seat.sub.entity';
+import { SeatCategory } from './seat.category.entity';
+import { ConcertSeatCategory } from './sub/concert.seat.category.sub.entity';
 
-@Table({ modelName: 'concerts' })
+@Table({
+  tableName: 'concerts',
+})
 export class Concert extends Model<Concert> {
-  // ID PRIMARY KEY
+  // PK ID
   @PrimaryKey
   @Column({
     type: DataType.UUID,
   })
   id: string;
 
-  // title
+  // ART
   @Column({
     type: DataType.STRING,
-    allowNull: false,
-  })
-  title: string;
-
-  // description
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  description?: string;
-
-  // art
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
   })
   art: string;
 
-  // director
+  // DIRECTOR
   @Column({
     type: DataType.STRING,
-    allowNull: false,
   })
   director: string;
 
-  // duration
+  // TITLE
   @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
+    type: DataType.STRING,
   })
-  duration: number;
+  title: string;
 
-  // price
+  // DESCRIPTION
   @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
+    type: DataType.STRING,
   })
-  price: number;
+  description: string;
 
-  // isActive
-  @Column({ type: DataType.BOOLEAN, defaultValue: true })
-  isActive: boolean;
-
-  // Many to Many with Category
-  @BelongsToMany(() => Category, {
-    through: 'concert_category',
-    foreignKey: 'concertId', // Định nghĩa khóa ngoại
-    otherKey: 'categoryId', // Định nghĩa khóa ngoại bên kia
-  })
-  categories: Category[];
-
-  // 1 concert can show in many show time
-  @HasMany(() => ShowTime)
-  showTimes: ShowTime[];
-
-  // create and update time
+  // CREATE AND UPDATE TIME
   @CreatedAt
-  @Column({ field: 'created_at', type: DataType.DATE })
   createdAt: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_at', type: DataType.DATE })
   updatedAt: Date;
+
+  // RELATIONS //
+
+  // N CONCERT - N CATEGORIES
+  @BelongsToMany(() => Category, () => ConcertCategory)
+  categories: Category[];
+
+  // 1 CONCERT - N IMAGES
+  @HasMany(() => Image)
+  images: Image[];
+
+  // 1 CONCERT - N SHOW TIME
+  @HasMany(() => ShowTime)
+  showTimes: ShowTime[];
+
+  // N CONCERT - N SEAT
+  @BelongsToMany(() => Seat, () => ConcertSeat)
+  seats: Seat[];
+
+  // N CONCERT - N SEAT CATEGORY
+  @BelongsToMany(() => SeatCategory, () => ConcertSeatCategory)
+  seatCategories: SeatCategory[];
+
+  // RELATIONS //
 }
