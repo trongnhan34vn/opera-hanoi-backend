@@ -1,0 +1,513 @@
+[2025-02-09T23:30:16.335] [INFO] default - Starting Nest application...
+[2025-02-09T23:30:16.487] [INFO] default - App successfully configured Logger
+[2025-02-09T23:30:16.488] [INFO] default - App successfully configured Filters
+[2025-02-09T23:30:16.488] [INFO] default - App successfully configured Interceptors
+[2025-02-09T23:30:16.488] [INFO] default - Nest app started with port [8092]
+[2025-02-09T23:30:16.584] [INFO] default - AppController {/}:
+[2025-02-09T23:30:16.585] [INFO] default - Mapped {/, GET} route
+[2025-02-09T23:30:16.586] [INFO] default - Nest application successfully started
+[2025-02-09T23:31:39.551] [INFO] default - Starting Nest application...
+[2025-02-09T23:33:07.361] [INFO] default - Starting Nest application...
+[2025-02-09T23:33:34.600] [INFO] default - Starting Nest application...
+[2025-02-09T23:33:34.811] [INFO] default - App successfully configured Logger
+[2025-02-09T23:33:34.811] [INFO] default - App successfully configured Filters
+[2025-02-09T23:33:34.812] [INFO] default - App successfully configured Interceptors
+[2025-02-09T23:33:34.812] [INFO] default - Nest app started with port [8092]
+[2025-02-09T23:33:34.912] [INFO] default - AppController {/}:
+[2025-02-09T23:33:34.913] [INFO] default - Mapped {/, GET} route
+[2025-02-09T23:33:34.914] [INFO] default - Nest application successfully started
+[2025-02-11T20:58:23.273] [INFO] default - Starting Nest application...
+[2025-02-11T20:58:23.489] [INFO] default - App successfully configured Logger
+[2025-02-11T20:58:23.490] [INFO] default - App successfully configured Filters
+[2025-02-11T20:58:23.490] [INFO] default - App successfully configured Interceptors
+[2025-02-11T20:58:23.490] [INFO] default - Nest app started with port [8092]
+[2025-02-11T20:58:23.504] [INFO] default - AppController {/}:
+[2025-02-11T20:58:23.504] [INFO] default - Mapped {/, GET} route
+[2025-02-11T20:58:23.504] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-11T20:58:23.505] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-11T20:58:23.505] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-11T20:58:23.505] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-11T20:58:23.505] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-11T20:58:23.505] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-11T20:58:23.506] [INFO] default - Nest application successfully started
+[2025-02-11T20:59:06.755] [INFO] log-aspect - Logging started: save
+[2025-02-11T20:59:06.791] [INFO] log-aspect - Logging finished: save finished in 36ms
+[2025-02-11T20:59:11.823] [INFO] log-aspect - Logging started: save
+[2025-02-11T20:59:11.836] [INFO] log-aspect - Logging finished: save finished in 13ms
+[2025-02-11T20:59:16.866] [INFO] log-aspect - Logging started: save
+[2025-02-11T20:59:16.878] [INFO] log-aspect - Logging finished: save finished in 12ms
+[2025-02-11T20:59:21.906] [INFO] log-aspect - Logging started: save
+[2025-02-11T20:59:21.916] [INFO] log-aspect - Logging finished: save finished in 10ms
+[2025-02-11T20:59:26.947] [INFO] log-aspect - Logging started: save
+[2025-02-11T20:59:26.968] [INFO] log-aspect - Logging finished: save finished in 21ms
+[2025-02-11T20:59:32.000] [INFO] log-aspect - Logging started: save
+[2025-02-11T20:59:32.013] [INFO] log-aspect - Logging finished: save finished in 13ms
+[2025-02-11T20:59:37.051] [INFO] log-aspect - Logging started: save
+[2025-02-11T20:59:37.060] [INFO] log-aspect - Logging finished: save finished in 9ms
+[2025-02-13T21:06:43.760] [INFO] default - Starting Nest application...
+[2025-02-13T21:06:44.005] [INFO] default - App successfully configured Logger
+[2025-02-13T21:06:44.005] [INFO] default - App successfully configured Filters
+[2025-02-13T21:06:44.005] [INFO] default - App successfully configured Interceptors
+[2025-02-13T21:06:44.005] [INFO] default - Nest app started with port [8092]
+[2025-02-13T21:06:44.021] [INFO] default - AppController {/}:
+[2025-02-13T21:06:44.022] [INFO] default - Mapped {/, GET} route
+[2025-02-13T21:06:44.022] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T21:06:44.022] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T21:06:44.022] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T21:06:44.023] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T21:06:44.023] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T21:06:44.023] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T21:06:44.024] [INFO] default - Nest application successfully started
+[2025-02-13T22:37:30.829] [INFO] default - Starting Nest application...
+[2025-02-13T22:37:31.063] [INFO] default - App successfully configured Logger
+[2025-02-13T22:37:31.063] [INFO] default - App successfully configured Filters
+[2025-02-13T22:37:31.063] [INFO] default - App successfully configured Interceptors
+[2025-02-13T22:37:31.063] [INFO] default - Nest app started with port [8092]
+[2025-02-13T22:37:31.076] [INFO] default - AppController {/}:
+[2025-02-13T22:37:31.077] [INFO] default - Mapped {/, GET} route
+[2025-02-13T22:37:31.077] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T22:37:31.077] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T22:37:31.078] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T22:37:31.078] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T22:37:31.078] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T22:37:31.078] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T22:37:31.079] [INFO] default - Nest application successfully started
+[2025-02-13T22:37:36.192] [INFO] log-aspect - Logging started: save
+[2025-02-13T22:37:36.197] [ERROR] log-aspect - Error: ["seatCategoriesPrice must be an array"]
+[2025-02-13T22:37:36.197] [ERROR] log-aspect - Logging finished: save failed after 5ms with error: BadRequestException: Bad Request Exception
+    at ValidationPipe.exceptionFactory (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/@nestjs/common/pipes/validation.pipe.js:101:20)
+    at ValidationPipe.transform (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/@nestjs/common/pipes/validation.pipe.js:74:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async resolveParamValue (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/@nestjs/core/router/router-execution-context.js:148:23)
+    at async Promise.all (index 0)
+    at async pipesFn (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/@nestjs/core/router/router-execution-context.js:151:13)
+    at async /Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/@nestjs/core/router/router-execution-context.js:37:30.
+[2025-02-13T22:46:18.985] [INFO] log-aspect - Logging started: save
+[2025-02-13T22:46:19.020] [INFO] concert-service - Start create operation...
+[2025-02-13T22:46:19.044] [INFO] concert-service - Set categories of concert
+[2025-02-13T22:46:19.045] [INFO] concert-service - Set images of concert
+[2025-02-13T22:46:19.051] [INFO] concert-service - Set show times of concert
+[2025-02-13T22:46:19.087] [ERROR] concert-service - SequelizeForeignKeyConstraintError: insert or update on table "concert_category" violates foreign key constraint "concert_category_concertId_fkey"
+[2025-02-13T22:46:19.087] [ERROR] log-aspect - Logging finished: save failed after 102ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async Promise.all (index 0)
+    at async BelongsToMany.set (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/associations/belongs-to-many.js:653:14)
+    at async ConcertRepository.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/repository/impl/concert.repository.impl.ts:19:5)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:79:30).
+[2025-02-13T23:14:03.934] [INFO] default - Starting Nest application...
+[2025-02-13T23:14:04.129] [INFO] default - App successfully configured Logger
+[2025-02-13T23:14:04.130] [INFO] default - App successfully configured Filters
+[2025-02-13T23:14:04.130] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:14:04.130] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:14:04.146] [INFO] default - AppController {/}:
+[2025-02-13T23:14:04.147] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:14:04.147] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:14:04.147] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:14:04.148] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:14:04.148] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:14:04.148] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:14:04.148] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:14:04.149] [INFO] default - Nest application successfully started
+[2025-02-13T23:14:07.038] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:14:07.049] [INFO] concert-service - Start create operation...
+[2025-02-13T23:14:07.066] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:14:07.067] [INFO] concert-service - Set images of concert
+[2025-02-13T23:14:07.069] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:14:07.088] [ERROR] concert-service - SequelizeForeignKeyConstraintError: insert or update on table "concert_category" violates foreign key constraint "concert_category_concertId_fkey"
+[2025-02-13T23:14:07.088] [ERROR] log-aspect - Logging finished: save failed after 50ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async Promise.all (index 0)
+    at async BelongsToMany.set (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/associations/belongs-to-many.js:653:14)
+    at async ConcertRepository.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/repository/impl/concert.repository.impl.ts:19:5)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:84:30).
+[2025-02-13T23:17:58.452] [INFO] default - Starting Nest application...
+[2025-02-13T23:17:58.667] [INFO] default - App successfully configured Logger
+[2025-02-13T23:17:58.667] [INFO] default - App successfully configured Filters
+[2025-02-13T23:17:58.667] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:17:58.667] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:17:58.681] [INFO] default - AppController {/}:
+[2025-02-13T23:17:58.682] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:17:58.682] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:17:58.682] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:17:58.683] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:17:58.683] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:17:58.683] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:17:58.683] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:17:58.684] [INFO] default - Nest application successfully started
+[2025-02-13T23:19:27.867] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:19:27.883] [INFO] concert-service - Start create operation...
+[2025-02-13T23:19:27.898] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:19:27.898] [INFO] concert-service - Set images of concert
+[2025-02-13T23:19:27.900] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:19:27.921] [ERROR] concert-service - SequelizeForeignKeyConstraintError: insert or update on table "concert_category" violates foreign key constraint "concert_category_concertId_fkey"
+[2025-02-13T23:19:27.921] [ERROR] log-aspect - Logging finished: save failed after 54ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async Promise.all (index 0)
+    at async BelongsToMany.add (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/associations/belongs-to-many.js:747:30)
+    at async ConcertRepository.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/repository/impl/concert.repository.impl.ts:19:5)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:83:30).
+[2025-02-13T23:30:24.524] [INFO] default - Starting Nest application...
+[2025-02-13T23:30:24.708] [INFO] default - App successfully configured Logger
+[2025-02-13T23:30:24.709] [INFO] default - App successfully configured Filters
+[2025-02-13T23:30:24.709] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:30:24.709] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:30:24.722] [INFO] default - AppController {/}:
+[2025-02-13T23:30:24.723] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:30:24.723] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:30:24.723] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:30:24.724] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:30:24.724] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:30:24.724] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:30:24.724] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:30:24.725] [INFO] default - Nest application successfully started
+[2025-02-13T23:30:30.472] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:30:30.481] [INFO] concert-service - Start create operation...
+[2025-02-13T23:30:30.502] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:30:30.502] [INFO] concert-service - Set images of concert
+[2025-02-13T23:30:30.505] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:30:30.537] [ERROR] concert-service - SequelizeDatabaseError: null value in column "id" of relation "concert_seatCategories" violates not-null constraint
+[2025-02-13T23:30:30.537] [ERROR] log-aspect - Logging finished: save failed after 65ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:97:7)
+    at async ConcertController.save (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/controller/concert.controller.ts:39:21).
+[2025-02-13T23:32:26.713] [INFO] default - Starting Nest application...
+[2025-02-13T23:32:26.897] [INFO] default - App successfully configured Logger
+[2025-02-13T23:32:26.897] [INFO] default - App successfully configured Filters
+[2025-02-13T23:32:26.897] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:32:26.897] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:32:26.910] [INFO] default - AppController {/}:
+[2025-02-13T23:32:26.911] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:32:26.911] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:32:26.911] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:32:26.911] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:32:26.912] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:32:26.912] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:32:26.912] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:32:26.913] [INFO] default - Nest application successfully started
+[2025-02-13T23:32:30.442] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:32:30.450] [INFO] concert-service - Start create operation...
+[2025-02-13T23:32:30.467] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:32:30.467] [INFO] concert-service - Set images of concert
+[2025-02-13T23:32:30.469] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:32:30.494] [ERROR] concert-service - SequelizeDatabaseError: null value in column "id" of relation "concert_seatCategories" violates not-null constraint
+[2025-02-13T23:32:30.494] [ERROR] log-aspect - Logging finished: save failed after 52ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:99:7)
+    at async ConcertController.save (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/controller/concert.controller.ts:39:21).
+[2025-02-13T23:35:51.888] [INFO] default - Starting Nest application...
+[2025-02-13T23:35:52.126] [INFO] default - App successfully configured Logger
+[2025-02-13T23:35:52.126] [INFO] default - App successfully configured Filters
+[2025-02-13T23:35:52.126] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:35:52.126] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:35:52.144] [INFO] default - AppController {/}:
+[2025-02-13T23:35:52.145] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:35:52.145] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:35:52.146] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:35:52.146] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:35:52.146] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:35:52.146] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:35:52.146] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:35:52.148] [INFO] default - Nest application successfully started
+[2025-02-13T23:35:54.663] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:35:54.672] [INFO] concert-service - Start create operation...
+[2025-02-13T23:35:54.693] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:35:54.694] [INFO] concert-service - Set images of concert
+[2025-02-13T23:35:54.696] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:35:54.730] [ERROR] concert-service - SequelizeDatabaseError: null value in column "id" of relation "concert_seatCategories" violates not-null constraint
+[2025-02-13T23:35:54.730] [ERROR] log-aspect - Logging finished: save failed after 67ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:99:7)
+    at async ConcertController.save (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/controller/concert.controller.ts:39:21).
+[2025-02-13T23:38:32.780] [INFO] default - Starting Nest application...
+[2025-02-13T23:38:32.996] [INFO] default - App successfully configured Logger
+[2025-02-13T23:38:32.996] [INFO] default - App successfully configured Filters
+[2025-02-13T23:38:32.996] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:38:32.996] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:38:33.009] [INFO] default - AppController {/}:
+[2025-02-13T23:38:33.010] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:38:33.010] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:38:33.010] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:38:33.010] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:38:33.011] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:38:33.011] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:38:33.011] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:38:33.012] [INFO] default - Nest application successfully started
+[2025-02-13T23:38:35.542] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:38:35.552] [INFO] concert-service - Start create operation...
+[2025-02-13T23:38:35.576] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:38:35.576] [INFO] concert-service - Set images of concert
+[2025-02-13T23:38:35.579] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:38:35.609] [ERROR] concert-service - SequelizeDatabaseError: null value in column "id" of relation "concert_seatCategories" violates not-null constraint
+[2025-02-13T23:38:35.609] [ERROR] log-aspect - Logging finished: save failed after 67ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:99:7)
+    at async ConcertController.save (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/controller/concert.controller.ts:39:21).
+[2025-02-13T23:42:51.103] [INFO] default - Starting Nest application...
+[2025-02-13T23:42:51.299] [INFO] default - App successfully configured Logger
+[2025-02-13T23:42:51.299] [INFO] default - App successfully configured Filters
+[2025-02-13T23:42:51.299] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:42:51.299] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:42:51.313] [INFO] default - AppController {/}:
+[2025-02-13T23:42:51.314] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:42:51.314] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:42:51.314] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:42:51.314] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:42:51.314] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:42:51.314] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:42:51.315] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:42:51.316] [INFO] default - Nest application successfully started
+[2025-02-13T23:42:55.096] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:42:55.105] [INFO] concert-service - Start create operation...
+[2025-02-13T23:42:55.128] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:42:55.128] [INFO] concert-service - Set images of concert
+[2025-02-13T23:42:55.132] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:42:55.152] [INFO] concert-service - Set price of seat categories
+[2025-02-13T23:42:55.536] [INFO] concert-service - Set amount of seat of concert
+[2025-02-13T23:42:55.538] [INFO] concert-service - Concert created!
+[2025-02-13T23:42:55.540] [INFO] log-aspect - Logging finished: save finished in 444ms
+[2025-02-13T23:56:38.653] [INFO] default - Starting Nest application...
+[2025-02-13T23:56:38.843] [INFO] default - App successfully configured Logger
+[2025-02-13T23:56:38.843] [INFO] default - App successfully configured Filters
+[2025-02-13T23:56:38.843] [INFO] default - App successfully configured Interceptors
+[2025-02-13T23:56:38.843] [INFO] default - Nest app started with port [8092]
+[2025-02-13T23:56:38.857] [INFO] default - AppController {/}:
+[2025-02-13T23:56:38.858] [INFO] default - Mapped {/, GET} route
+[2025-02-13T23:56:38.858] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-13T23:56:38.858] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-13T23:56:38.859] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-13T23:56:38.859] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-13T23:56:38.859] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-13T23:56:38.859] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-13T23:56:38.860] [INFO] default - Nest application successfully started
+[2025-02-13T23:56:48.643] [INFO] log-aspect - Logging started: save
+[2025-02-13T23:56:48.652] [INFO] concert-service - Start create operation...
+[2025-02-13T23:56:48.676] [INFO] concert-service - Set categories of concert
+[2025-02-13T23:56:48.676] [INFO] concert-service - Set images of concert
+[2025-02-13T23:56:48.679] [INFO] concert-service - Set show times of concert
+[2025-02-13T23:56:48.701] [INFO] concert-service - Set price of seat categories
+[2025-02-13T23:56:49.109] [INFO] concert-service - Set amount of seat of concert
+[2025-02-13T23:56:49.111] [INFO] concert-service - Concert created!
+[2025-02-13T23:56:49.112] [INFO] log-aspect - Logging finished: save finished in 469ms
+[2025-02-14T00:04:47.560] [INFO] default - Starting Nest application...
+[2025-02-14T00:04:47.750] [INFO] default - App successfully configured Logger
+[2025-02-14T00:04:47.751] [INFO] default - App successfully configured Filters
+[2025-02-14T00:04:47.751] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:04:47.751] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:04:47.765] [INFO] default - AppController {/}:
+[2025-02-14T00:04:47.765] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:04:47.765] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:04:47.766] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:04:47.766] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:04:47.766] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:04:47.766] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:04:47.766] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:04:47.767] [INFO] default - Nest application successfully started
+[2025-02-14T00:04:53.021] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:04:53.030] [INFO] concert-service - Start create operation...
+[2025-02-14T00:04:53.053] [INFO] concert-service - Set categories of concert
+[2025-02-14T00:04:53.053] [INFO] concert-service - Set images of concert
+[2025-02-14T00:04:53.056] [INFO] concert-service - Set show times of concert
+[2025-02-14T00:04:53.076] [INFO] concert-service - Set price of seat categories
+[2025-02-14T00:04:53.451] [INFO] concert-service - Set amount of seat of concert
+[2025-02-14T00:04:53.454] [INFO] concert-service - Concert created!
+[2025-02-14T00:04:53.456] [INFO] log-aspect - Logging finished: save finished in 435ms
+[2025-02-14T00:07:21.939] [INFO] default - Starting Nest application...
+[2025-02-14T00:07:22.134] [INFO] default - App successfully configured Logger
+[2025-02-14T00:07:22.134] [INFO] default - App successfully configured Filters
+[2025-02-14T00:07:22.134] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:07:22.134] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:07:22.148] [INFO] default - AppController {/}:
+[2025-02-14T00:07:22.149] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:07:22.149] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:07:22.149] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:07:22.149] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:07:22.149] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:07:22.149] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:07:22.150] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:07:22.151] [INFO] default - Nest application successfully started
+[2025-02-14T00:08:43.416] [INFO] default - Starting Nest application...
+[2025-02-14T00:08:43.599] [INFO] default - App successfully configured Logger
+[2025-02-14T00:08:43.599] [INFO] default - App successfully configured Filters
+[2025-02-14T00:08:43.601] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:08:43.601] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:08:43.614] [INFO] default - AppController {/}:
+[2025-02-14T00:08:43.615] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:08:43.615] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:08:43.615] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:08:43.616] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:08:43.616] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:08:43.616] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:08:43.616] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:08:43.617] [INFO] default - Nest application successfully started
+[2025-02-14T00:09:47.170] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:09:47.191] [INFO] concert-service - Start create operation...
+[2025-02-14T00:09:47.205] [ERROR] concert-service - Error: Resource not found
+[2025-02-14T00:09:47.207] [ERROR] log-aspect - Logging finished: save failed after 35ms with error: Error: Resource not found
+    at CategoryRepository.findById (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/repository/impl/category.repository.impl.ts:35:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async CategoryService.findById (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/category.service.impl.ts:47:12)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:40:29)
+    at async ConcertController.save (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/controller/concert.controller.ts:39:21).
+[2025-02-14T00:11:20.923] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:11:20.947] [INFO] concert-service - Start create operation...
+[2025-02-14T00:11:20.970] [INFO] concert-service - Set categories of concert
+[2025-02-14T00:11:20.972] [INFO] concert-service - Set images of concert
+[2025-02-14T00:11:20.976] [INFO] concert-service - Set show times of concert
+[2025-02-14T00:11:21.001] [INFO] concert-service - Set price of seat categories
+[2025-02-14T00:11:21.147] [INFO] concert-service - Set amount of seat of concert
+[2025-02-14T00:11:21.152] [INFO] concert-service - Concert created!
+[2025-02-14T00:11:21.153] [INFO] log-aspect - Logging finished: save finished in 230ms
+[2025-02-14T00:14:34.420] [INFO] default - Starting Nest application...
+[2025-02-14T00:14:34.611] [INFO] default - App successfully configured Logger
+[2025-02-14T00:14:34.612] [INFO] default - App successfully configured Filters
+[2025-02-14T00:14:34.612] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:14:34.612] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:14:34.626] [INFO] default - AppController {/}:
+[2025-02-14T00:14:34.626] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:14:34.626] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:14:34.627] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:14:34.627] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:14:34.627] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:14:34.627] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:14:34.627] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:14:34.628] [INFO] default - Nest application successfully started
+[2025-02-14T00:14:38.620] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:14:38.629] [INFO] concert-service - Start create operation...
+[2025-02-14T00:14:38.650] [INFO] concert-service - Set categories of concert
+[2025-02-14T00:14:38.651] [INFO] concert-service - Set images of concert
+[2025-02-14T00:14:38.654] [INFO] concert-service - Set show times of concert
+[2025-02-14T00:14:38.678] [INFO] concert-service - Set price of seat categories
+[2025-02-14T00:14:38.815] [INFO] concert-service - Set amount of seat of concert
+[2025-02-14T00:14:38.818] [INFO] concert-service - Concert created!
+[2025-02-14T00:14:38.820] [INFO] log-aspect - Logging finished: save finished in 200ms
+[2025-02-14T00:17:56.089] [INFO] default - Starting Nest application...
+[2025-02-14T00:17:56.304] [INFO] default - App successfully configured Logger
+[2025-02-14T00:17:56.305] [INFO] default - App successfully configured Filters
+[2025-02-14T00:17:56.305] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:17:56.305] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:17:56.326] [INFO] default - AppController {/}:
+[2025-02-14T00:17:56.327] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:17:56.327] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:17:56.327] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:17:56.328] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:17:56.328] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:17:56.328] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:17:56.328] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:17:56.329] [INFO] default - Nest application successfully started
+[2025-02-14T00:18:01.943] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:18:01.952] [INFO] concert-service - Start create operation...
+[2025-02-14T00:18:01.971] [INFO] concert-service - Set categories of concert
+[2025-02-14T00:18:01.971] [INFO] concert-service - Set images of concert
+[2025-02-14T00:18:01.973] [INFO] concert-service - Set show times of concert
+[2025-02-14T00:18:01.990] [INFO] concert-service - Set price of seat categories
+[2025-02-14T00:18:02.147] [INFO] concert-service - Set amount of seat of concert
+[2025-02-14T00:18:02.149] [INFO] concert-service - Concert created!
+[2025-02-14T00:18:02.150] [INFO] log-aspect - Logging finished: save finished in 207ms
+[2025-02-14T00:28:07.298] [INFO] default - Starting Nest application...
+[2025-02-14T00:28:07.489] [INFO] default - App successfully configured Logger
+[2025-02-14T00:28:07.489] [INFO] default - App successfully configured Filters
+[2025-02-14T00:28:07.489] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:28:07.489] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:28:07.503] [INFO] default - AppController {/}:
+[2025-02-14T00:28:07.504] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:28:07.504] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:28:07.504] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:28:07.505] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:28:07.505] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:28:07.505] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:28:07.505] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:28:07.506] [INFO] default - Nest application successfully started
+[2025-02-14T00:28:17.277] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:28:17.286] [INFO] concert-service - Start create operation...
+[2025-02-14T00:28:17.304] [INFO] concert-service - Set categories of concert
+[2025-02-14T00:28:17.304] [INFO] concert-service - Set images of concert
+[2025-02-14T00:28:17.306] [INFO] concert-service - Set show times of concert
+[2025-02-14T00:28:17.326] [INFO] concert-service - Set price of seat categories
+[2025-02-14T00:28:17.466] [INFO] concert-service - Set amount of seat of concert
+[2025-02-14T00:28:17.469] [INFO] concert-service - Concert created!
+[2025-02-14T00:28:17.470] [INFO] log-aspect - Logging finished: save finished in 193ms
+[2025-02-14T00:32:54.391] [INFO] default - Starting Nest application...
+[2025-02-14T00:32:54.585] [INFO] default - App successfully configured Logger
+[2025-02-14T00:32:54.585] [INFO] default - App successfully configured Filters
+[2025-02-14T00:32:54.585] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:32:54.585] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:32:54.601] [INFO] default - AppController {/}:
+[2025-02-14T00:32:54.602] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:32:54.602] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:32:54.602] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:32:54.602] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:32:54.603] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:32:54.603] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:32:54.603] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:32:54.603] [INFO] default - Nest application successfully started
+[2025-02-14T00:33:18.342] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:33:18.364] [INFO] concert-service - Start create operation...
+[2025-02-14T00:33:18.384] [INFO] concert-service - Set categories of concert
+[2025-02-14T00:33:18.400] [ERROR] concert-service - SequelizeForeignKeyConstraintError: insert or update on table "images" violates foreign key constraint "images_concertId_fkey"
+[2025-02-14T00:33:18.400] [ERROR] log-aspect - Logging finished: save failed after 58ms with error: Error
+    at Query.run (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/postgres/query.js:76:25)
+    at <anonymous> (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/sequelize.js:650:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PostgresQueryInterface.bulkInsert (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)
+    at async recursiveBulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2851:25)
+    at async Function.bulkCreate (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/node_modules/sequelize/src/model.js:2977:12)
+    at async ConcertService.create (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/service/impl/concert.service.impl.ts:62:7)
+    at async ConcertController.save (/Users/nhannguyen/Documents/IT Project/opera-house-backend/concert-service/src/controller/concert.controller.ts:39:21).
+[2025-02-14T00:35:22.142] [INFO] default - Starting Nest application...
+[2025-02-14T00:35:22.336] [INFO] default - App successfully configured Logger
+[2025-02-14T00:35:22.337] [INFO] default - App successfully configured Filters
+[2025-02-14T00:35:22.337] [INFO] default - App successfully configured Interceptors
+[2025-02-14T00:35:22.337] [INFO] default - Nest app started with port [8092]
+[2025-02-14T00:35:22.351] [INFO] default - AppController {/}:
+[2025-02-14T00:35:22.351] [INFO] default - Mapped {/, GET} route
+[2025-02-14T00:35:22.351] [INFO] default - CategoryController {/api/v1/concert}:
+[2025-02-14T00:35:22.352] [INFO] default - Mapped {/api/v1/concert/categories, GET} route
+[2025-02-14T00:35:22.352] [INFO] default - Mapped {/api/v1/concert/categories/:categoryId, GET} route
+[2025-02-14T00:35:22.352] [INFO] default - Mapped {/api/v1/concert/categories, POST} route
+[2025-02-14T00:35:22.352] [INFO] default - ConcertController {/api/v1/concert}:
+[2025-02-14T00:35:22.352] [INFO] default - Mapped {/api/v1/concert/concerts, POST} route
+[2025-02-14T00:35:22.353] [INFO] default - Nest application successfully started
+[2025-02-14T00:35:28.114] [INFO] log-aspect - Logging started: save
+[2025-02-14T00:35:28.123] [INFO] concert-service - Start create operation...
+[2025-02-14T00:35:28.142] [INFO] concert-service - Set categories of concert
+[2025-02-14T00:35:28.143] [INFO] concert-service - Set images of concert
+[2025-02-14T00:35:28.145] [INFO] concert-service - Set show times of concert
+[2025-02-14T00:35:28.173] [INFO] concert-service - Set price of seat categories
+[2025-02-14T00:35:28.309] [INFO] concert-service - Set amount of seat of concert
+[2025-02-14T00:35:28.312] [INFO] concert-service - Concert created!
+[2025-02-14T00:35:28.313] [INFO] log-aspect - Logging finished: save finished in 199ms

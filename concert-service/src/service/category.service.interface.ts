@@ -1,4 +1,5 @@
-import { IGenericService } from './generic.service.interface';
-import { CategoryDto } from '../dto/category.dto';
+import { GenericServiceInterface } from './generic.service.interface';
+import { CategoryDto } from '../dto/request/category.dto';
 
-export interface ICategoryService extends IGenericService<CategoryDto> {}
+export interface CategoryServiceInterface
+  extends GenericServiceInterface<CategoryDto> {}

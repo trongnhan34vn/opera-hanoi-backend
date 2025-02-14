@@ -9,44 +9,43 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Concert } from './concert.entity';
+import { ConcertCategory } from './sub/concert.category.sub.entity';
 
-@Table({ modelName: 'categories' })
+@Table({
+  tableName: 'categories',
+})
 export class Category extends Model<Category> {
-  // ID PRIMARY KEY
+  // PK ID
   @PrimaryKey
   @Column({
     type: DataType.UUID,
   })
   id: string;
 
-  // title
+  // TITLE
   @Column({
     type: DataType.STRING,
-    allowNull: false,
   })
   title: string;
 
-  // description
+  // DESCRIPTION
   @Column({
     type: DataType.STRING,
-    allowNull: true,
   })
-  description?: string;
+  description: string;
 
-  // Many to Many with Concert
-  @BelongsToMany(() => Concert, {
-    through: 'concert_category',
-    foreignKey: 'categoryId',  // Định nghĩa khóa ngoại
-    otherKey: 'concertId',   // Định nghĩa khóa ngoại bên kia
-  })
-  concerts: Concert[];
-
-  // create and update time
+  // CREATE AND UPDATE TIME
   @CreatedAt
-  @Column({ field: 'created_at', type: DataType.DATE })
   createdAt: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_at', type: DataType.DATE })
   updatedAt: Date;
+
+  // RELATIONS //
+
+  // CONCERT
+  @BelongsToMany(() => Concert, () => ConcertCategory)
+  concerts: Concert[];
+
+  // RELATIONS //
 }

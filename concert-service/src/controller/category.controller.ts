@@ -10,8 +10,9 @@ import {
 import { CategoryService } from '../service/impl/category.service.impl';
 import { HttpResponseFactory, SuccessMessage } from 'common-lib';
 import { Response } from 'express';
-import { CategoryDto } from '../dto/category.dto';
+
 import { SkipAuth } from '../config/SkipAuthGuardAnnotationConfig';
+import { CategoryDto } from '../dto/request/category.dto';
 
 @Controller('/api/v1/concert')
 export class CategoryController {

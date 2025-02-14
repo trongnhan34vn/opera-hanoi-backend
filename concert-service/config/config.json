@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "Nhantic1998@",
+    "database": "concert_service_db",
+    "host": "127.0.0.1",
+    "port": 5435,
+    "dialect": "postgres",
+    "define": {
+      "schema": "concert_service_schema"
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
