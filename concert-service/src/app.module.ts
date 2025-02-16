@@ -37,6 +37,7 @@ import { ConcertSeat } from './entity/sub/concert.seat.sub.entity';
 import { ShowTime } from './entity/show.time.entity';
 import { CategoryModule } from './module/category.module';
 import { ConcertModule } from './module/concert.module';
+import * as process from 'node:process';
 
 const envFilePath = '../.env.dev';
 
@@ -47,7 +48,7 @@ const envFilePath = '../.env.dev';
     ConcertModule,
     // import config interceptor
     LogModule,
-    // import config .env.dev
+    // import config .env.local
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: path.resolve(__dirname, envFilePath),
@@ -68,12 +69,12 @@ const envFilePath = '../.env.dev';
     // DATABASES
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
-      port: 5435,
-      username: 'postgres',
-      password: 'Nhantic1998@',
-      database: 'concert_service_db',
-      schema: 'concert_service_schema',
+      host: process.env.CONCERT_SERVICE_DB_HOST,
+      port: Number.parseInt(process.env.CONCERT_SERVICE_DB_PORT ?? '5432'),
+      username: process.env.CONCERT_SERVICE_DB_USERNAME,
+      password: process.env.CONCERT_SERVICE_DB_PASSWORD,
+      database: process.env.CONCERT_SERVICE_DB_DATABASE,
+      schema: process.env.CONCERT_SERVICE_DB_SCHEMA,
       models: [
         Concert,
         Category,
@@ -88,8 +89,13 @@ const envFilePath = '../.env.dev';
       define: {
         timestamps: true,
       },
+      dialectOptions: {
+        useUTC: false, // ⛔ Không convert về UTC
+        dateStrings: true,
+      },
       autoLoadModels: true,
       synchronize: true,
+      timezone: '+07:00',
     }),
     // DATABASES
   ],

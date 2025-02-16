@@ -18,17 +18,50 @@ const concert_service_impl_1 = require("../service/impl/concert.service.impl");
 const common_lib_1 = require("common-lib");
 const concert_dto_1 = require("../dto/request/concert.dto");
 const SkipAuthGuardAnnotationConfig_1 = require("../config/SkipAuthGuardAnnotationConfig");
+const pagination_dto_1 = require("../dto/request/pagination.dto");
 let ConcertController = class ConcertController {
     constructor(concertService, httpResponseFactory) {
         this.concertService = concertService;
         this.httpResponseFactory = httpResponseFactory;
     }
-    async save(res, concertDto) {
+    async findUpcomingConcerts(res, query) {
+        const result = await this.concertService.findUpcomingConcerts(query);
+        return this.httpResponseFactory.sendSuccessResponse(res, common_1.HttpStatus.OK, common_lib_1.SuccessMessage.OK.getCode, `Query concert success. Total ${result.total} (record) (s)`, result.dtoConcerts);
+    }
+    async findConcertsByCategories(res, categoryId) {
+        const result = await this.concertService.findByCategoryId(categoryId);
+        return this.httpResponseFactory.sendSuccessResponse(res, common_1.HttpStatus.OK, common_lib_1.SuccessMessage.OK.getCode, `Query concert success. Total ${result.count} (record) (s)`, result.dtoConcerts);
+    }
+    async create(res, concertDto) {
         const concert = await this.concertService.create(concertDto);
         return this.httpResponseFactory.sendSuccessResponse(res, common_1.HttpStatus.CREATED, common_lib_1.SuccessMessage.CREATED.getCode, `Concert created [${concert.id}]`, concert);
     }
+    async bulkCreate(res, concertDtos) {
+        for (const concertDto of concertDtos) {
+            await this.concertService.create(concertDto);
+        }
+        return this.httpResponseFactory.sendSuccessResponse(res, common_1.HttpStatus.CREATED, common_lib_1.SuccessMessage.CREATED.getCode, `Concerts created`, null);
+    }
 };
 exports.ConcertController = ConcertController;
+__decorate([
+    (0, common_1.Get)('/concerts/upcoming'),
+    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, pagination_dto_1.Pagination]),
+    __metadata("design:returntype", Promise)
+], ConcertController.prototype, "findUpcomingConcerts", null);
+__decorate([
+    (0, common_1.Get)('/concerts'),
+    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Query)('categoryId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], ConcertController.prototype, "findConcertsByCategories", null);
 __decorate([
     (0, common_1.Post)('/concerts'),
     (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
@@ -37,7 +70,16 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, concert_dto_1.ConcertDto]),
     __metadata("design:returntype", Promise)
-], ConcertController.prototype, "save", null);
+], ConcertController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('/concerts/bulkCreate'),
+    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Array]),
+    __metadata("design:returntype", Promise)
+], ConcertController.prototype, "bulkCreate", null);
 exports.ConcertController = ConcertController = __decorate([
     (0, common_1.Controller)('/api/v1/concert'),
     __metadata("design:paramtypes", [concert_service_impl_1.ConcertService,

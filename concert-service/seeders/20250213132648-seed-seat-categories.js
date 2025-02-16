@@ -25,6 +25,11 @@ module.exports = {
       seatCategories.push(category);
     }
 
+    await queryInterface.bulkDelete(
+      { tableName: 'seat_categories', schema: 'concert_service_schema' },
+      null,
+      {},
+    );
     await queryInterface.bulkInsert(
       {
         tableName: 'seat_categories',

@@ -34,6 +34,11 @@ module.exports = {
       categories.push(category);
     }
 
+    await queryInterface.bulkDelete(
+      { tableName: 'categories', schema: 'concert_service_schema' },
+      null,
+      {},
+    );
     await queryInterface.bulkInsert(
       {
         tableName: 'categories',
@@ -42,7 +47,6 @@ module.exports = {
       categories,
       {},
     );
-    console.log('Seeding seat_categories success!');
   },
 
   async down(queryInterface, Sequelize) {

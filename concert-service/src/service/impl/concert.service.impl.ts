@@ -3,7 +3,7 @@ import { ConcertServiceInterface } from '../concert.service.interface';
 import { Injectable } from '@nestjs/common';
 import { ConcertRepository } from '../../repository/impl/concert.repository.impl';
 import { ConcertMapper } from '../../mapper/impl/concert.mapper.impl';
-import { LoggerFactory } from 'common-lib';
+import { ErrorMessage, LoggerFactory, ResourceException } from 'common-lib';
 import { Category } from '../../entity/category.entity';
 import { CategoryService } from './category.service.impl';
 import { CategoryMapper } from '../../mapper/impl/category.mapper.impl';
@@ -15,9 +15,15 @@ import { Sequelize } from 'sequelize-typescript';
 import { ConcertSeat } from '../../entity/sub/concert.seat.sub.entity';
 import { Seat } from '../../entity/seat.entity';
 import { v4 as uuidV4 } from 'uuid';
+import { ShowtimeDto } from '../../dto/request/showtime.dto';
+import { Concert } from '../../entity/concert.entity';
+import { Pagination } from '../../dto/request/pagination.dto';
 
 @Injectable()
 export class ConcertService implements ConcertServiceInterface {
+  private DATE_PATTERN = 'YYYY/MM/DD HH:mm:ss';
+  private TIMEZONE = 'Asia/Ho_Chi_Minh';
+
   constructor(
     private readonly concertRepository: ConcertRepository,
     private readonly concertMapper: ConcertMapper,
@@ -27,10 +33,14 @@ export class ConcertService implements ConcertServiceInterface {
     private readonly sequelize: Sequelize,
   ) {}
 
+  /**
+   * create concert
+   * @param dto
+   */
   async create(dto: ConcertDto): Promise<ConcertDto> {
     const transaction = await this.sequelize.transaction();
     try {
-      const concert = await this.concertMapper.toEntity(dto);
+      const concert = this.concertMapper.toEntity(dto);
       this.logger.log('Start create operation...');
       // CREATE OPERATION
       // set categories
@@ -62,25 +72,43 @@ export class ConcertService implements ConcertServiceInterface {
       // set images
 
       // set showtime
+      // throw exception if showtime in the past
+      const isShowTimesInPast = this.isShowTimesInPast(dto.showTimes);
+      if (isShowTimesInPast) {
+        throw new ResourceException(
+          ErrorMessage.BAD_REQUEST.getCode,
+          ErrorMessage.BAD_REQUEST.getMessage,
+          'Show times is invalid. Show times cannot be in the past',
+        );
+      }
+
       const showTimes: ShowTime[] = [];
       const stringShowTimes = dto.showTimes;
       for (const stringShowTime of stringShowTimes) {
         const showTime = new ShowTime();
         showTime.id = uuidV4();
         showTime.concertId = concert.id;
-        showTime.startTime = moment(
-          stringShowTime.startTime,
-          'YYYY/MM/DD HH:mm:ss',
-        )
-          .tz('Asia/Ho_Chi_Minh')
+        showTime.startTime = moment(stringShowTime.startTime, this.DATE_PATTERN)
+          .tz(this.TIMEZONE)
           .toDate();
-        showTime.endTime = moment(stringShowTime.endTime, 'YYYY/MM/DD HH:mm:ss')
-          .tz('Asia/Ho_Chi_Minh')
+        showTime.endTime = moment(stringShowTime.endTime, this.DATE_PATTERN)
+          .tz(this.TIMEZONE)
           .toDate();
         showTimes.push(showTime);
       }
-      concert.showTimes = showTimes;
+      const isConcertDuplicated = await this.isShowTimesOfConcertDuplicated(
+        dto.showTimes,
+      );
+      // throw exception if show times are conflict
+      if (isConcertDuplicated) {
+        throw new ResourceException(
+          ErrorMessage.CONFLICT.getCode,
+          ErrorMessage.CONFLICT.getMessage,
+          'Time slot conflict',
+        );
+      }
 
+      concert.showTimes = showTimes;
       this.logger.log('Set show times of concert');
       // set showtime
 
@@ -117,7 +145,7 @@ export class ConcertService implements ConcertServiceInterface {
       }
 
       await ConcertSeat.bulkCreate(concertSeats, { transaction });
-      this.logger.log('Set amount of seat of concert');
+      this.logger.log('Set the number of seats for the concert');
       // create concert seat
 
       await transaction.commit();
@@ -129,6 +157,90 @@ export class ConcertService implements ConcertServiceInterface {
       this.logger.error(error);
       throw error;
     }
+  }
+
+  /**
+   * To check if show times are in the past
+   * @param showTimes
+   */
+  private isShowTimesInPast(showTimes: ShowtimeDto[]) {
+    for (const showTime of showTimes) {
+      const startTime = moment(showTime.startTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      const momentDate = moment(new Date(Date.now()), this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      if (startTime <= momentDate) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * To check if a showtime has already been scheduled for another concert
+   * @param showTimes
+   */
+  private async isShowTimesOfConcertDuplicated(
+    showTimes: ShowtimeDto[],
+  ): Promise<boolean> {
+    for (const showTime of showTimes) {
+      const startTime = moment(showTime.startTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      const endTime = moment(showTime.endTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      const concerts = await this.sequelize.query(
+        `SELECT *
+         FROM checkConcertTimeDuplication(?, ?)`,
+        {
+          replacements: [startTime, endTime],
+          model: Concert,
+          mapToModel: true,
+        },
+      );
+      if (concerts.length > 0) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Find concerts that will take place within the next 2 weeks
+   * @param page
+   */
+  async findUpcomingConcerts(page: Pagination) {
+    try {
+      const result =
+        await this.concertRepository.findByShowTimeWithInTwoWeeks(page);
+      const concerts = result.concerts;
+      const dtoConcerts: ConcertDto[] = [];
+      for (const concert of concerts) {
+        const concertDto = this.concertMapper.toDto(concert);
+        concertDto.showTimes = (concert['show_times'] as ShowtimeDto[]) ?? [];
+        dtoConcerts.push(concertDto);
+      }
+      return { ...result, dtoConcerts };
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  /**
+   * Find concert by specified category
+   * @param categoryId
+   */
+  async findByCategoryId(categoryId: string) {
+    const result = await this.concertRepository.findByCategoryId(categoryId);
+    const concerts = result.rows;
+    const dtoConcerts: ConcertDto[] = [];
+    for (const concert of concerts) {
+      const concertDto = this.concertMapper.toDto(concert);
+      dtoConcerts.push(concertDto);
+    }
+    return { ...result, dtoConcerts };
   }
 
   save(dto: ConcertDto): Promise<ConcertDto> {

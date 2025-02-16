@@ -1,5 +1,5 @@
 'use strict';
-const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require('uuid');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -20,16 +20,24 @@ module.exports = {
         const seatCode = row + j;
         seats.push({
           id: uuidv4(),
-          code: seatCode ,
+          code: seatCode,
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         });
-
       }
     }
 
-    await queryInterface.bulkInsert({tableName: 'seats', schema: 'concert_service_schema'}, seats, {});
-    console.log("Seeding seats success!");
+    await queryInterface.bulkDelete(
+      { tableName: 'seats', schema: 'concert_service_schema' },
+      null,
+      {},
+    );
+    await queryInterface.bulkInsert(
+      { tableName: 'seats', schema: 'concert_service_schema' },
+      seats,
+      {},
+    );
+    console.log('Seeding seats success!');
   },
 
   async down(queryInterface, Sequelize) {

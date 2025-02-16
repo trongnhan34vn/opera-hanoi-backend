@@ -14,11 +14,10 @@ const concert_dto_1 = require("../../dto/request/concert.dto");
 const concert_entity_1 = require("../../entity/concert.entity");
 const common_1 = require("@nestjs/common");
 const uuid_1 = require("uuid");
-const category_service_impl_1 = require("../../service/impl/category.service.impl");
+const showtime_dto_1 = require("../../dto/request/showtime.dto");
+const moment = require("moment-timezone");
 let ConcertMapper = class ConcertMapper {
-    constructor(categoryService) {
-        this.categoryService = categoryService;
-    }
+    constructor() { }
     toDto(entity) {
         const concertDto = new concert_dto_1.ConcertDto();
         concertDto.id = entity.id;
@@ -26,6 +25,27 @@ let ConcertMapper = class ConcertMapper {
         concertDto.title = entity.title;
         concertDto.director = entity.director;
         concertDto.description = entity.description;
+        if (entity.images) {
+            const dtoImages = [];
+            for (const image of entity.images) {
+                const imageDto = image.url;
+                dtoImages.push(imageDto);
+            }
+            concertDto.images = dtoImages;
+        }
+        if (entity.showTimes) {
+            const dtoShowTime = [];
+            const showTimes = entity.showTimes;
+            for (const showTime of showTimes) {
+                const startTime = showTime.startTime;
+                const endTime = showTime.endTime;
+                const showTimeDto = new showtime_dto_1.ShowtimeDto();
+                showTimeDto.startTime = moment(startTime).format('YYYY/MM/DD HH:ss:mm');
+                showTimeDto.endTime = moment(endTime).format('YYYY/MM/DD HH:ss:mm');
+                dtoShowTime.push(showTimeDto);
+            }
+            concertDto.showTimes = dtoShowTime;
+        }
         return concertDto;
     }
     toEntity(dto) {
@@ -41,6 +61,6 @@ let ConcertMapper = class ConcertMapper {
 exports.ConcertMapper = ConcertMapper;
 exports.ConcertMapper = ConcertMapper = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [category_service_impl_1.CategoryService])
+    __metadata("design:paramtypes", [])
 ], ConcertMapper);
 //# sourceMappingURL=concert.mapper.impl.js.map
