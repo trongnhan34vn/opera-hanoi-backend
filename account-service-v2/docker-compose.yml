@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  account-service-app:
+    container_name: account-service-app
+    build: .
+    ports:
+      - "8091:8091"
+    depends_on:
+      - account-service-db
+    env_file:
+      - .env.dev
+    environment:
+      DB_HOST: account-service-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: Nhantic1998@
+      DB_NAME: account_service_db
+
+  account-service-db:
+    image: postgres:latest
+    container_name: account-service-db
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: account_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Nhantic1998@
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres_data:

@@ -23,6 +23,7 @@ import { User } from './entity/user.entity';
 import { UserController } from './controller/user.controller';
 import { SkipAuthGuard } from './config/SkipAuthGuard';
 import { UserModule } from './module/user.module';
+import * as process from 'node:process';
 
 const envFilePath = '../.env.dev';
 
@@ -32,7 +33,7 @@ const envFilePath = '../.env.dev';
     UserModule,
     // import config interceptor
     LogModule,
-    // import config .env.dev
+    // import config .env.local
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: path.resolve(__dirname, envFilePath),
@@ -46,16 +47,21 @@ const envFilePath = '../.env.dev';
     // DATABASES
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
-      port: 5434,
-      username: 'postgres',
-      password: 'Nhantic1998@',
-      database: 'account_service_db',
-      schema: 'account_service_schema',
+      host: process.env.ACCOUNT_SERVICE_DB_HOST,
+      port: Number.parseInt(process.env.ACCOUNT_SERVICE_DB_PORT ?? '5432'),
+      username: process.env.ACCOUNT_SERVICE_DB_USERNAME,
+      password: process.env.ACCOUNT_SERVICE_DB_PASSWORD,
+      database: process.env.ACCOUNT_SERVICE_DB_DATABASE,
+      schema: process.env.ACCOUNT_SERVICE_DB_SCHEMA,
       models: [User],
       define: {
         timestamps: true,
       },
+      dialectOptions: {
+        useUTC: false, // ⛔ Không convert về UTC
+        dateStrings: true,
+      },
+      timezone: '+07:00',
       autoLoadModels: true,
       synchronize: true,
     }),
