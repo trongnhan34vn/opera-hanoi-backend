@@ -30,6 +30,7 @@ const concert_seat_sub_entity_1 = require("./entity/sub/concert.seat.sub.entity"
 const show_time_entity_1 = require("./entity/show.time.entity");
 const category_module_1 = require("./module/category.module");
 const concert_module_1 = require("./module/concert.module");
+const process = require("node:process");
 const envFilePath = '../.env.dev';
 let AppModule = class AppModule {
 };
@@ -48,12 +49,12 @@ exports.AppModule = AppModule = __decorate([
             common_lib_1.MiddlewareModule,
             sequelize_1.SequelizeModule.forRoot({
                 dialect: 'postgres',
-                host: 'localhost',
-                port: 5435,
-                username: 'postgres',
-                password: 'Nhantic1998@',
-                database: 'concert_service_db',
-                schema: 'concert_service_schema',
+                host: process.env.CONCERT_SERVICE_DB_HOST,
+                port: Number.parseInt(process.env.CONCERT_SERVICE_DB_PORT ?? '5435'),
+                username: process.env.CONCERT_SERVICE_DB_USERNAME,
+                password: process.env.CONCERT_SERVICE_DB_PASSWORD,
+                database: process.env.CONCERT_SERVICE_DB_DATABASE,
+                schema: process.env.CONCERT_SERVICE_DB_SCHEMA,
                 models: [
                     concert_entity_1.Concert,
                     category_entity_1.Category,
@@ -68,8 +69,13 @@ exports.AppModule = AppModule = __decorate([
                 define: {
                     timestamps: true,
                 },
+                dialectOptions: {
+                    useUTC: false,
+                    dateStrings: true,
+                },
                 autoLoadModels: true,
                 synchronize: true,
+                timezone: '+07:00',
             }),
         ],
         controllers: [app_controller_1.AppController],

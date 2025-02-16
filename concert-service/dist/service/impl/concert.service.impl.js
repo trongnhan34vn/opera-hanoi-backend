@@ -24,6 +24,7 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const concert_seat_sub_entity_1 = require("../../entity/sub/concert.seat.sub.entity");
 const seat_entity_1 = require("../../entity/seat.entity");
 const uuid_1 = require("uuid");
+const concert_entity_1 = require("../../entity/concert.entity");
 let ConcertService = class ConcertService {
     constructor(concertRepository, concertMapper, categoryService, categoryMapper, logger, sequelize) {
         this.concertRepository = concertRepository;
@@ -32,11 +33,13 @@ let ConcertService = class ConcertService {
         this.categoryMapper = categoryMapper;
         this.logger = logger;
         this.sequelize = sequelize;
+        this.DATE_PATTERN = 'YYYY/MM/DD HH:mm:ss';
+        this.TIMEZONE = 'Asia/Ho_Chi_Minh';
     }
     async create(dto) {
         const transaction = await this.sequelize.transaction();
         try {
-            const concert = await this.concertMapper.toEntity(dto);
+            const concert = this.concertMapper.toEntity(dto);
             this.logger.log('Start create operation...');
             const categoryIds = dto.categories;
             const categories = [];
@@ -59,19 +62,27 @@ let ConcertService = class ConcertService {
             }
             concert.images = images;
             this.logger.log('Set images of concert');
+            const isShowTimesInPast = this.isShowTimesInPast(dto.showTimes);
+            if (isShowTimesInPast) {
+                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.BAD_REQUEST.getCode, common_lib_1.ErrorMessage.BAD_REQUEST.getMessage, 'Show times is invalid. Show times cannot be in the past');
+            }
             const showTimes = [];
             const stringShowTimes = dto.showTimes;
             for (const stringShowTime of stringShowTimes) {
                 const showTime = new show_time_entity_1.ShowTime();
                 showTime.id = (0, uuid_1.v4)();
                 showTime.concertId = concert.id;
-                showTime.startTime = moment(stringShowTime.startTime, 'YYYY/MM/DD HH:mm:ss')
-                    .tz('Asia/Ho_Chi_Minh')
+                showTime.startTime = moment(stringShowTime.startTime, this.DATE_PATTERN)
+                    .tz(this.TIMEZONE)
                     .toDate();
-                showTime.endTime = moment(stringShowTime.endTime, 'YYYY/MM/DD HH:mm:ss')
-                    .tz('Asia/Ho_Chi_Minh')
+                showTime.endTime = moment(stringShowTime.endTime, this.DATE_PATTERN)
+                    .tz(this.TIMEZONE)
                     .toDate();
                 showTimes.push(showTime);
+            }
+            const isConcertDuplicated = await this.isShowTimesOfConcertDuplicated(dto.showTimes);
+            if (isConcertDuplicated) {
+                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.CONFLICT.getCode, common_lib_1.ErrorMessage.CONFLICT.getMessage, 'Time slot conflict');
             }
             concert.showTimes = showTimes;
             this.logger.log('Set show times of concert');
@@ -100,9 +111,9 @@ let ConcertService = class ConcertService {
                 concertSeats.push(concertSeat.get());
             }
             await concert_seat_sub_entity_1.ConcertSeat.bulkCreate(concertSeats, { transaction });
-            this.logger.log('Set amount of seat of concert');
+            this.logger.log('Set the number of seats for the concert');
             await transaction.commit();
-            this.logger.log('Concert created!');
+            this.logger.log(`Concert created id [${createdConcert.id}]`);
             return this.concertMapper.toDto(createdConcert);
         }
         catch (error) {
@@ -110,6 +121,66 @@ let ConcertService = class ConcertService {
             this.logger.error(error);
             throw error;
         }
+    }
+    isShowTimesInPast(showTimes) {
+        for (const showTime of showTimes) {
+            const startTime = moment(showTime.startTime, this.DATE_PATTERN)
+                .tz(this.TIMEZONE)
+                .toDate();
+            const momentDate = moment(new Date(Date.now()), this.DATE_PATTERN)
+                .tz(this.TIMEZONE)
+                .toDate();
+            if (startTime <= momentDate) {
+                return true;
+            }
+        }
+        return false;
+    }
+    async isShowTimesOfConcertDuplicated(showTimes) {
+        for (const showTime of showTimes) {
+            const startTime = moment(showTime.startTime, this.DATE_PATTERN)
+                .tz(this.TIMEZONE)
+                .toDate();
+            const endTime = moment(showTime.endTime, this.DATE_PATTERN)
+                .tz(this.TIMEZONE)
+                .toDate();
+            const concerts = await this.sequelize.query(`SELECT *
+         FROM checkConcertTimeDuplication(?, ?)`, {
+                replacements: [startTime, endTime],
+                model: concert_entity_1.Concert,
+                mapToModel: true,
+            });
+            if (concerts.length > 0)
+                return true;
+        }
+        return false;
+    }
+    async findUpcomingConcerts(page) {
+        try {
+            const result = await this.concertRepository.findByShowTimeWithInTwoWeeks(page);
+            const concerts = result.concerts;
+            const dtoConcerts = [];
+            for (const concert of concerts) {
+                const concertDto = this.concertMapper.toDto(concert);
+                concertDto.showTimes = concert['show_times'] ?? [];
+                dtoConcerts.push(concertDto);
+            }
+            return { ...result, dtoConcerts };
+        }
+        catch (error) {
+            this.logger.error(error);
+            throw error;
+        }
+    }
+    async findByCategoryId(categoryId) {
+        const result = await this.concertRepository.findByCategoryId(categoryId);
+        const concerts = result.rows;
+        const dtoConcerts = [];
+        for (const concert of concerts) {
+            const concertDto = this.concertMapper.toDto(concert);
+            dtoConcerts.push(concertDto);
+        }
+        return { ...result, dtoConcerts };
     }
     save(dto) {
         throw new Error('Method not implemented.');

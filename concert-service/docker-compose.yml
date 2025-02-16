@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  concert-service-app:
+    container_name: concert-service-app
+    build: .
+    ports:
+      - "8092:8092"
+    depends_on:
+      - concert-service-db
+    env_file:
+      - .env.dev
+    environment:
+      DB_HOST: concert-service-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: Nhantic1998@
+      DB_NAME: concert_service_db
+
+  concert-service-db:
+    image: postgres:latest
+    container_name: concert-service-db
+    restart: always
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: concert_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Nhantic1998@
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres_data:

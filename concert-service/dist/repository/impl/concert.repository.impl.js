@@ -17,12 +17,16 @@ const concert_entity_1 = require("../../entity/concert.entity");
 const common_1 = require("@nestjs/common");
 const common_lib_1 = require("common-lib");
 const sequelize_1 = require("@nestjs/sequelize");
+const sequelize_2 = require("sequelize");
 const image_entity_1 = require("../../entity/image.entity");
 const show_time_entity_1 = require("../../entity/show.time.entity");
+const sequelize_typescript_1 = require("sequelize-typescript");
+const category_entity_1 = require("../../entity/category.entity");
 let ConcertRepository = class ConcertRepository {
-    constructor(concertModel, logger) {
+    constructor(concertModel, logger, sequelize) {
         this.concertModel = concertModel;
         this.logger = logger;
+        this.sequelize = sequelize;
     }
     async create(entity, transaction) {
         const createdConcert = await entity.save({ transaction });
@@ -44,6 +48,45 @@ let ConcertRepository = class ConcertRepository {
             throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.NOT_FOUND.getCode, common_lib_1.ErrorMessage.NOT_FOUND.getMessage, `Concert not found with id [${id}]`);
         return concert;
     }
+    async findByShowTimeWithInTwoWeeks(page) {
+        const limit = page.size ?? 2;
+        const currentPage = page.page ?? 1;
+        const offset = (currentPage - 1) * limit;
+        const total = await this.sequelize.query('select *\n' + 'from count_concerts_within_2_weeks();', { raw: true, type: sequelize_2.QueryTypes.SELECT });
+        if (total.length <= 0) {
+            throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.NOT_FOUND.getCode, common_lib_1.ErrorMessage.NOT_FOUND.getMessage, 'Count record errors');
+        }
+        const concerts = await this.sequelize.query('Select * from get_concerts_within_2_weeks(?, ?)', {
+            replacements: [limit, offset],
+            raw: true,
+            type: sequelize_2.QueryTypes.SELECT,
+        });
+        return {
+            total: total[0]['count_concerts_within_2_weeks'],
+            page: currentPage,
+            concerts,
+        };
+    }
+    async findByCategoryId(categoryId) {
+        return await concert_entity_1.Concert.findAndCountAll({
+            include: [
+                {
+                    model: category_entity_1.Category,
+                    where: { id: categoryId },
+                    required: true,
+                },
+                {
+                    model: image_entity_1.Image,
+                    attributes: ['url'],
+                },
+                {
+                    model: show_time_entity_1.ShowTime,
+                    attributes: ['startTime', 'endTime'],
+                },
+            ],
+            distinct: true,
+        });
+    }
     async remove(id) {
         const concert = await this.findById(id);
         await concert.destroy();
@@ -56,6 +99,7 @@ exports.ConcertRepository = ConcertRepository;
 exports.ConcertRepository = ConcertRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, sequelize_1.InjectModel)(concert_entity_1.Concert)),
-    __metadata("design:paramtypes", [Object, common_lib_1.LoggerFactory])
+    __metadata("design:paramtypes", [Object, common_lib_1.LoggerFactory,
+        sequelize_typescript_1.Sequelize])
 ], ConcertRepository);
 //# sourceMappingURL=concert.repository.impl.js.map

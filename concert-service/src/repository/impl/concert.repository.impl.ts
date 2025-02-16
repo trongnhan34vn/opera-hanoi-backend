@@ -1,12 +1,14 @@
 import { Concert } from 'src/entity/concert.entity';
 import { ConcertRepositoryInterface } from '../concert.repository.interface';
 import { Injectable } from '@nestjs/common';
-import { Sequelize } from 'sequelize-typescript';
 import { ErrorMessage, LoggerFactory, ResourceException } from 'common-lib';
 import { InjectModel } from '@nestjs/sequelize';
-import { Transaction } from 'sequelize';
+import { QueryTypes, Transaction } from 'sequelize';
 import { Image } from '../../entity/image.entity';
 import { ShowTime } from '../../entity/show.time.entity';
+import { Pagination } from '../../dto/request/pagination.dto';
+import { Sequelize } from 'sequelize-typescript';
+import { Category } from '../../entity/category.entity';
 
 @Injectable()
 export class ConcertRepository implements ConcertRepositoryInterface {
@@ -14,6 +16,7 @@ export class ConcertRepository implements ConcertRepositoryInterface {
     @InjectModel(Concert)
     private readonly concertModel: typeof Concert,
     private readonly logger: LoggerFactory,
+    private readonly sequelize: Sequelize,
   ) {}
 
   async create(entity: Concert, transaction?: Transaction): Promise<Concert> {
@@ -51,6 +54,70 @@ export class ConcertRepository implements ConcertRepositoryInterface {
         `Concert not found with id [${id}]`,
       );
     return concert;
+  }
+
+  /**
+   * Find concerts have show times within 2 weeks
+   * @param page
+   */
+  async findByShowTimeWithInTwoWeeks(page: Pagination) {
+    const limit = page.size ?? 2;
+    const currentPage = page.page ?? 1;
+
+    const offset = (currentPage - 1) * limit;
+
+    const total = await this.sequelize.query(
+      'select *\n' + 'from count_concerts_within_2_weeks();',
+      { raw: true, type: QueryTypes.SELECT },
+    );
+
+    if (total.length <= 0) {
+      throw new ResourceException(
+        ErrorMessage.NOT_FOUND.getCode,
+        ErrorMessage.NOT_FOUND.getMessage,
+        'Count record errors',
+      );
+    }
+
+    const concerts: Concert[] = await this.sequelize.query(
+      'Select * from get_concerts_within_2_weeks(?, ?)',
+      {
+        replacements: [limit, offset],
+        raw: true,
+        type: QueryTypes.SELECT,
+      },
+    );
+
+    return {
+      total: total[0]['count_concerts_within_2_weeks'] as number,
+      page: currentPage,
+      concerts,
+    };
+  }
+
+  /**
+   * Find concerts by category id
+   * @param categoryId
+   */
+  async findByCategoryId(categoryId: string) {
+    return await Concert.findAndCountAll({
+      include: [
+        {
+          model: Category,
+          where: { id: categoryId },
+          required: true,
+        },
+        {
+          model: Image,
+          attributes: ['url'],
+        },
+        {
+          model: ShowTime,
+          attributes: ['startTime', 'endTime'],
+        },
+      ],
+      distinct: true,
+    });
   }
 
   async remove(id: string): Promise<void> {
