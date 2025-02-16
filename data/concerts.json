@@ -1,0 +1,262 @@
+[
+  {
+    "title": "Giao hưởng mùa xuân",
+    "description": "Một đêm nhạc giao hưởng với những tác phẩm bất hủ",
+    "art": "Dàn nhạc giao hưởng Việt Nam",
+    "images": [
+      "https://example.com/image1.jpg",
+      "https://example.com/image2.jpg"
+    ],
+    "director": "Nhạc trưởng Trần Vũ",
+    "categories": ["892c765d-53a7-4084-b0da-1ad9df98ecae"],
+    "showTimes": [
+      {
+        "startTime": "2025/02/20 19:00:00",
+        "endTime": "2025/02/20 21:00:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      {
+        "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be",
+        "price": 2500000
+      },
+      {
+        "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db",
+        "price": 1500000
+      },
+      {
+        "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a",
+        "price": 700000
+      },
+      {
+        "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea",
+        "price": 400000
+      }
+    ]
+  },
+  {
+    "title": "Vũ điệu Hồ Thiên Nga",
+    "description": "Một đêm ballet kinh điển với Hồ Thiên Nga",
+    "art": "Nhóm vũ công Nhà hát lớn",
+    "images": [
+      "https://example.com/image3.jpg",
+      "https://example.com/image4.jpg",
+      "https://example.com/image5.jpg"
+    ],
+    "director": "Biên đạo múa Lê Thanh",
+    "categories": ["ec592cb4-1d61-48a0-8723-7f3c032c09b7"],
+    "showTimes": [
+      {
+        "startTime": "2025/02/21 18:30:00",
+        "endTime": "2025/02/21 20:30:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      {
+        "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be",
+        "price": 2800000
+      },
+      {
+        "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db",
+        "price": 1800000
+      },
+      {
+        "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a",
+        "price": 900000
+      },
+      {
+        "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea",
+        "price": 500000
+      }
+    ]
+  },
+  {
+    "title": "Liveshow Đàm Vĩnh Hưng",
+    "description": "Đêm nhạc hoành tráng với Đàm Vĩnh Hưng",
+    "art": "Đàm Vĩnh Hưng",
+    "images": [
+      "https://example.com/image6.jpg",
+      "https://example.com/image7.jpg"
+    ],
+    "director": "Đạo diễn Phạm Hoàng",
+    "categories": ["5394228f-c3cb-455c-9730-5d4b0b862003", "83f0b981-6628-41e9-bcd7-1887f4733da2"],
+    "showTimes": [
+      {
+        "startTime": "2025/02/22 20:00:00",
+        "endTime": "2025/02/22 22:30:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      {
+        "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be",
+        "price": 3500000
+      },
+      {
+        "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db",
+        "price": 2200000
+      },
+      {
+        "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a",
+        "price": 1000000
+      },
+      {
+        "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea",
+        "price": 600000
+      }
+    ]
+  },
+  {
+    "title": "Đêm hội Xiếc Việt",
+    "description": "Chương trình xiếc đặc sắc với những màn biểu diễn đỉnh cao",
+    "art": "Đoàn xiếc Trung Ương",
+    "images": [
+      "https://example.com/image8.jpg",
+      "https://example.com/image9.jpg"
+    ],
+    "director": "Đạo diễn Nguyễn Lâm",
+    "categories": ["416889b3-f09b-4b96-a668-1f4df6f64060"],
+    "showTimes": [
+      {
+        "startTime": "2025/02/23 17:00:00",
+        "endTime": "2025/02/23 19:00:00"
+      },
+      {
+        "startTime": "2025/02/23 20:00:00",
+        "endTime": "2025/02/23 22:00:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      {
+        "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be",
+        "price": 1800000
+      },
+      {
+        "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db",
+        "price": 1200000
+      },
+      {
+        "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a",
+        "price": 600000
+      },
+      {
+        "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea",
+        "price": 400000
+      }
+    ]
+  },
+  {
+    "title": "Giai điệu mùa thu",
+    "description": "Đêm nhạc cổ điển với những tác phẩm bất hủ.",
+    "art": "Dàn nhạc giao hưởng Hà Nội",
+    "images": [
+      "https://example.com/image10.jpg",
+      "https://example.com/image11.jpg"
+    ],
+    "director": "Nhạc trưởng Hoàng Minh",
+    "categories": ["892c765d-53a7-4084-b0da-1ad9df98ecae"],
+    "showTimes": [
+      {
+        "startTime": "2025/03/01 19:00:00",
+        "endTime": "2025/03/01 21:00:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      { "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be", "price": 2700000 },
+      { "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db", "price": 1600000 },
+      { "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a", "price": 800000 },
+      { "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea", "price": 500000 }
+    ]
+  },
+  {
+    "title": "Rock Storm 2025",
+    "description": "Sự kiện rock bùng cháy với các ban nhạc hàng đầu.",
+    "art": "Ban nhạc Bức Tường, Microwave, Ngũ Cung",
+    "images": [
+      "https://example.com/image12.jpg",
+      "https://example.com/image13.jpg"
+    ],
+    "director": "Đạo diễn Nguyễn Huy",
+    "categories": ["5394228f-c3cb-455c-9730-5d4b0b862003"],
+    "showTimes": [
+      {
+        "startTime": "2025/03/02 20:00:00",
+        "endTime": "2025/03/02 23:00:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      { "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be", "price": 3000000 },
+      { "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db", "price": 2000000 },
+      { "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a", "price": 1000000 },
+      { "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea", "price": 700000 }
+    ]
+  },
+  {
+    "title": "Giai điệu mùa thu",
+    "description": "Đêm nhạc cổ điển với những tác phẩm bất hủ.",
+    "art": "Dàn nhạc giao hưởng Hà Nội",
+    "images": [
+      "https://example.com/image10.jpg",
+      "https://example.com/image11.jpg"
+    ],
+    "director": "Nhạc trưởng Hoàng Minh",
+    "categories": ["892c765d-53a7-4084-b0da-1ad9df98ecae"],
+    "showTimes": [
+      {
+        "startTime": "2025/03/03 19:00:00",
+        "endTime": "2025/03/03 21:00:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      { "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be", "price": 2700000 },
+      { "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db", "price": 1600000 },
+      { "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a", "price": 800000 },
+      { "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea", "price": 500000 }
+    ]
+  },
+  {
+    "title": "Rock Storm 2025",
+    "description": "Sự kiện rock bùng cháy với các ban nhạc hàng đầu.",
+    "art": "Ban nhạc Bức Tường, Microwave, Ngũ Cung",
+    "images": [
+      "https://example.com/image12.jpg",
+      "https://example.com/image13.jpg"
+    ],
+    "director": "Đạo diễn Nguyễn Huy",
+    "categories": ["5394228f-c3cb-455c-9730-5d4b0b862003"],
+    "showTimes": [
+      {
+        "startTime": "2025/03/04 20:00:00",
+        "endTime": "2025/03/04 23:00:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      { "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be", "price": 3000000 },
+      { "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db", "price": 2000000 },
+      { "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a", "price": 1000000 },
+      { "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea", "price": 700000 }
+    ]
+  },
+  {
+    "title": "Đêm nhạc Trịnh Công Sơn",
+    "description": "Hòa nhạc tôn vinh nhạc sĩ Trịnh Công Sơn với những ca khúc bất hủ.",
+    "art": "Nhiều ca sĩ nổi tiếng",
+    "images": [
+      "https://example.com/image14.jpg",
+      "https://example.com/image15.jpg"
+    ],
+    "director": "Đạo diễn Lê Phương",
+    "categories": ["83f0b981-6628-41e9-bcd7-1887f4733da2"],
+    "showTimes": [
+      {
+        "startTime": "2025/03/06 19:30:00",
+        "endTime": "2025/03/06 22:00:00"
+      }
+    ],
+    "seatCategoriesPrice": [
+      { "seatCategoryId": "0e02b52c-6f36-45f5-890e-fa46609110be", "price": 2500000 },
+      { "seatCategoryId": "bf44f324-6849-493d-a152-938fe7cbb8db", "price": 1500000 },
+      { "seatCategoryId": "28946da2-694a-4446-b802-0d5a71a56c9a", "price": 900000 },
+      { "seatCategoryId": "2bc1ddbb-2cb1-4908-9967-e82531b656ea", "price": 600000 }
+    ]
+  }
+]
