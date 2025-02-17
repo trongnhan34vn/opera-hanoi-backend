@@ -251,8 +251,14 @@ export class ConcertService implements ConcertServiceInterface {
     throw new Error('Method not implemented.');
   }
 
-  findById(id: string): Promise<ConcertDto> {
-    throw new Error('Method not implemented.');
+  async findById(id: string): Promise<ConcertDto> {
+    try {
+      const concert = await this.concertRepository.findById(id);
+      return this.concertMapper.toDto(concert);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
   }
 
   remove(id: string): Promise<void> {

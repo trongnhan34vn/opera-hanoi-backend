@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Query,
   Res,
@@ -47,6 +48,19 @@ export class ConcertController {
       SuccessMessage.OK.getCode,
       `Query concert success. Total ${result.count} (record) (s)`,
       result.dtoConcerts,
+    );
+  }
+
+  @Get('/concerts/:id')
+  @SkipAuth()
+  async findConcertById(@Res() res: Response, @Param('id') id: string) {
+    const concert = await this.concertService.findById(id);
+    return this.httpResponseFactory.sendSuccessResponse(
+      res,
+      HttpStatus.OK,
+      SuccessMessage.OK.getCode,
+      'Concert founded',
+      concert,
     );
   }
 
