@@ -54,21 +54,21 @@ const envFilePath = '../.env.dev';
     },
     // LOGGER
     // CONSUL
-    {
-      provide: ConsulService,
-      useFactory: () =>
-        new ConsulService(new LoggerFactory('default'), {
-          host: 'localhost',
-          port: 8500,
-          service: {
-            id: 'consul-auth-service',
-            name: 'auth-service',
-            host: 'localhost',
-            port: 8090,
-            healthCheckPath: '/actuator/health',
-          },
-        }),
-    },
+    // {
+    //   provide: ConsulService,
+    //   useFactory: () =>
+    //     new ConsulService(new LoggerFactory('default'), {
+    //       host: 'localhost',
+    //       port: 8500,
+    //       service: {
+    //         id: 'consul-auth-service',
+    //         name: 'auth-service',
+    //         host: 'localhost',
+    //         port: 8090,
+    //         healthCheckPath: '/actuator/health',
+    //       },
+    //     }),
+    // },
     // CONSUL
     // START SECURITY PROVIDER
     {

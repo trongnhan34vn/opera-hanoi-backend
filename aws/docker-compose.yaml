@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  auth-service:
+    container_name: auth-service
+    image: 816486563047.dkr.ecr.ap-southeast-1.amazonaws.com/auth-service
+    ports:
+      - "8090:8090"
+    networks:
+      - opera-house
+
+  account-service:
+    container_name: account-service
+    image: 816486563047.dkr.ecr.ap-southeast-1.amazonaws.com/account-service
+    ports:
+      - "8091:8091"
+    depends_on:
+      - account-service-db
+    environment:
+      DB_HOST: account-service-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: Nhantic1998@
+      DB_NAME: account_service_db
+    networks:
+      - opera-house
+
+  account-service-db:
+    image: postgres:latest
+    container_name: account-service-db
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: account_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Nhantic1998@
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./account-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - opera-house
+
+  concert-service:
+    container_name: concert-service
+    image: 816486563047.dkr.ecr.ap-southeast-1.amazonaws.com/concert-service
+    ports:
+      - "8092:8092"
+    depends_on:
+      - concert-service-db
+    environment:
+      DB_HOST: concert-service-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: Nhantic1998@
+      DB_NAME: concert_service_db
+    networks:
+      - opera-house
+
+  concert-service-db:
+    image: postgres:latest
+    container_name: concert-service-db
+    restart: always
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: concert_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Nhantic1998@
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - opera-house
+
+volumes:
+  postgres_data:
+
+networks:
+  opera-house:
