@@ -36,7 +36,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Nhantic1998@
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - account_service_data:/var/lib/postgresql/data
       - ./account-service/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - opera-house
@@ -68,13 +68,14 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Nhantic1998@
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - concert_service_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - opera-house
 
 volumes:
-  postgres_data:
+  account_service_data:
+  concert_service_data:
 
 networks:
   opera-house:
