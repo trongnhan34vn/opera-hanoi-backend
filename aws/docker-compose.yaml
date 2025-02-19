@@ -69,7 +69,7 @@ services:
       POSTGRES_PASSWORD: Nhantic1998@
     volumes:
       - concert_service_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./concert-service/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - opera-house
 
