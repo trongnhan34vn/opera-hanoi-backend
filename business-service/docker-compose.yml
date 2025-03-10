@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  business-service-app:
+    container_name: business-service-app
+    build: .
+    ports:
+      - "8092:8092"
+    depends_on:
+      - business-service-db
+    env_file:
+      - .env.local
+    environment:
+      DB_HOST: business-service-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: Nhantic1998@
+      DB_NAME: business_service_db
+#    command: sh -c "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && node dist/main"
+    networks:
+      - opera-house-network
+
+
+  business-service-db:
+    image: postgres:latest
+    container_name: business-service-db
+    restart: always
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: business_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Nhantic1998@
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - opera-house-network
+
+networks:
+  opera-house-network:
+    name: opera-house-network
+    driver: bridge
+
+volumes:
+  postgres_data:
