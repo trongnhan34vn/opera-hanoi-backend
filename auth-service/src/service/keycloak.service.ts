@@ -10,7 +10,6 @@ import {
 } from 'common-lib';
 import {
   KeycloakRequest,
-  KeycloakTokenResponse,
   UserKeycloakRegistry,
 } from '../interface/keycloak.interface';
 import {
@@ -24,6 +23,7 @@ import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
 import { UserSignInDto } from '../dto/request/UserSignIn.dto';
 import { RoleKC } from '../dto/response/RoleKC.dto';
 import { UserKc } from '../dto/response/UserKc.dto';
+import { KeycloakTokenResponse } from '../dto/response/KeycloakTokenResponse.dto';
 
 @Injectable()
 export class KeycloakService {
@@ -86,15 +86,15 @@ export class KeycloakService {
    * @param userSignUp
    * @return boolean
    */
-  async signUp(userSignUp: UserSignUpDto) {
+  async signUp(userSignUp: UserSignUpDto): Promise<UserKc> {
     // 1. get admin access. sign in with admin account by keycloak api
     const token = await this.getAdminAccess();
     try {
       // 2. create user with admin access by keycloak api
       await this.createUser(userSignUp, token);
-      await this.mappingRoleToUser(token, userSignUp);
       // 3. assign role
-      return true;
+      await this.mappingRoleToUser(token, userSignUp);
+      return await this.findUserByEmail(userSignUp.email, token);
     } catch (error) {
       throw error;
     }
@@ -235,7 +235,6 @@ export class KeycloakService {
     const roles = userDto.roles;
     // *************** IN PROGRESS *****************
     if (roles && roles.size !== 0) {
-      console.log('sign up with specified role');
       return;
     }
     // *************** IN PROGRESS *****************

@@ -5,6 +5,8 @@ import { AuthService } from '../service/auth.service';
 import { SkipAuth } from '../config/SkipAuthGuardAnnotationConfig';
 import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
 import { UserSignInDto } from '../dto/request/UserSignIn.dto';
+import { plainToInstance } from 'class-transformer';
+import { KeycloakTokenResponse } from '../dto/response/KeycloakTokenResponse.dto';
 
 @Controller('/api/v1/auth')
 export class AuthController {
@@ -36,6 +38,19 @@ export class AuthController {
       HttpStatus.OK,
       SuccessMessage.OK.getCode,
       'Sign Up successfully',
+      response,
+    );
+  }
+
+  @Post('/sign-in-admin')
+  @SkipAuth()
+  async signInAdmin(@Res() res: Response, @Body() userDto: UserSignInDto) {
+    const response = await this.authService.signInAdmin(userDto);
+    return this.responseFactory.sendSuccessResponse(
+      res,
+      HttpStatus.OK,
+      SuccessMessage.OK.getCode,
+      'Sign in successfully',
       response,
     );
   }

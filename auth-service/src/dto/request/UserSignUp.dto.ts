@@ -2,6 +2,10 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UserSignUpDto {
   @IsString()
+  @IsOptional()
+  id?: string;
+
+  @IsString()
   @IsNotEmpty()
   email: string;
 
@@ -27,4 +31,10 @@ export class UserSignUpDto {
 
   @IsOptional()
   roles?: Set<string>;
+}
+
+export class AccountServiceUser extends UserSignUpDto {
+  @IsString()
+  @IsNotEmpty()
+  keycloakId: string;
 }

@@ -14,9 +14,9 @@ import { KeycloakService } from '../service/keycloak.service';
       provide: LoggerFactory,
       useFactory: () => new LoggerFactory('keycloak-service'), // Cung cấp category và level mặc định
     },
-    KeycloakService
+    KeycloakService,
   ],
 
-  exports: [KeycloakService]
+  exports: [KeycloakService],
 })
 export class KeycloakModule {}

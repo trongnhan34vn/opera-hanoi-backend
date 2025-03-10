@@ -1,4 +1,9 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ErrorMessage,
   HttpResponseFactory,
@@ -29,13 +34,14 @@ export class AuthErrorController implements ExceptionFilter {
         status,
         resourceError.getErrorCode,
         resourceError.message,
-        resourceError.getDetails,
+        resourceError.details,
       );
     }
     // in case not resource error
     return this.responseFactory.sendErrorResponse(
       response,
-      error['status'] && this.getStatus(ErrorMessage.INTERNAL_SERVER_ERROR.getCode),
+      error['status'] ??
+        this.getStatus(ErrorMessage.INTERNAL_SERVER_ERROR.getCode),
       this.getErrorMessage(error['status']).getCode,
       this.getErrorMessage(error['status']).getMessage,
       error.message,
@@ -49,6 +55,8 @@ export class AuthErrorController implements ExceptionFilter {
    */
   private getErrorMessage(status: number) {
     switch (status) {
+      case 503:
+        return ErrorMessage.SERVICE_UNAVAILABLE;
       case 404:
         return ErrorMessage.NOT_FOUND;
       case 400:
@@ -73,18 +81,20 @@ export class AuthErrorController implements ExceptionFilter {
   private getStatus(error: ResourceException) {
     const code = error.getErrorCode;
     switch (code) {
+      case ErrorMessage.SERVICE_UNAVAILABLE.getCode:
+        return HttpStatus.SERVICE_UNAVAILABLE;
       case ErrorMessage.BAD_REQUEST.getCode:
-        return 400;
+        return HttpStatus.BAD_REQUEST;
       case ErrorMessage.UNAUTHORIZED.getCode:
-        return 401;
+        return HttpStatus.UNAUTHORIZED;
       case ErrorMessage.CONFLICT.getCode:
-        return 409;
+        return HttpStatus.CONFLICT;
       case ErrorMessage.FORBIDDEN.getCode:
-        return 403;
+        return HttpStatus.FORBIDDEN;
       case ErrorMessage.NOT_FOUND.getCode:
-        return 404;
+        return HttpStatus.NOT_FOUND;
       default:
-        return 500;
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
   }
 }

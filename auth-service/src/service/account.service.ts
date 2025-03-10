@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
+import { AccountServiceUser, UserSignUpDto } from '../dto/request/UserSignUp.dto';
 import {
+  ApiResponse,
   ErrorMessage,
+  HttpContentType,
   HttpHeaders,
   HttpMethod,
   HttpServiceFactory,
@@ -13,7 +15,8 @@ import {
   ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS,
   ACCOUNT_SERVICE_PATH,
   API_KEY,
-} from '../constants/AccountServiceConstant';
+} from '../constants/ServiceConstant';
+import { SuccessResponse } from 'common-lib/src/factory/response/SuccessResponse.entity';
 
 @Injectable()
 export class AccountService {
@@ -22,17 +25,20 @@ export class AccountService {
     private readonly logger: LoggerFactory,
   ) {}
 
-  async save(userDto: UserSignUpDto) {
+  async save(userDto: AccountServiceUser) {
     try {
       this.logger.log(
         `Start save user [${userDto.email}] to account service...`,
       );
       // call account-service
       const headers: HttpHeaders = {
+        contentType: HttpContentType.JSON,
         apiKey: API_KEY,
       };
 
-      const response = await this.httpService.call<UserSignUpDto>(
+      const response = await this.httpService.call<
+        SuccessResponse<UserSignUpDto>
+      >(
         HttpMethod.POST,
         ACCOUNT_SERVICE_BASEURL,
         ACCOUNT_SERVICE_PATH + ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS,
@@ -48,7 +54,8 @@ export class AccountService {
         );
       }
 
-      const createdUser: UserSignUpDto = response.data;
+      const successResponse = response.data;
+      const createdUser = successResponse.data;
       if (!createdUser) {
         throw new ResourceException(
           ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
@@ -56,8 +63,9 @@ export class AccountService {
           'Data response from account-service is null',
         );
       }
+
       this.logger.log(`Saved user [${userDto.email}] successfully!`);
-      return true;
+      return createdUser.id;
     } catch (error) {
       this.logger.error(error);
       throw error;

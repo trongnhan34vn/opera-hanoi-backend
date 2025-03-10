@@ -11,7 +11,7 @@ import * as path from 'node:path';
 import * as process from 'node:process';
 import { ValidationPipe } from '@nestjs/common';
 
-const envFilePath = '../../env/.env.dev';
+const envFilePath = '../../env/.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 
 async function bootstrap() {
@@ -42,6 +42,7 @@ async function bootstrap() {
       transform: true, // Tự động chuyển đổi payload sang DTO
     }),
   );
+
   await app.listen(process.env.AUTH_SERVICE_PORT);
 }
 

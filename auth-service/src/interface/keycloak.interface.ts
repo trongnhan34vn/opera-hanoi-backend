@@ -6,14 +6,6 @@ export interface KeycloakRequest {
   grant_type: string;
 }
 
-export interface KeycloakTokenResponse {
-  accessToken: string;
-  refreshToken: string;
-  tokenId: string;
-  expiresIn: number;
-  refreshExpiresIn: number;
-}
-
 export interface UserKeycloakRegistry {
   email: string;
   firstName: string;

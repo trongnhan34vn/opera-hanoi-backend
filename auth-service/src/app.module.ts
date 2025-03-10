@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {
-  ConsulService,
   HttpResponseFactory,
   LoggerFactory,
   LogModule,
@@ -22,13 +21,15 @@ import { KeycloakConfig } from './config/KeycloakConfig';
 import { GlobalAuthGuard } from './config/GlobalAuthGuard';
 import { APP_GUARD } from '@nestjs/core';
 import { SkipAuthGuard } from './config/SkipAuthGuard';
+import { ConcertModule } from './module/concert.module';
 
-const envFilePath = '../.env.dev';
+const envFilePath = '../.env.local';
 
 @Module({
   imports: [
     // import auth module
     AuthModule,
+    ConcertModule,
     // import config interceptor
     LogModule,
     // import config .env.dev
