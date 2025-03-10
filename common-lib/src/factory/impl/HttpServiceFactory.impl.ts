@@ -9,9 +9,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 @Injectable()
 export class HttpServiceFactory implements IHttpService {
-  constructor(
-    private readonly logger: LoggerFactory,
-  ) {}
+  constructor(private readonly logger: LoggerFactory) {}
 
   /**
    * Call API common
@@ -37,7 +35,7 @@ export class HttpServiceFactory implements IHttpService {
       data: [${data}];`,
     );
     try {
-      let response: AxiosResponse;
+      let response: AxiosResponse<T>;
       switch (method) {
         case HttpMethod.GET:
           // GET method
@@ -68,7 +66,6 @@ export class HttpServiceFactory implements IHttpService {
       this.logger.log('Call API successfully.');
       return response;
     } catch (error) {
-      console.log('Error', error);
       if (error instanceof AxiosError) {
         this.handleAxiosError(error);
       }
@@ -90,15 +87,25 @@ export class HttpServiceFactory implements IHttpService {
   private handleAxiosError(error: AxiosError) {
     const statusError = error.status;
     if (!statusError) {
+      if (error.code === 'ECONNREFUSED') {
+        throw new ResourceException(
+          ErrorMessage.SERVICE_UNAVAILABLE.getCode,
+          ErrorMessage.SERVICE_UNAVAILABLE.getMessage,
+          `Connect Refused (code:[${error.code}])`,
+        );
+      }
+
       throw new ResourceException(
         ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
         ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-        error.cause.message,
+        'Error undefined',
       );
     }
     this.logger.error(
       `Error occurred when calling API. ${error}. Response: ${JSON.stringify(error.response?.data)}.`,
     );
+    console.log('status common ------> ', statusError);
+    console.log('error common ------> ', error);
     switch (statusError) {
       case 400:
         throw new ResourceException(
@@ -110,7 +117,8 @@ export class HttpServiceFactory implements IHttpService {
         throw new ResourceException(
           ErrorMessage.UNAUTHORIZED.getCode,
           error.message,
-          error.response.data['message'],
+          error.response.data['message'] ??
+            error.response.data['error_description'],
         );
       case 403:
         throw new ResourceException(

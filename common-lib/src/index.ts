@@ -34,3 +34,5 @@ export * from './config/guard/SkipAuthGuardAnnotationConfig';
 export * from './config/guard/security.module';
 export * from './config/guard/api.middleware.module';
 
+// utils
+export { CodeGenerator } from './utils/code.generate.util';
