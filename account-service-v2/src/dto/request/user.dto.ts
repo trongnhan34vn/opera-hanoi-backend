@@ -27,4 +27,7 @@ export class UserDto {
   @IsString()
   @IsNotEmpty()
   lastName: string;
+
+  @IsString()
+  keycloakId: string;
 }

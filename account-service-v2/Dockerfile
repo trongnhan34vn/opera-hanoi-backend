@@ -22,6 +22,9 @@ COPY . .
 # Build ứng dụng (nếu cần)
 RUN npm run build
 
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 # Expose port và chạy ứng dụng
 EXPOSE 8091
-CMD ["npm", "run", "start:prod"]
+CMD ["/docker-entrypoint.sh"]

@@ -18,6 +18,12 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: false,
   })
+  keycloakId: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   email: string;
 
   @Column({
