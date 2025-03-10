@@ -5,7 +5,7 @@ export class ErrorResponse extends ApiResponse {
     super(code, message);
     this.details = details;
   }
-  private details: string;
+  details: string;
 
   get getDetails() {
     return this.details;

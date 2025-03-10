@@ -1,6 +1,6 @@
 export class ResourceException extends Error {
-  private errorCode: string;
-  private details?: string;
+  errorCode: string;
+  details?: string;
   constructor(errorCode: string, message: string, details?: string) {
     super(message);
     this.errorCode = errorCode;

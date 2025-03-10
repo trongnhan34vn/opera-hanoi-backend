@@ -18,6 +18,7 @@ export class ApiKeyMiddleware implements NestMiddleware {
       // Nếu không có API key hoặc sai API key
       throw new ResourceException(
         ErrorMessage.UNAUTHORIZED.getCode,
+        ErrorMessage.UNAUTHORIZED.getMessage,
         'Unauthorized',
       );
     }

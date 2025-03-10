@@ -1,7 +1,7 @@
 import { ApiResponse } from './ApiResponse.entity';
 
 export class SuccessResponse<T> extends ApiResponse {
-  private data: T;
+  public data: T;
   constructor(code: string, message: string, data: T) {
     super(code, message);
     this.data = data;

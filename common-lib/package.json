@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/sequelize": "^11.0.0",
     "axios": "^1.7.9",
+    "bs58": "^6.0.0",
     "consul": "^2.0.1",
     "log4js": "^6.9.1",
     "luxon": "^3.5.0",
