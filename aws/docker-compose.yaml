@@ -70,6 +70,7 @@ services:
     volumes:
       - concert_service_data:/var/lib/postgresql/data
       - ./concert-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./concert-service/concert_sql_function_migrate.sql:/docker-entrypoint-initdb.d/concert_sql_function_migrate.sql
     networks:
       - opera-house
 
