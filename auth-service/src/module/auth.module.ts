@@ -8,9 +8,10 @@ import {
 } from 'common-lib';
 import { KeycloakModule } from './keycloak.module';
 import { AccountModule } from './account.module';
+import { ConcertModule } from './concert.module';
 
 @Module({
-  imports: [HttpServiceModule, KeycloakModule, AccountModule],
+  imports: [HttpServiceModule, KeycloakModule, AccountModule, ConcertModule],
   providers: [
     AuthService,
     HttpResponseFactory,

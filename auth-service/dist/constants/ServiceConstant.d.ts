@@ -1,0 +1,11 @@
+export declare const ACCOUNT_SERVICE_HOST: string;
+export declare const ACCOUNT_SERVICE_PORT: string;
+export declare const ACCOUNT_SERVICE_BASEURL: string;
+export declare const ACCOUNT_SERVICE_PATH = "/api/v1/account";
+export declare const ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS = "/users";
+export declare const CONCERT_SERVICE_HOST: string;
+export declare const CONCERT_SERVICE_PORT: string;
+export declare const CONCERT_SERVICE_BASEURL: string;
+export declare const CONCERT_SERVICE_PATH = "/api/v1/business";
+export declare const CONCERT_SERVICE_CREATE_CART_ENDPOINT = "/carts";
+export declare const API_KEY: string;

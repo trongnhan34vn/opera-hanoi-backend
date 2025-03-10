@@ -1,0 +1,10 @@
+export declare const KEYCLOAK_SERVICE_HOST: string;
+export declare const KEYCLOAK_SERVICE_PORT: string;
+export declare const KEYCLOAK_SERVICE_URL: string;
+export declare const KEYCLOAK_PROVIDER_TOKEN_URI_PATH: string;
+export declare const KEYCLOAK_CLIENT_ID: string;
+export declare const KEYCLOAK_CLIENT_SECRET: string;
+export declare const KEYCLOAK_SERVICE_ADMIN_PATH_URI: string;
+export declare const KEYCLOAK_REALM: string;
+export declare const KEYCLOAK_PROVIDER_ISSUE_URI: string;
+export declare const KEYCLOAK_ADMIN_URI: string;
