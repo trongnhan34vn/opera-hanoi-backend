@@ -25,7 +25,7 @@ import { SkipAuthGuard } from './config/SkipAuthGuard';
 import { UserModule } from './module/user.module';
 import * as process from 'node:process';
 
-const envFilePath = '../.env.dev';
+const envFilePath = '../.env.local';
 
 @Module({
   imports: [

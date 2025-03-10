@@ -18,6 +18,7 @@ export class UserMapper implements IUserMapper {
     if (user.birthDate) {
       userDto.birthDate = user.birthDate.toDateString();
     }
+    userDto.keycloakId = user.keycloakId;
     userDto.firstName = user.firstName;
     userDto.lastName = user.lastName;
     return userDto;
@@ -32,6 +33,7 @@ export class UserMapper implements IUserMapper {
     if (userDto.address) {
       user.set('address', userDto.address);
     }
+    user.set('keycloakId', userDto.keycloakId);
     user.set('firstName', userDto.firstName);
     user.set('lastName', userDto.lastName);
     if (userDto.birthDate) {

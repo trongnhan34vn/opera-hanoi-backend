@@ -11,7 +11,7 @@ import {
 import { ErrorController } from './controller/error.controller';
 import { ValidationPipe } from '@nestjs/common';
 
-const envFilePath = '../.env.dev';
+const envFilePath = '../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 async function bootstrap() {
   const logger = new LoggerFactory('default');
