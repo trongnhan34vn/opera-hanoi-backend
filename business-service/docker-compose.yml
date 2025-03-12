@@ -11,7 +11,7 @@ services:
     env_file:
       - .env.local
     environment:
-      DB_HOST: business-service-db
+      DB_HOST: ${BUSINESS_SERVICE_DB_HOST}
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASS: Nhantic1998@
@@ -25,6 +25,8 @@ services:
     image: postgres:latest
     container_name: business-service-db
     restart: always
+    env_file:
+      - .env.local
     ports:
       - "5435:5432"
     environment:

@@ -3,6 +3,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.5
     container_name: keycloak
+    platform: linux/amd64
     command:
       start-dev
     environment:
@@ -17,9 +18,11 @@ services:
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       - keycloak-db
+    networks:
+      - opera-house-network
 
   keycloak-db:
     image: postgres:14
@@ -30,6 +33,13 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - keycloak-db-data:/var/lib/postgresql/data
+    networks:
+      - opera-house-network
 
 volumes:
   keycloak-db-data:
+
+networks:
+  opera-house-network:
+    name: opera-house-network
+    driver: bridge
