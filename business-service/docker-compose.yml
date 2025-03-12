@@ -25,6 +25,8 @@ services:
     image: postgres:latest
     container_name: business-service-db
     restart: always
+    env_file:
+      - .env.local
     ports:
       - "5435:5432"
     environment:

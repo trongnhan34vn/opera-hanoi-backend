@@ -11,7 +11,7 @@ import * as path from 'node:path';
 import * as process from 'node:process';
 import { ValidationPipe } from '@nestjs/common';
 
-const envFilePath = '../../env/.env.local';
+const envFilePath = '../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 
 async function bootstrap() {
