@@ -11,7 +11,7 @@ services:
     env_file:
       - .env.local
     environment:
-      DB_HOST: ${BUSINESS_SERVICE_DB_HOST}
+      DB_HOST: business-service-db
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASS: Nhantic1998@
