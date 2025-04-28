@@ -3,57 +3,60 @@ import {
   BelongsToMany,
   Column,
   CreatedAt,
-  DataType, ForeignKey,
+  DataType,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
-  UpdatedAt,
+  UpdatedAt
 } from 'sequelize-typescript';
+import { CartItem } from './cart.item.entity';
 import { Concert } from './concert.entity';
-import { ConcertCategory } from './sub/concert.category.sub.entity';
+import { SeatCategory } from './seat.category';
 import { ConcertSeat } from './sub/concert.seat.sub.entity';
-import { SeatCategory } from './seat.category.entity';
+import { Zone } from './zone.entity';
 
 @Table({
   tableName: 'seats',
 })
 export class Seat extends Model<Seat> {
-  // PK ID
   @PrimaryKey
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   })
-  id: string;
+  id: number;
 
-  // SEAT CODE - EX: A1, B2,....
   @Column({
     type: DataType.STRING,
   })
-  code: string;
+  label: string;
 
-  // CREATE AND UPDATE TIME
+  @BelongsTo(() => SeatCategory)
+  seatCategory: SeatCategory;
+
+  @ForeignKey(() => SeatCategory)
+  @Column({
+    type: DataType.UUID,
+  })
+  seatCategoryId: string;
+
   @CreatedAt
   createdAt: Date;
 
   @UpdatedAt
   updatedAt: Date;
 
-  // RELATIONS //
+  @BelongsTo(() => Zone)
+  zone: Zone;
 
-  // CONCERT
-  @BelongsToMany(() => Concert, () => ConcertSeat)
-  concerts: Concert[];
-
-  @ForeignKey(() => SeatCategory)
+  @ForeignKey(() => Zone)
   @Column({
     type: DataType.UUID,
-    allowNull: false,
   })
-  seatCategoryId: string;
+  zoneId: string;
 
-  @BelongsTo(() => SeatCategory)
-  seatCategory: SeatCategory;
-
-  // RELATIONS //
+  @BelongsToMany(() => Concert, () => ConcertSeat)
+  concerts: Concert[]
 }

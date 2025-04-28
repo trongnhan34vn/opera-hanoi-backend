@@ -1,22 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { AccountServiceUser, UserSignUpDto } from '../dto/request/UserSignUp.dto';
-import {
-  ApiResponse,
-  ErrorMessage,
-  HttpContentType,
-  HttpHeaders,
-  HttpMethod,
-  HttpServiceFactory,
-  LoggerFactory,
-  ResourceException,
-} from 'common-lib';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import {
   ACCOUNT_SERVICE_BASEURL,
   ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS,
   ACCOUNT_SERVICE_PATH,
   API_KEY,
 } from '../constants/ServiceConstant';
-import { SuccessResponse } from 'common-lib/src/factory/response/SuccessResponse.entity';
+import {
+  AccountServiceUser,
+  UserSignUpDto,
+} from '../dto/request/UserSignUp.dto';
+import { HttpServiceFactory } from 'common/dist/factory/impl/http.service.factory.impl';
+import { LoggerFactory } from 'common/dist/factory/impl/logger.factory.impl';
+import {
+  HttpEndpoint,
+  HttpHeaders,
+} from 'common/dist/factory/http.service.factory.interface';
+import { HttpContentType } from 'common/dist/enum/http.content.enum';
+import { HttpMethod } from 'common';
 
 @Injectable()
 export class AccountService {
@@ -36,20 +36,29 @@ export class AccountService {
         apiKey: API_KEY,
       };
 
-      const response = await this.httpService.call<
-        SuccessResponse<UserSignUpDto>
-      >(
+      // const response = await this.httpService.call<
+      //   SuccessResponse<UserSignUpDto>
+      // >(
+      //   HttpMethod.POST,
+      //   ACCOUNT_SERVICE_BASEURL,
+      //   ACCOUNT_SERVICE_PATH + ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS,
+      //   headers,
+      //   userDto,
+      // );
+      const endpoint: HttpEndpoint = {
+        baseURL: ACCOUNT_SERVICE_BASEURL,
+        path: ACCOUNT_SERVICE_PATH + ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS,
+      };
+      
+      const response = await this.httpService.call(
+        endpoint,
         HttpMethod.POST,
-        ACCOUNT_SERVICE_BASEURL,
-        ACCOUNT_SERVICE_PATH + ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS,
-        headers,
         userDto,
+        headers,
       );
 
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
+        throw new InternalServerErrorException(
           'Response from account-service is null',
         );
       }
@@ -57,9 +66,7 @@ export class AccountService {
       const successResponse = response.data;
       const createdUser = successResponse.data;
       if (!createdUser) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
+        throw new InternalServerErrorException(
           'Data response from account-service is null',
         );
       }

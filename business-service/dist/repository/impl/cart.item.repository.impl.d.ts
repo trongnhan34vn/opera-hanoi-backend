@@ -1,7 +1,9 @@
+import { ICartItemRepository } from '../cart.item.repository.interface';
 import { Transaction } from 'sequelize';
 import { CartItem } from 'src/entity/cart.item.entity';
-import { CartItemRepositoryInterface } from '../cart.item.repository.interface';
-export declare class CartItemRepository implements CartItemRepositoryInterface {
+export declare class CartItemRepository implements ICartItemRepository {
+    private readonly cartItemModel;
+    constructor(cartItemModel: typeof CartItem);
     create(entity: CartItem, transaction?: Transaction): Promise<CartItem>;
     update(entity: CartItem, transaction?: Transaction): Promise<CartItem>;
     findById(id: string): Promise<CartItem>;

@@ -1,6 +1,7 @@
-export declare enum SeatCategoryName {
+export declare enum SeatCategoryEnum {
     VIP = "VIP",
-    STANDARD = "Standard",
-    PREMIUM = "Premium",
-    ECONOMY = "Economy"
+    A = "A",
+    B = "B",
+    C = "C",
+    D = "D"
 }

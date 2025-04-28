@@ -8,13 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartMapper = void 0;
+const common_1 = require("@nestjs/common");
 const cart_dto_1 = require("../../dto/request/cart.dto");
 const cart_entity_1 = require("../../entity/cart.entity");
-const common_1 = require("@nestjs/common");
 const uuid_1 = require("uuid");
-const cart_item_mapper_impl_1 = require("./cart.item.mapper.impl");
+const symbol_1 = require("../../constants/symbol");
 let CartMapper = class CartMapper {
     constructor(cartItemMapper) {
         this.cartItemMapper = cartItemMapper;
@@ -22,25 +25,38 @@ let CartMapper = class CartMapper {
     toDto(entity) {
         const cartDto = new cart_dto_1.CartDto();
         cartDto.id = entity.id;
-        cartDto.userId = entity.id;
-        if (entity.cartItems) {
-            cartDto.cartItems = this.cartItemMapper.toDtos(entity.cartItems);
-        }
+        cartDto.userId = entity.userId;
+        cartDto.cartItems = this.cartItemMapper.toDtos(entity.cartItems);
         return cartDto;
     }
     toEntity(dto) {
         const cart = new cart_entity_1.Cart();
         cart.id = dto.id ?? (0, uuid_1.v4)();
         cart.userId = dto.userId;
-        if (dto.cartItems) {
-            cart.cartItems = this.cartItemMapper.toEntities(dto.cartItems);
-        }
+        cart.cartItems = this.cartItemMapper.toEntities(dto.cartItems);
         return cart;
+    }
+    toDtos(entities) {
+        const cartDtos = [];
+        for (const entity of entities) {
+            const cartDto = this.toDto(entity);
+            cartDtos.push(cartDto);
+        }
+        return cartDtos;
+    }
+    toEntities(dtos) {
+        const carts = [];
+        for (const dto of dtos) {
+            const cart = this.toEntity(dto);
+            carts.push(cart);
+        }
+        return carts;
     }
 };
 exports.CartMapper = CartMapper;
 exports.CartMapper = CartMapper = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [cart_item_mapper_impl_1.CartItemMapper])
+    __param(0, (0, common_1.Inject)(symbol_1.ICartItemMapperToken)),
+    __metadata("design:paramtypes", [Object])
 ], CartMapper);
 //# sourceMappingURL=cart.mapper.impl.js.map

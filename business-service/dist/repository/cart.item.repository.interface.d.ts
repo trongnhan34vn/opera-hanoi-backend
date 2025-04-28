@@ -1,4 +1,4 @@
-import { GenericRepositoryInterface } from './generic.repository.interface';
-import { CartItem } from '../entity/cart.item.entity';
-export interface CartItemRepositoryInterface extends GenericRepositoryInterface<CartItem> {
+import { CartItem } from "src/entity/cart.item.entity";
+import { GenericRepositoryInterface } from "./generic.repository.interface";
+export interface ICartItemRepository extends GenericRepositoryInterface<CartItem> {
 }

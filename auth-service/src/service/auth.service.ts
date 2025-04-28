@@ -1,10 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import {
-  ErrorMessage,
-  Log,
-  LoggerFactory,
-  ResourceException,
-} from 'common-lib';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { KeycloakService } from './keycloak.service';
 import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
 import { UserSignInDto } from '../dto/request/UserSignIn.dto';
@@ -13,6 +7,12 @@ import { CartService } from './cart.service';
 import * as jwt from 'jsonwebtoken';
 import { KeycloakTokenResponse } from '../dto/response/KeycloakTokenResponse.dto';
 import { plainToInstance } from 'class-transformer';
+import { LoggerFactory } from 'common/dist/factory/impl/logger.factory.impl';
+import {
+  ForbiddenException,
+  ResourceException,
+  UnauthorizedException,
+} from 'common';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +29,7 @@ export class AuthService {
    * @param userLogin
    * @return KeycloakToken
    */
-  @Log()
+  // @Log()
   async signIn(userLogin: UserSignInDto): Promise<KeycloakTokenResponse> {
     try {
       return await this.keycloakService.signIn(userLogin);
@@ -60,9 +60,7 @@ export class AuthService {
         }
       });
       if (!isAdmin) {
-        throw new ResourceException(
-          ErrorMessage.FORBIDDEN.getCode,
-          ErrorMessage.FORBIDDEN.getMessage,
+        throw new ForbiddenException(
           `Account [${userLogin.email}] doesn't have permission`,
         );
       }
@@ -70,7 +68,21 @@ export class AuthService {
       tokenResponse.email = decodedToken['email'];
       return tokenResponse;
     } catch (error) {
-      this.logger.error('Error occurred while signing in admin account', error);
+      this.logger.error(
+        `Error occurred while signing in admin account [${userLogin.email}]`,
+        error,
+      );
+
+      const errorResponse = error as ResourceException;
+      const status = errorResponse.getStatus();
+      const isUnauthorized = status === HttpStatus.UNAUTHORIZED;
+      if (isUnauthorized) {
+        throw new UnauthorizedException(
+          'Unauthorized',
+          'Invalid User Credential',
+        );
+      }
+
       throw error;
     }
   }
@@ -79,7 +91,7 @@ export class AuthService {
    * sign up
    * @param userSignUp
    */
-  @Log()
+  // @Log()
   async signUp(userSignUp: UserSignUpDto): Promise<boolean> {
     try {
       // 1. sign up with Keycloak server

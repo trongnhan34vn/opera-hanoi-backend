@@ -43,7 +43,7 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
 const auth_controller_1 = require("./controller/auth.controller");
 const auth_module_1 = require("./module/auth.module");
 const config_1 = require("@nestjs/config");
@@ -54,6 +54,7 @@ const GlobalAuthGuard_1 = require("./config/GlobalAuthGuard");
 const core_1 = require("@nestjs/core");
 const SkipAuthGuard_1 = require("./config/SkipAuthGuard");
 const concert_module_1 = require("./module/concert.module");
+const auth_error_controller_1 = require("./controller/auth.error.controller");
 const envFilePath = '../.env.local';
 let AppModule = class AppModule {
 };
@@ -63,25 +64,29 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             auth_module_1.AuthModule,
             concert_module_1.ConcertModule,
-            common_lib_1.LogModule,
+            common_2.LogModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 envFilePath: path.resolve(__dirname, envFilePath),
             }),
             nest_keycloak_connect_1.KeycloakConnectModule.register(KeycloakConfig_1.KeycloakConfig.getKeycloakConfig()),
-            common_lib_1.MiddlewareModule,
+            common_2.MiddlewareModule,
         ],
         controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
         providers: [
             app_service_1.AppService,
-            common_lib_1.HttpResponseFactory,
+            common_2.HttpResponseFactory,
             {
-                provide: common_lib_1.LoggerFactory,
-                useFactory: () => new common_lib_1.LoggerFactory('default'),
+                provide: common_2.LoggerFactory,
+                useFactory: () => new common_2.LoggerFactory('default'),
             },
             {
                 provide: core_1.APP_GUARD,
                 useClass: GlobalAuthGuard_1.GlobalAuthGuard,
+            },
+            {
+                provide: core_1.APP_FILTER,
+                useClass: auth_error_controller_1.AuthErrorController,
             },
             nest_keycloak_connect_1.AuthGuard,
             nest_keycloak_connect_1.ResourceGuard,

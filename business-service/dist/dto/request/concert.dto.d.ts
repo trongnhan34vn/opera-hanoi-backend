@@ -1,17 +1,17 @@
 import { ShowtimeDto } from './showtime.dto';
-type SeatCategoriesPrice = {
-    seatCategoryName: string;
-    price: number;
-};
 export declare class ConcertDto {
     id: string;
-    art: string;
-    director: string;
+    code: string;
+    artists: string[];
+    directors: string[];
     title: string;
     description: string;
-    categories: string[];
+    genres: string[];
     images: string[];
     showTimes: ShowtimeDto[];
-    seatCategoriesPrice: SeatCategoriesPrice[];
+    prices: PriceDto[];
 }
-export {};
+export type PriceDto = {
+    seatCategoryId: string;
+    price: number;
+};

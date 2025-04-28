@@ -1,24 +1,15 @@
-import { ConcertDto } from 'src/dto/request/concert.dto';
-import { ConcertServiceInterface } from '../concert.service.interface';
 import { Injectable } from '@nestjs/common';
-import { ConcertRepository } from '../../repository/impl/concert.repository.impl';
-import { ConcertMapper } from '../../mapper/impl/concert.mapper.impl';
-import { ErrorMessage, LoggerFactory, ResourceException } from 'common-lib';
-import { Category } from '../../entity/category.entity';
-import { CategoryService } from './category.service.impl';
-import { CategoryMapper } from '../../mapper/impl/category.mapper.impl';
-import { Image } from '../../entity/image.entity';
-import { ShowTime } from '../../entity/show.time.entity';
+import { LoggerFactory } from 'common';
 import * as moment from 'moment-timezone';
 import { Sequelize } from 'sequelize-typescript';
-import { ConcertSeat } from '../../entity/sub/concert.seat.sub.entity';
-import { Seat } from '../../entity/seat.entity';
-import { v4 as uuidV4 } from 'uuid';
+import { ConcertDto } from 'src/dto/request/concert.dto';
+import { Pagination } from '../../dto/request/pagination.dto';
 import { ShowtimeDto } from '../../dto/request/showtime.dto';
 import { Concert } from '../../entity/concert.entity';
-import { Pagination } from '../../dto/request/pagination.dto';
-import { SeatCategory } from '../../entity/seat.category.entity';
-import { SeatCategoryName } from '../../entity/enum/seat.category.enum';
+// import { ConcertSeat } from '../../entity/sub/concert.seat.sub.entity';
+import { ConcertMapper } from '../../mapper/impl/concert.mapper.impl';
+import { ConcertRepository } from '../../repository/impl/concert.repository.impl';
+import { ConcertServiceInterface } from '../concert.service.interface';
 
 @Injectable()
 export class ConcertService implements ConcertServiceInterface {
@@ -28,8 +19,6 @@ export class ConcertService implements ConcertServiceInterface {
   constructor(
     private readonly concertRepository: ConcertRepository,
     private readonly concertMapper: ConcertMapper,
-    private readonly categoryService: CategoryService,
-    private readonly categoryMapper: CategoryMapper,
     private readonly logger: LoggerFactory,
     private readonly sequelize: Sequelize,
   ) {}
@@ -41,113 +30,110 @@ export class ConcertService implements ConcertServiceInterface {
   async create(dto: ConcertDto): Promise<ConcertDto> {
     const transaction = await this.sequelize.transaction();
     try {
-      const concert = this.concertMapper.toEntity(dto);
+      const concert = await this.concertMapper.toEntity(dto);
       this.logger.log('Start create operation...');
       // CREATE OPERATION
-      // set categories
-      const categoryIds = dto.categories;
-      const categories: Category[] = [];
-      for (const categoryId of categoryIds) {
-        const categoryDto = await this.categoryService.findById(categoryId);
-        const category = this.categoryMapper.toEntity(categoryDto);
-        categories.push(category);
-      }
+      // // set genres
+      // const genreIds = dto.genres;
+      // const genres: Genre[] = [];
+      // for (const genreId of genreIds) {
+      //   const genreDto = await this.genreService.findById(genreId);
+      //   const genre = this.genreMapper.toEntity(genreDto);
+      //   genres.push(genre);
+      // }
 
-      concert.categories = categories;
-      this.logger.log('Set categories of concert');
-      // set categories
+      // concert.genres = genres;
+      // this.logger.log('Set genre of concert');
+      // // set genres
 
-      // set images
-      const imageUrls = dto.images;
-      const images: Image[] = [];
-      for (const stringUrl of imageUrls) {
-        const image = new Image();
-        image.id = uuidV4();
-        image.concertId = concert.id;
-        image.url = stringUrl;
-        image.concert = concert;
-        images.push(image);
-      }
-      concert.images = images;
-      this.logger.log('Set images of concert');
-      // set images
+      // // set images
+      // const imageUrls = dto.images;
+      // const images: Image[] = [];
+      // for (const stringUrl of imageUrls) {
+      //   const image = new Image();
+      //   image.id = uuidV4();
+      //   image.concertId = concert.id;
+      //   image.url = stringUrl;
+      //   image.concert = concert;
+      //   images.push(image);
+      // }
+      // concert.images = images;
+      // this.logger.log('Set images of concert');
+      // // set images
 
-      // set showtime
-      // throw exception if showtime in the past
-      const isShowTimesInPast = this.isShowTimesInPast(dto.showTimes);
-      if (isShowTimesInPast) {
-        throw new ResourceException(
-          ErrorMessage.BAD_REQUEST.getCode,
-          ErrorMessage.BAD_REQUEST.getMessage,
-          'Show times is invalid. Show times cannot be in the past',
-        );
-      }
+      // // set showtime
+      // // throw exception if showtime in the past
+      // const isShowTimesInPast = this.isShowTimesInPast(dto.showTimes);
+      // if (isShowTimesInPast) {
+      //   throw new BadRequestException(
+      //     'Show times is invalid. Show times cannot be in the past',
+      //   );
+      // }
 
-      const showTimes: ShowTime[] = [];
-      const stringShowTimes = dto.showTimes;
-      for (const stringShowTime of stringShowTimes) {
-        const showTime = new ShowTime();
-        showTime.id = uuidV4();
-        showTime.concertId = concert.id;
-        showTime.startTime = moment(stringShowTime.startTime, this.DATE_PATTERN)
-          .tz(this.TIMEZONE)
-          .toDate();
-        showTime.endTime = moment(stringShowTime.endTime, this.DATE_PATTERN)
-          .tz(this.TIMEZONE)
-          .toDate();
-        showTimes.push(showTime);
-      }
-      const isConcertDuplicated = await this.isShowTimesOfConcertDuplicated(
-        dto.showTimes,
+      // const showTimes: ShowTime[] = [];
+      // const stringShowTimes = dto.showTimes;
+      // for (const stringShowTime of stringShowTimes) {
+      //   const showTime = new ShowTime();
+      //   showTime.id = uuidV4();
+      //   showTime.concertId = concert.id;
+      //   showTime.startTime = moment(stringShowTime.startTime, this.DATE_PATTERN)
+      //     .tz(this.TIMEZONE)
+      //     .toDate();
+      //   showTime.endTime = moment(stringShowTime.endTime, this.DATE_PATTERN)
+      //     .tz(this.TIMEZONE)
+      //     .toDate();
+      //   showTimes.push(showTime);
+      // }
+      // const isConcertDuplicated = await this.isShowTimesOfConcertDuplicated(
+      //   dto.showTimes,
+      // );
+      // // throw exception if show times are conflict
+      // if (isConcertDuplicated) {
+      //   throw new ConflictException('Time slot conflict');
+      // }
+
+      // concert.showTimes = showTimes;
+      // this.logger.log('Set show times of concert');
+      // // set showtime
+
+      const createdConcert = await this.concertRepository.create(
+        concert,
+        transaction,
       );
-      // throw exception if show times are conflict
-      if (isConcertDuplicated) {
-        throw new ResourceException(
-          ErrorMessage.CONFLICT.getCode,
-          ErrorMessage.CONFLICT.getMessage,
-          'Time slot conflict',
-        );
-      }
 
-      concert.showTimes = showTimes;
-      this.logger.log('Set show times of concert');
-      // set showtime
+      // // create concert seat
+      // const seats = await Seat.findAll({ include: [SeatCategory] }); // find all seat
+      // const concertSeats: ConcertSeat[] = [];
+      // for (const seat of seats) {
+      //   if (!seat.seatCategory) {
+      //     throw new InternalServerException(
+      //       'Error occurred. Seat category of seat is null',
+      //     );
+      //   }
+      //   const concertSeat = new ConcertSeat();
+      //   concertSeat.id = uuidV4();
+      //   concertSeat.concertId = createdConcert.id;
+      //   concertSeat.seatId = seat.id;
+      //   concertSeats.push(concertSeat.get());
+      // }
 
-      const createdConcert = await this.concertRepository.create(concert);
+      // await ConcertSeat.bulkCreate(concertSeats, { transaction });
+      // // create concert seat
 
-      // create concert seat
-      const seats = await Seat.findAll({ include: [SeatCategory] });
-      const concertSeats: ConcertSeat[] = [];
-      for (const seat of seats) {
-        if (!seat.seatCategory) {
-          throw new ResourceException(
-            ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-            ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-            'Error occurred when query seat category of seat',
-          );
-        }
-        const seatCategoryPrice = dto.seatCategoriesPrice.find(
-          (scp) => scp.seatCategoryName === seat.seatCategory.name.toString(),
-        );
+      // // identify price
+      // const priceDtos: PriceDto[] = dto.prices;
+      // const prices: Price[] = [];
+      // for (const priceDto of priceDtos) {
+      //   const price = new Price();
+      //   price.id = uuidV4();
+      //   price.concertId = createdConcert.id;
+      //   price.seatCategoryId = priceDto.seatCategoryId;
+      //   price.price = priceDto.priceValue;
+      //   prices.push(price.get());
+      // }
 
-        if (!seatCategoryPrice) {
-          throw new ResourceException(
-            ErrorMessage.NOT_FOUND.getCode,
-            ErrorMessage.NOT_FOUND.getMessage,
-            'Error occurred when set price for seat of concert',
-          );
-        }
-
-        const concertSeat = new ConcertSeat();
-        concertSeat.id = uuidV4();
-        concertSeat.concertId = concert.id;
-        concertSeat.seatId = seat.id;
-        concertSeat.price = seatCategoryPrice.price;
-        concertSeats.push(concertSeat.get());
-      }
-      await ConcertSeat.bulkCreate(concertSeats, { transaction });
-      this.logger.log('Set the number of seats for the concert');
-      // create concert seat
+      // await Price.bulkCreate(prices, { transaction });
+      // // identify price
 
       await transaction.commit();
       this.logger.log(`Concert created id [${createdConcert.id}]`);
@@ -215,14 +201,8 @@ export class ConcertService implements ConcertServiceInterface {
     try {
       const result =
         await this.concertRepository.findByShowTimeWithInTwoWeeks(page);
-      const concerts = result.concerts;
-      const dtoConcerts: ConcertDto[] = [];
-      for (const concert of concerts) {
-        const concertDto = this.concertMapper.toDto(concert);
-        concertDto.showTimes = (concert['show_times'] as ShowtimeDto[]) ?? [];
-        dtoConcerts.push(concertDto);
-      }
-      return { ...result, dtoConcerts };
+
+      return result;
     } catch (error) {
       this.logger.error(error);
       throw error;
@@ -230,12 +210,12 @@ export class ConcertService implements ConcertServiceInterface {
   }
 
   /**
-   * Find concert by specified category
-   * @param categoryId
+   * Find concert by specified genre
+   * @param genreId
    */
-  async findByCategoryId(categoryId: string) {
+  async findByGenreId(genreId: string) {
     try {
-      const result = await this.concertRepository.findByCategoryId(categoryId);
+      const result = await this.concertRepository.findByGenreId(genreId);
       const concerts = result.rows;
       const concertDtos = this.concertMapper.toDtos(concerts);
       this.logger.log('Concert founded');
@@ -264,6 +244,10 @@ export class ConcertService implements ConcertServiceInterface {
       this.logger.error(error);
       throw error;
     }
+  }
+
+  async findAllConcertPagination(page: Pagination) {
+    return await this.concertRepository.findAllConcertPagination(page);
   }
 
   save(dto: ConcertDto): Promise<ConcertDto> {

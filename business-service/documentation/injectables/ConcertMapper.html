@@ -1,0 +1,1144 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>business-service documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">business-service documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >ConcertMapper</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/mapper/impl/concert.mapper.impl.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#DATE_PATTERN" >DATE_PATTERN</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#TIMEZONE" >TIMEZONE</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isShowTimesInPast" >isShowTimesInPast</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#isShowTimesOfConcertDuplicated" >isShowTimesOfConcertDuplicated</a>
+                            </li>
+                            <li>
+                                <a href="#toDto" >toDto</a>
+                            </li>
+                            <li>
+                                <a href="#toDtos" >toDtos</a>
+                            </li>
+                            <li>
+                                <a href="#toEntities" >toEntities</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#toEntity" >toEntity</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(sequelize: Sequelize, logger: LoggerFactory, genreService: <a href="../injectables/GenreService.html" target="_self">GenreService</a>, genreMapper: <a href="../injectables/GenreMapper.html" target="_self">GenreMapper</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:29</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>sequelize</td>
+                                                  
+                                                        <td>
+                                                                    <code>Sequelize</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>logger</td>
+                                                  
+                                                        <td>
+                                                                    <code>LoggerFactory</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>genreService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GenreService.html" target="_self" >GenreService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>genreMapper</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GenreMapper.html" target="_self" >GenreMapper</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isShowTimesInPast"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isShowTimesInPast</b></span>
+                        <a href="#isShowTimesInPast"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isShowTimesInPast(showTimes: <a href="../classes/ShowtimeDto.html" target="_self">ShowtimeDto[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="245"
+                                    class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:245</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>To check if show times are in the past</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>showTimes</td>
+                                            <td>
+                                                            <code><a href="../classes/ShowtimeDto.html" target="_self" >ShowtimeDto[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isShowTimesOfConcertDuplicated"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>isShowTimesOfConcertDuplicated</b></span>
+                        <a href="#isShowTimesOfConcertDuplicated"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isShowTimesOfConcertDuplicated(showTimes: <a href="../classes/ShowtimeDto.html" target="_self">ShowtimeDto[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="264"
+                                    class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:264</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>To check if a showtime has already been scheduled for another concert</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>showTimes</td>
+                                            <td>
+                                                            <code><a href="../classes/ShowtimeDto.html" target="_self" >ShowtimeDto[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toDto"></a>
+                    <span class="name">
+                        <span ><b>toDto</b></span>
+                        <a href="#toDto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toDto(entity: <a href="../classes/Concert.html" target="_self">Concert</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entity</td>
+                                            <td>
+                                                            <code><a href="../classes/Concert.html" target="_self" >Concert</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/ConcertDto.html" target="_self" >ConcertDto</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toDtos"></a>
+                    <span class="name">
+                        <span ><b>toDtos</b></span>
+                        <a href="#toDtos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toDtos(entities: <a href="../classes/Concert.html" target="_self">Concert[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="232"
+                                    class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:232</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entities</td>
+                                            <td>
+                                                            <code><a href="../classes/Concert.html" target="_self" >Concert[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>ConcertDto[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toEntities"></a>
+                    <span class="name">
+                        <span ><b>toEntities</b></span>
+                        <a href="#toEntities"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toEntities(dtos: ConcertDto[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dtos</td>
+                                            <td>
+                                                        <code>ConcertDto[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>[] | Promise</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toEntity"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>toEntity</b></span>
+                        <a href="#toEntity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toEntity(dto: <a href="../classes/ConcertDto.html" target="_self">ConcertDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/ConcertDto.html" target="_self" >ConcertDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Concert.html" target="_self" >Promise&lt;Concert&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DATE_PATTERN"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>DATE_PATTERN</b></span>
+                        <a href="#DATE_PATTERN"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;YYYY/MM/DD HH:mm:ss&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TIMEZONE"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>TIMEZONE</b></span>
+                        <a href="#TIMEZONE"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Asia/Ho_Chi_Minh&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/mapper/impl/concert.mapper.impl.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
+import {
+  BadRequestException,
+  CodeGenerator,
+  ConflictException,
+  LoggerFactory,
+  NotFoundException,
+} from &#x27;common&#x27;;
+import * as moment from &#x27;moment-timezone&#x27;;
+import { ConcertDto, PriceDto } from &#x27;src/dto/request/concert.dto&#x27;;
+import { Artist } from &#x27;src/entity/artist.entity&#x27;;
+import { Concert } from &#x27;src/entity/concert.entity&#x27;;
+import { Director } from &#x27;src/entity/director.entity&#x27;;
+import { Genre } from &#x27;src/entity/genre.entity&#x27;;
+import { Image } from &#x27;src/entity/image.entity&#x27;;
+import { Price } from &#x27;src/entity/price.enity&#x27;;
+import { SeatCategory } from &#x27;src/entity/seat.category&#x27;;
+import { Seat } from &#x27;src/entity/seat.entity&#x27;;
+import { ShowTime } from &#x27;src/entity/show.time.entity&#x27;;
+import { GenreService } from &#x27;src/service/impl/genre.service.impl&#x27;;
+import { v4 as uuidV4 } from &#x27;uuid&#x27;;
+import { ShowtimeDto } from &#x27;../../dto/request/showtime.dto&#x27;;
+import { CodeEntitiesEnum } from &#x27;../../entity/enum/code.entities.enum&#x27;;
+import { ConcertMapperInterface } from &#x27;../concert.mapper.interface&#x27;;
+import { GenreMapper } from &#x27;./genre.mapper.impl&#x27;;
+import { Sequelize } from &#x27;sequelize-typescript&#x27;;
+
+@Injectable()
+export class ConcertMapper implements ConcertMapperInterface {
+  constructor(
+    private readonly sequelize: Sequelize,
+    private readonly logger: LoggerFactory,
+    private readonly genreService: GenreService,
+    private readonly genreMapper: GenreMapper,
+  ) {}
+  toEntities(dtos: ConcertDto[]): Concert[] | Promise&lt;Concert[]&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+  private DATE_PATTERN &#x3D; &#x27;YYYY/MM/DD HH:mm:ss&#x27;;
+  private TIMEZONE &#x3D; &#x27;Asia/Ho_Chi_Minh&#x27;;
+
+  toDto(entity: Concert): ConcertDto {
+    const concertDto &#x3D; new ConcertDto();
+    concertDto.id &#x3D; entity.id;
+    concertDto.title &#x3D; entity.title;
+    concertDto.description &#x3D; entity.description;
+    concertDto.code &#x3D; entity.code;
+    if (entity.images) {
+      const dtoImages: string[] &#x3D; [];
+      for (const image of entity.images) {
+        const imageDto &#x3D; image.url;
+        dtoImages.push(imageDto);
+      }
+      concertDto.images &#x3D; dtoImages;
+    }
+
+    if (entity.artists) {
+      const dtoArtists: string[] &#x3D; [];
+      for (const artist of entity.artists) {
+        const artistDto &#x3D; artist.name;
+        dtoArtists.push(artistDto);
+      }
+      concertDto.artists &#x3D; dtoArtists;
+    }
+
+    if (entity.directors) {
+      const dtoDirectors: string[] &#x3D; [];
+      for (const director of entity.directors) {
+        const directorDto &#x3D; director.name;
+        dtoDirectors.push(directorDto);
+      }
+      concertDto.directors &#x3D; dtoDirectors;
+    }
+
+    if (entity.showTimes) {
+      const dtoShowTimes: ShowtimeDto[] &#x3D; [];
+      const showTimes &#x3D; entity.showTimes;
+      for (const showTime of showTimes) {
+        const startTime &#x3D; showTime.startTime;
+        const endTime &#x3D; showTime.endTime;
+        const showTimeDto &#x3D; new ShowtimeDto();
+        showTimeDto.startTime &#x3D; moment(startTime).format(&#x27;YYYY/MM/DD HH:mm:ss&#x27;);
+        showTimeDto.endTime &#x3D; moment(endTime).format(&#x27;YYYY/MM/DD HH:mm:ss&#x27;);
+        dtoShowTimes.push(showTimeDto);
+      }
+      concertDto.showTimes &#x3D; dtoShowTimes;
+      
+    }
+    return concertDto;
+  }
+
+  async toEntity(dto: ConcertDto): Promise&lt;Concert&gt; {
+    const concert &#x3D; new Concert();
+    concert.id &#x3D; dto.id ? dto.id : uuidV4();
+    concert.code &#x3D; CodeGenerator.generateCode(
+      CodeEntitiesEnum.CONCERT,
+      concert.id,
+    );
+    concert.title &#x3D; dto.title;
+    concert.description &#x3D; dto.description;
+    // genres //
+    this.logger.log(&#x27;Concert mapper field [genres]&#x27;);
+    const dtoGenres &#x3D; dto.genres;
+    const genres: Genre[] &#x3D; [];
+    for (const dtoGenre of dtoGenres) {
+      const foundGenreDto &#x3D; await this.genreService.findById(dtoGenre);
+      genres.push(this.genreMapper.toEntity(foundGenreDto));
+    }
+
+    concert.genres &#x3D; genres;
+    // genres //
+
+    // images //
+    this.logger.log(&#x27;Concert mapper field [images]&#x27;);
+    const dtoImages &#x3D; dto.images;
+    const images: Image[] &#x3D; [];
+    for (const dtoImage of dtoImages) {
+      const image &#x3D; new Image();
+      image.id &#x3D; uuidV4();
+      image.url &#x3D; dtoImage;
+      image.concertId &#x3D; concert.id;
+      images.push(image);
+    }
+    concert.images &#x3D; images;
+    // images //
+
+    // show times //
+    this.logger.log(&#x27;Concert mapper field [showTimes]&#x27;);
+    // throw exception if showtime in the past
+    const isShowTimesInPast &#x3D; this.isShowTimesInPast(dto.showTimes);
+    if (isShowTimesInPast) {
+      throw new BadRequestException(
+        &#x27;Show times is invalid. Show times cannot be in the past&#x27;,
+      );
+    }
+
+    const showTimes: ShowTime[] &#x3D; [];
+    const stringShowTimes &#x3D; dto.showTimes;
+    for (const stringShowTime of stringShowTimes) {
+      const showTime &#x3D; new ShowTime();
+      showTime.id &#x3D; uuidV4();
+      showTime.concertId &#x3D; concert.id;
+      showTime.startTime &#x3D; moment(stringShowTime.startTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      showTime.endTime &#x3D; moment(stringShowTime.endTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      showTimes.push(showTime);
+    }
+    const isConcertDuplicated &#x3D; await this.isShowTimesOfConcertDuplicated(
+      dto.showTimes,
+    );
+    // throw exception if show times are conflict
+    if (isConcertDuplicated) {
+      throw new ConflictException(&#x27;Time slot conflict&#x27;);
+    }
+
+    concert.showTimes &#x3D; showTimes;
+    // show times //
+
+    // artist //
+    this.logger.log(&#x27;Concert mapper field [artists]&#x27;);
+    const dtoArtists &#x3D; dto.artists;
+    const artists: Artist[] &#x3D; [];
+    for (const dtoArtist of dtoArtists) {
+      const artist &#x3D; new Artist();
+      artist.id &#x3D; uuidV4();
+      artist.name &#x3D; dtoArtist;
+      artist.concertId &#x3D; concert.id;
+
+      artists.push(artist);
+    }
+    concert.artists &#x3D; artists;
+    // artist //
+
+    // director //
+    this.logger.log(&#x27;Concert mapper field [directors]&#x27;);
+    const dtoDirectors &#x3D; dto.artists;
+    const directors: Director[] &#x3D; [];
+    for (const dtoDirector of dtoDirectors) {
+      const director &#x3D; new Director();
+      director.id &#x3D; uuidV4();
+      director.name &#x3D; dtoDirector;
+      director.concertId &#x3D; concert.id;
+
+      directors.push(director);
+    }
+    concert.directors &#x3D; directors;
+    // director //
+
+    // concert seat //
+    this.logger.log(&#x27;Concert mapper field [concertSeats]&#x27;);
+    const seats &#x3D; await Seat.findAll({ include: [SeatCategory] }); // find all seat
+    if (!seats || (seats &amp;&amp; seats.length &#x3D;&#x3D;&#x3D; 0)) {
+      throw new NotFoundException(&#x27;Seats not found&#x27;);
+    }
+    // const concertSeats: ConcertSeat[] &#x3D; [];
+    // for (const seat of seats) {
+    //   if (!seat.seatCategory) {
+    //     throw new InternalServerException(
+    //       &#x27;Error occurred. Seat category of seat is null&#x27;,
+    //     );
+    //   }
+    //   const concertSeat &#x3D; new ConcertSeat();
+    //   concertSeat.id &#x3D; uuidV4();
+    //   concertSeat.concertId &#x3D; concert.id;
+    //   concertSeat.seatId &#x3D; seat.id;
+    //   concertSeats.push(concertSeat.get());
+    // }
+    concert.seats &#x3D; seats;
+    // concert seat //
+
+    // price
+    this.logger.log(&#x27;Concert mapper field [prices]&#x27;);
+    const priceDtos: PriceDto[] &#x3D; dto.prices;
+    const prices: Price[] &#x3D; [];
+    for (const priceDto of priceDtos) {
+      const price &#x3D; new Price();
+      price.id &#x3D; uuidV4();
+      price.concertId &#x3D; concert.id;
+      price.seatCategoryId &#x3D; priceDto.seatCategoryId;
+      price.price &#x3D; priceDto.price;
+      prices.push(price);
+    }
+    concert.prices &#x3D; prices;
+    // price
+
+    return concert;
+  }
+
+  toDtos(entities: Concert[]): ConcertDto[] {
+    const dtoConcerts: ConcertDto[] &#x3D; [];
+    for (const concert of entities) {
+      const concertDto &#x3D; this.toDto(concert);
+      dtoConcerts.push(concertDto);
+    }
+    return dtoConcerts;
+  }
+
+  /**
+   * To check if show times are in the past
+   * @param showTimes
+   */
+  private isShowTimesInPast(showTimes: ShowtimeDto[]) {
+    for (const showTime of showTimes) {
+      const startTime &#x3D; moment(showTime.startTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      const momentDate &#x3D; moment(new Date(Date.now()), this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      if (startTime &lt;&#x3D; momentDate) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * To check if a showtime has already been scheduled for another concert
+   * @param showTimes
+   */
+  private async isShowTimesOfConcertDuplicated(
+    showTimes: ShowtimeDto[],
+  ): Promise&lt;boolean&gt; {
+    for (const showTime of showTimes) {
+      const startTime &#x3D; moment(showTime.startTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      const endTime &#x3D; moment(showTime.endTime, this.DATE_PATTERN)
+        .tz(this.TIMEZONE)
+        .toDate();
+      const concerts &#x3D; await this.sequelize.query(
+        &#x60;SELECT *
+           FROM checkConcertTimeDuplication(?, ?)&#x60;,
+        {
+          replacements: [startTime, endTime],
+          model: Concert,
+          mapToModel: true,
+        },
+      );
+      if (concerts.length &gt; 0) return true;
+    }
+    return false;
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ConcertMapper.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartService = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
 const ServiceConstant_1 = require("../constants/ServiceConstant");
+const common_2 = require("common");
 let CartService = class CartService {
     constructor(httpService, logger) {
         this.httpService = httpService;
@@ -27,9 +27,13 @@ let CartService = class CartService {
             const headers = {
                 apiKey: ServiceConstant_1.API_KEY,
             };
-            const response = await this.httpService.call(common_lib_1.HttpMethod.POST, ServiceConstant_1.CONCERT_SERVICE_BASEURL, ServiceConstant_1.CONCERT_SERVICE_PATH + ServiceConstant_1.CONCERT_SERVICE_CREATE_CART_ENDPOINT, headers, cart);
+            const endpoint = {
+                baseURL: ServiceConstant_1.BUSINESS_SERVICE_BASEURL,
+                path: ServiceConstant_1.BUSINESS_SERVICE_PATH + ServiceConstant_1.BUSINESS_SERVICE_CREATE_CART_ENDPOINT,
+            };
+            const response = await this.httpService.call(endpoint, common_2.HttpMethod.POST, cart, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'Error occurred when creating cart for user');
+                throw new common_1.InternalServerErrorException('Error occurred when creating cart for user');
             }
             this.logger.log('Cart created');
         }
@@ -42,7 +46,7 @@ let CartService = class CartService {
 exports.CartService = CartService;
 exports.CartService = CartService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [common_lib_1.HttpServiceFactory,
-        common_lib_1.LoggerFactory])
+    __metadata("design:paramtypes", [common_2.HttpServiceFactory,
+        common_2.LoggerFactory])
 ], CartService);
 //# sourceMappingURL=cart.service.js.map

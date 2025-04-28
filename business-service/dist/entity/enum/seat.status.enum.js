@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SeatStatusName = void 0;
-var SeatStatusName;
-(function (SeatStatusName) {
-    SeatStatusName["AVAILABLE"] = "AVAILABLE";
-    SeatStatusName["RESERVED"] = "RESERVED";
-    SeatStatusName["CANCELED"] = "CANCELED";
-    SeatStatusName["OUT_OF_SERVICES"] = "OUT_OF_SERVICES";
-})(SeatStatusName || (exports.SeatStatusName = SeatStatusName = {}));
+exports.SeatStatusEnum = void 0;
+var SeatStatusEnum;
+(function (SeatStatusEnum) {
+    SeatStatusEnum["AVAILABLE"] = "AVAILABLE";
+    SeatStatusEnum["RESERVED"] = "RESERVED";
+    SeatStatusEnum["CANCELED"] = "CANCELED";
+    SeatStatusEnum["OUT_OF_SERVICES"] = "OUT_OF_SERVICES";
+})(SeatStatusEnum || (exports.SeatStatusEnum = SeatStatusEnum = {}));
 //# sourceMappingURL=seat.status.enum.js.map

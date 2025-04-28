@@ -4,12 +4,12 @@ import {
   HttpResponseFactory,
   LogAspectInterceptor,
   LoggerFactory,
-} from 'common-lib';
-import { AuthErrorController } from './controller/auth.error.controller';
+} from 'common';
 import * as dotenv from 'dotenv';
 import * as path from 'node:path';
 import * as process from 'node:process';
 import { ValidationPipe } from '@nestjs/common';
+import { ExceptionController } from './controller/exception.controller';
 
 const envFilePath = '../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
@@ -24,7 +24,10 @@ async function bootstrap() {
   logger.log('App successfully configured Logger');
 
   // config controller exception
-  app.useGlobalFilters(new AuthErrorController(app.get(HttpResponseFactory)));
+  app.useGlobalFilters(
+    new ExceptionController(app.get(HttpResponseFactory)),
+    // new UnhandledExceptionFilter(app.get(HttpResponseFactory)),
+  );
   logger.log('App successfully configured Filters');
 
   // config interceptors

@@ -8,10 +8,10 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Sao chép file `.tgz` của thư viện common
-COPY common-lib-0.0.1.tgz ./
+COPY common-0.0.1.tgz ./
 
 # Cài đặt thư viện common từ file `.tgz`
-RUN npm install ./common-lib-0.0.1.tgz
+RUN npm install ./common-0.0.1.tgz
 
 # Cài đặt dependencies
 RUN npm install

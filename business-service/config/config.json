@@ -2,12 +2,12 @@
   "development": {
     "username": "postgres",
     "password": "Nhantic1998@",
-    "database": "concert_service_db",
+    "database": "business_service_db",
     "host": "127.0.0.1",
     "port": 5435,
     "dialect": "postgres",
     "define": {
-      "schema": "concert_service_schema"
+      "schema": "business_service_schema"
     }
   },
   "test": {

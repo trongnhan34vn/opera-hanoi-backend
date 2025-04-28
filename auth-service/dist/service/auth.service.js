@@ -44,15 +44,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
 const keycloak_service_1 = require("./keycloak.service");
-const UserSignUp_dto_1 = require("../dto/request/UserSignUp.dto");
-const UserSignIn_dto_1 = require("../dto/request/UserSignIn.dto");
 const account_service_1 = require("./account.service");
 const cart_service_1 = require("./cart.service");
 const jwt = __importStar(require("jsonwebtoken"));
 const KeycloakTokenResponse_dto_1 = require("../dto/response/KeycloakTokenResponse.dto");
 const class_transformer_1 = require("class-transformer");
+const logger_factory_impl_1 = require("common/dist/factory/impl/logger.factory.impl");
+const common_2 = require("common");
 let AuthService = class AuthService {
     constructor(keycloakService, logger, accountService, cartService) {
         this.keycloakService = keycloakService;
@@ -77,8 +76,9 @@ let AuthService = class AuthService {
             });
             const accessToken = tokenResponse.accessToken;
             const decodedToken = jwt.decode(accessToken);
-            const realmAccess = decodedToken['realm_access'];
-            const roles = realmAccess['roles'];
+            const resourceAccess = decodedToken['resource_access'];
+            const app = resourceAccess['hanoi-opera-app'];
+            const roles = app['roles'];
             let isAdmin = false;
             roles.forEach((role) => {
                 if (role.includes('ADMIN')) {
@@ -86,20 +86,29 @@ let AuthService = class AuthService {
                 }
             });
             if (!isAdmin) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.UNAUTHORIZED.getCode, common_lib_1.ErrorMessage.UNAUTHORIZED.getMessage, 'Account is unauthorized');
+                throw new common_2.ForbiddenException(`Account [${userLogin.email}] doesn't have permission`);
             }
             tokenResponse.email = decodedToken['email'];
             return tokenResponse;
         }
         catch (error) {
-            this.logger.error('Error occurred while signing in admin account', error);
+            this.logger.error(`Error occurred while signing in admin account [${userLogin.email}]`, error);
+            const errorResponse = error;
+            const status = errorResponse.getStatus();
+            const isUnauthorized = status === common_1.HttpStatus.UNAUTHORIZED;
+            if (isUnauthorized) {
+                throw new common_2.UnauthorizedException('Unauthorized', 'Invalid User Credential');
+            }
             throw error;
         }
     }
     async signUp(userSignUp) {
         try {
-            await this.keycloakService.signUp(userSignUp);
-            const userId = await this.accountService.save(userSignUp);
+            const createdUser = await this.keycloakService.signUp(userSignUp);
+            const userId = await this.accountService.save({
+                ...userSignUp,
+                keycloakId: createdUser.id,
+            });
             await this.cartService.createCart(userId);
             return true;
         }
@@ -111,22 +120,10 @@ let AuthService = class AuthService {
     }
 };
 exports.AuthService = AuthService;
-__decorate([
-    (0, common_lib_1.Log)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [UserSignIn_dto_1.UserSignInDto]),
-    __metadata("design:returntype", Promise)
-], AuthService.prototype, "signIn", null);
-__decorate([
-    (0, common_lib_1.Log)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [UserSignUp_dto_1.UserSignUpDto]),
-    __metadata("design:returntype", Promise)
-], AuthService.prototype, "signUp", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [keycloak_service_1.KeycloakService,
-        common_lib_1.LoggerFactory,
+        logger_factory_impl_1.LoggerFactory,
         account_service_1.AccountService,
         cart_service_1.CartService])
 ], AuthService);

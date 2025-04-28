@@ -1,7 +1,6 @@
 export declare class CartItemDto {
     id: string;
     cartId: string;
-    seatId: string;
-    concertId: string;
+    concertSeatId: string;
     price: number;
 }

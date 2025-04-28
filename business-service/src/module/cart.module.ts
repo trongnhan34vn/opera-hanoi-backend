@@ -1,41 +1,58 @@
 import { Module } from '@nestjs/common';
-import {
-  HttpResponseFactory,
-  HttpServiceModule,
-  LoggerFactory,
-  LogModule,
-} from 'common-lib';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Cart } from '../entity/cart.entity';
-import { CartItem } from '../entity/cart.item.entity';
-import { CartService } from '../service/impl/cart.service.impl';
-import { CartItemService } from '../service/impl/cart.item.service.impl';
-import { CartRepository } from '../repository/impl/cart.repository.impl';
-import { CartItemRepository } from '../repository/impl/cart.item.repository.impl';
-import { CartMapper } from '../mapper/impl/cart.mapper.impl';
-import { CartItemMapper } from '../mapper/impl/cart.item.mapper.impl';
-import { CartController } from '../controller/cart.controller';
+import { HttpResponseFactory, LoggerFactory } from 'common';
+import {
+  ICartItemMapperToken,
+  ICartItemRepositoryToken,
+  ICartItemServiceToken,
+  ICartMapperToken,
+  ICartRepositoryToken,
+  ICartServiceToken,
+} from 'src/constants/symbol';
+import { CartController } from 'src/controller/cart.controller';
+import { Cart } from 'src/entity/cart.entity';
+import { CartItem } from 'src/entity/cart.item.entity';
+import { CartItemMapper } from 'src/mapper/impl/cart.item.mapper.impl';
+import { CartMapper } from 'src/mapper/impl/cart.mapper.impl';
+import { CartItemRepository } from 'src/repository/impl/cart.item.repository.impl';
+import { CartRepository } from 'src/repository/impl/cart.repository.impl';
+import { CartItemService } from 'src/service/impl/cart.item.service.impl';
+import { CartService } from 'src/service/impl/cart.service.impl';
 
 @Module({
-  imports: [
-    LogModule,
-    HttpServiceModule,
-    SequelizeModule.forFeature([Cart, CartItem]),
-  ],
-  controllers: [CartController],
+  imports: [SequelizeModule.forFeature([Cart, CartItem])],
   providers: [
-    CartService,
-    CartItemService,
-    CartRepository,
-    CartMapper,
-    CartItemMapper,
-    CartItemRepository,
-    HttpResponseFactory,
+    {
+      provide: ICartRepositoryToken,
+      useClass: CartRepository,
+    },
+    {
+      provide: ICartServiceToken,
+      useClass: CartService,
+    },
+    {
+      provide: ICartMapperToken,
+      useClass: CartMapper,
+    },
+    {
+      provide: ICartItemRepositoryToken,
+      useClass: CartItemRepository,
+    },
+    {
+      provide: ICartItemServiceToken,
+      useClass: CartItemService,
+    },
+    {
+      provide: ICartItemMapperToken,
+      useClass: CartItemMapper,
+    },
     {
       provide: LoggerFactory,
       useFactory: () => new LoggerFactory('cart-service'), // Cung cấp category và level mặc định
     },
+    HttpResponseFactory,
   ],
-  exports: [CartService],
+  controllers: [CartController],
+  exports: [ICartItemServiceToken, ICartServiceToken],
 })
 export class CartModule {}

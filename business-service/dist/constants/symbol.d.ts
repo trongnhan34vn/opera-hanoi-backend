@@ -1,0 +1,10 @@
+export declare const ISeatCategoryRepositoryToken: unique symbol;
+export declare const ISeatCateogoryServiceToken: unique symbol;
+export declare const ISeatCategoryMapperToken: unique symbol;
+export declare const ICartRepositoryToken: unique symbol;
+export declare const ICartServiceToken: unique symbol;
+export declare const ICartMapperToken: unique symbol;
+export declare const ICartItemRepositoryToken: unique symbol;
+export declare const ICartItemServiceToken: unique symbol;
+export declare const ICartItemMapperToken: unique symbol;
+export declare const IS3ServiceToken: unique symbol;

@@ -12,25 +12,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Seat = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const concert_entity_1 = require("./concert.entity");
+const seat_category_1 = require("./seat.category");
 const concert_seat_sub_entity_1 = require("./sub/concert.seat.sub.entity");
-const seat_category_entity_1 = require("./seat.category.entity");
+const zone_entity_1 = require("./zone.entity");
 let Seat = class Seat extends sequelize_typescript_1.Model {
 };
 exports.Seat = Seat;
 __decorate([
     sequelize_typescript_1.PrimaryKey,
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
-        defaultValue: sequelize_typescript_1.DataType.UUIDV4,
+        type: sequelize_typescript_1.DataType.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Seat.prototype, "id", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
     }),
     __metadata("design:type", String)
-], Seat.prototype, "code", void 0);
+], Seat.prototype, "label", void 0);
+__decorate([
+    (0, sequelize_typescript_1.BelongsTo)(() => seat_category_1.SeatCategory),
+    __metadata("design:type", seat_category_1.SeatCategory)
+], Seat.prototype, "seatCategory", void 0);
+__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => seat_category_1.SeatCategory),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.UUID,
+    }),
+    __metadata("design:type", String)
+], Seat.prototype, "seatCategoryId", void 0);
 __decorate([
     sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
@@ -40,21 +53,20 @@ __decorate([
     __metadata("design:type", Date)
 ], Seat.prototype, "updatedAt", void 0);
 __decorate([
+    (0, sequelize_typescript_1.BelongsTo)(() => zone_entity_1.Zone),
+    __metadata("design:type", zone_entity_1.Zone)
+], Seat.prototype, "zone", void 0);
+__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => zone_entity_1.Zone),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.UUID,
+    }),
+    __metadata("design:type", String)
+], Seat.prototype, "zoneId", void 0);
+__decorate([
     (0, sequelize_typescript_1.BelongsToMany)(() => concert_entity_1.Concert, () => concert_seat_sub_entity_1.ConcertSeat),
     __metadata("design:type", Array)
 ], Seat.prototype, "concerts", void 0);
-__decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => seat_category_entity_1.SeatCategory),
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
-        allowNull: false,
-    }),
-    __metadata("design:type", String)
-], Seat.prototype, "seatCategoryId", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => seat_category_entity_1.SeatCategory),
-    __metadata("design:type", seat_category_entity_1.SeatCategory)
-], Seat.prototype, "seatCategory", void 0);
 exports.Seat = Seat = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: 'seats',

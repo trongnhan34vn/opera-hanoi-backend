@@ -1,19 +1,15 @@
-import { LoggerFactory } from 'common-lib';
-import { CartItemRepository } from '../../repository/impl/cart.item.repository.impl';
-import { CartItemServiceInterface } from '../cart.item.service.interface';
-import { CartItem } from 'src/entity/cart.item.entity';
-import { CartItemDto } from '../../dto/request/cart.item.dto';
-import { CartItemMapper } from '../../mapper/impl/cart.item.mapper.impl';
+import { ICartItemService } from '../cart.item.service.interface';
+import { CartItemDto } from 'src/dto/request/cart.item.dto';
+import { ICartItemRepository } from 'src/repository/cart.item.repository.interface';
+import { ICartItemMapper } from 'src/mapper/cart.item.mapper.interface';
 import { Sequelize } from 'sequelize-typescript';
-export declare class CartItemService implements CartItemServiceInterface {
-    private readonly logger;
-    private readonly cartItemMapper;
+export declare class CartItemService implements ICartItemService {
     private readonly cartItemRepository;
+    private readonly cartItemMapper;
     private readonly sequelize;
-    constructor(logger: LoggerFactory, cartItemMapper: CartItemMapper, cartItemRepository: CartItemRepository, sequelize: Sequelize);
-    addToCart(dto: CartItemDto): Promise<CartItemDto>;
-    save(dto: CartItem): Promise<CartItem>;
-    findAll(): Promise<CartItem[]>;
-    findById(id: string): Promise<CartItem>;
+    constructor(cartItemRepository: ICartItemRepository, cartItemMapper: ICartItemMapper, sequelize: Sequelize);
+    save(dto: CartItemDto): Promise<CartItemDto>;
+    findAll(): Promise<CartItemDto[]>;
+    findById(id: string): Promise<CartItemDto>;
     remove(id: string): Promise<void>;
 }

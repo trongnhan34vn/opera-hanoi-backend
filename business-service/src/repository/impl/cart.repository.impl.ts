@@ -1,35 +1,37 @@
-import { CartRepositoryInterface } from '../cart.repository.interface';
-import { Cart } from '../../entity/cart.entity';
-import { InjectModel } from '@nestjs/sequelize';
-import { LoggerFactory } from 'common-lib';
-import { Transaction } from 'sequelize';
 import { Injectable } from '@nestjs/common';
+import { ICartRepository } from '../cart.repository.interface';
+import { Transaction } from 'sequelize';
+import { Cart } from 'src/entity/cart.entity';
+import { InjectModel } from '@nestjs/sequelize';
+import { NotFoundException } from 'common';
 
 @Injectable()
-export class CartRepository implements CartRepositoryInterface {
+export class CartRepository implements ICartRepository {
   constructor(
     @InjectModel(Cart)
-    private readonly cartModel: typeof Cart,
-    private readonly logger: LoggerFactory,
+    private readonly cartItemModel: typeof Cart,
   ) {}
 
   async create(entity: Cart, transaction?: Transaction): Promise<Cart> {
     return await entity.save({ transaction });
   }
-
-  update(entity: Cart, transaction?: Transaction): Promise<Cart> {
-    throw new Error('Method not implemented.');
+  async update(entity: Cart, transaction?: Transaction): Promise<Cart> {
+    return await entity.update(
+      { ...entity, updatedAt: new Date(Date.now()) },
+      { transaction },
+    );
   }
-
-  findById(id: string): Promise<Cart> {
-    throw new Error('Method not implemented.');
+  async findById(id: string): Promise<Cart> {
+    const cart = await this.cartItemModel.findOne({ where: { id } });
+    if (!cart) throw new NotFoundException(`Cart [${id}] Not Found`);
+    return cart;
   }
-
-  remove(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async remove(id: string): Promise<void> {
+    const cart = await this.findById(id);
+    if (!cart) throw new NotFoundException(`Cart [${id}] Not Found`);
+    await cart.destroy();
   }
-
-  findAll(): Promise<Cart[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<Cart[]> {
+    return await this.cartItemModel.findAll();
   }
 }

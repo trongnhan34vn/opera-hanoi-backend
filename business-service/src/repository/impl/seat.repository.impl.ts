@@ -1,9 +1,9 @@
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { NotFoundException } from 'common';
 import { Transaction } from 'sequelize';
 import { Seat } from 'src/entity/seat.entity';
 import { SeatRepositoryInterface } from '../seat.repository.interface';
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { ErrorMessage, ResourceException } from 'common-lib';
 
 @Injectable()
 export class SeatRepository implements SeatRepositoryInterface {
@@ -17,7 +17,7 @@ export class SeatRepository implements SeatRepositoryInterface {
   }
 
   async update(entity: Seat, transaction?: Transaction): Promise<Seat> {
-    return entity.update(
+    return await entity.update(
       { ...entity, updatedAt: new Date(Date.now()) },
       { transaction },
     );
@@ -26,9 +26,7 @@ export class SeatRepository implements SeatRepositoryInterface {
   async findById(id: string): Promise<Seat> {
     const seat = await this.seatModel.findOne({ where: { id } });
     if (!seat) {
-      throw new ResourceException(
-        ErrorMessage.NOT_FOUND.getCode,
-        ErrorMessage.NOT_FOUND.getMessage,
+      throw new NotFoundException(
         `Seat not found with id [${id}]`,
       );
     }

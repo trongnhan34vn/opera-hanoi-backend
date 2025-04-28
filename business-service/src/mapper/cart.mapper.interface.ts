@@ -1,5 +1,5 @@
-import { GenericMapperInterface } from './generic.mapper';
-import { CartDto } from '../dto/request/cart.dto';
-import { Cart } from '../entity/cart.entity';
+import { CartDto } from "src/dto/request/cart.dto";
+import { GenericMapperInterface } from "./generic.mapper";
+import { Cart } from "src/entity/cart.entity";
 
-export interface CartMapperInterface extends GenericMapperInterface<CartDto, Cart> {}
+export interface ICartMapper extends GenericMapperInterface<CartDto, Cart> {}

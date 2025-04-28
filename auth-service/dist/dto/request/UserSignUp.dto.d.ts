@@ -8,3 +8,6 @@ export declare class UserSignUpDto {
     lastName: string;
     roles?: Set<string>;
 }
+export declare class AccountServiceUser extends UserSignUpDto {
+    keycloakId: string;
+}

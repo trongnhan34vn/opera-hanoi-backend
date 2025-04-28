@@ -1,8 +1,8 @@
-import { HttpResponseFactory } from 'common-lib';
+import { HttpResponseFactory } from 'common';
 import { Response } from 'express';
-import { AuthService } from '../service/auth.service';
-import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
 import { UserSignInDto } from '../dto/request/UserSignIn.dto';
+import { UserSignUpDto } from '../dto/request/UserSignUp.dto';
+import { AuthService } from '../service/auth.service';
 export declare class AuthController {
     private readonly responseFactory;
     private readonly authService;

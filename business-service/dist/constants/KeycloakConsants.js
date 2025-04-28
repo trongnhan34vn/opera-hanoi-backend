@@ -4,7 +4,7 @@ exports.KEYCLOAK_ADMIN_URI = exports.KEYCLOAK_PROVIDER_ISSUE_URI = exports.KEYCL
 const process = require("node:process");
 const dotenv = require("dotenv");
 const path = require("path");
-const envFilePath = '../../../env/.env.dev';
+const envFilePath = '../../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 exports.KEYCLOAK_SERVICE_HOST = process.env.KEYCLOAK_SERVICE_HOST;
 exports.KEYCLOAK_SERVICE_PORT = process.env.KEYCLOAK_SERVICE_PORT;

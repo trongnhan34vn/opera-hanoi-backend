@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConcertSeat = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const concert_entity_1 = require("../concert.entity");
-const seat_entity_1 = require("../seat.entity");
 const seat_status_enum_1 = require("../enum/seat.status.enum");
+const seat_entity_1 = require("../seat.entity");
 let ConcertSeat = class ConcertSeat extends sequelize_typescript_1.Model {
 };
 exports.ConcertSeat = ConcertSeat;
@@ -21,6 +21,7 @@ __decorate([
     sequelize_typescript_1.PrimaryKey,
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.UUID,
+        defaultValue: sequelize_typescript_1.DataType.UUIDV4
     }),
     __metadata("design:type", String)
 ], ConcertSeat.prototype, "id", void 0);
@@ -34,23 +35,17 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => seat_entity_1.Seat),
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
-    }),
-    __metadata("design:type", String)
-], ConcertSeat.prototype, "seatId", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.ENUM(...Object.values(seat_status_enum_1.SeatStatusName)),
-        defaultValue: 'AVAILABLE',
-    }),
-    __metadata("design:type", String)
-], ConcertSeat.prototype, "status", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
     }),
     __metadata("design:type", Number)
-], ConcertSeat.prototype, "price", void 0);
+], ConcertSeat.prototype, "seatId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.ENUM(...Object.values(seat_status_enum_1.SeatStatusEnum)),
+        defaultValue: seat_status_enum_1.SeatStatusEnum.AVAILABLE,
+    }),
+    __metadata("design:type", String)
+], ConcertSeat.prototype, "status", void 0);
 __decorate([
     sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
@@ -61,7 +56,7 @@ __decorate([
 ], ConcertSeat.prototype, "updatedAt", void 0);
 exports.ConcertSeat = ConcertSeat = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: 'concert_seats',
+        tableName: 'concert_seat',
     })
 ], ConcertSeat);
 //# sourceMappingURL=concert.seat.sub.entity.js.map

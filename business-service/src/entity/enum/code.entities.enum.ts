@@ -1,4 +1,4 @@
 export enum CodeEntitiesEnum {
-  CATEGORY = 'CAT',
+  GENRE = 'GEN',
   CONCERT = 'CON',
 }

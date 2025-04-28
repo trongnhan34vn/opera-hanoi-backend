@@ -10,7 +10,6 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Concert } from './concert.entity';
-import { UUIDV4 } from 'sequelize';
 
 @Table({
   tableName: 'images',

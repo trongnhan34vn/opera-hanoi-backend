@@ -8,12 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartService = void 0;
 const common_1 = require("@nestjs/common");
-const cart_repository_impl_1 = require("../../repository/impl/cart.repository.impl");
-const cart_mapper_impl_1 = require("../../mapper/impl/cart.mapper.impl");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
+const symbol_1 = require("../../constants/symbol");
 const sequelize_typescript_1 = require("sequelize-typescript");
 let CartService = class CartService {
     constructor(cartRepository, cartMapper, logger, sequelize) {
@@ -22,40 +24,45 @@ let CartService = class CartService {
         this.logger = logger;
         this.sequelize = sequelize;
     }
-    save(dto) {
-        throw new Error('Method not implemented.');
-    }
-    async create(dto) {
+    async save(dto) {
         const transaction = await this.sequelize.transaction();
+        const cart = this.cartMapper.toEntity(dto);
         try {
-            const cart = this.cartMapper.toEntity(dto);
-            const entity = await this.cartRepository.create(cart, transaction);
-            this.logger.log(`Cart created [${entity.id}]`);
-            await transaction.commit();
-            return entity;
+            if (!dto.id) {
+                const createdCart = await this.cartRepository.create(cart, transaction);
+                this.logger.log(`Cart [${createdCart.id}] is created`);
+                return this.cartMapper.toDto(createdCart);
+            }
+            const updatedCart = await this.cartRepository.update(cart, transaction);
+            this.logger.log(`Cart [${updatedCart.id}] is updated`);
+            return this.cartMapper.toDto(updatedCart);
         }
         catch (error) {
-            await transaction.rollback();
-            this.logger.error(error);
             throw error;
         }
     }
-    findAll() {
+    async findAll() {
         throw new Error('Method not implemented.');
     }
-    findById(id) {
-        throw new Error('Method not implemented.');
+    async findById(id) {
+        try {
+            const cart = await this.cartRepository.findById(id);
+            return this.cartMapper.toDto(cart);
+        }
+        catch (error) {
+            throw error;
+        }
     }
-    remove(id) {
+    async remove(id) {
         throw new Error('Method not implemented.');
     }
 };
 exports.CartService = CartService;
 exports.CartService = CartService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [cart_repository_impl_1.CartRepository,
-        cart_mapper_impl_1.CartMapper,
-        common_lib_1.LoggerFactory,
+    __param(0, (0, common_1.Inject)(symbol_1.ICartItemRepositoryToken)),
+    __param(1, (0, common_1.Inject)(symbol_1.ICartMapperToken)),
+    __metadata("design:paramtypes", [Object, Object, common_2.LoggerFactory,
         sequelize_typescript_1.Sequelize])
 ], CartService);
 //# sourceMappingURL=cart.service.impl.js.map

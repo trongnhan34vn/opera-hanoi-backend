@@ -11,8 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeycloakService = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
 const KeycloakConsants_1 = require("../constants/KeycloakConsants");
+const http_service_factory_impl_1 = require("common/dist/factory/impl/http.service.factory.impl");
+const logger_factory_impl_1 = require("common/dist/factory/impl/logger.factory.impl");
+const http_content_enum_1 = require("common/dist/enum/http.content.enum");
+const http_method_enum_1 = require("common/dist/enum/http.method.enum");
+const common_2 = require("common");
 let KeycloakService = class KeycloakService {
     constructor(httpService, logger) {
         this.httpService = httpService;
@@ -29,11 +33,15 @@ let KeycloakService = class KeycloakService {
                 grant_type: grantType,
             };
             const headers = {
-                contentType: common_lib_1.HttpContentType.FORM_URLENCODED,
+                contentType: http_content_enum_1.HttpContentType.FORM_URLENCODED,
             };
-            const response = await this.httpService.call(common_lib_1.HttpMethod.POST, KeycloakConsants_1.KEYCLOAK_SERVICE_URL, KeycloakConsants_1.KEYCLOAK_PROVIDER_TOKEN_URI_PATH, headers, keycloakRequest);
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: KeycloakConsants_1.KEYCLOAK_PROVIDER_TOKEN_URI_PATH,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.POST, keycloakRequest, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'response from Keycloak is null');
+                throw new common_1.InternalServerErrorException('Response from Keycloak is null');
             }
             this.logger.log('Sign in with Keycloak successfully.');
             return response.data;
@@ -48,7 +56,7 @@ let KeycloakService = class KeycloakService {
         try {
             await this.createUser(userSignUp, token);
             await this.mappingRoleToUser(token, userSignUp);
-            return true;
+            return await this.findUserByEmail(userSignUp.email, token);
         }
         catch (error) {
             throw error;
@@ -69,9 +77,13 @@ let KeycloakService = class KeycloakService {
             const headers = {
                 token,
             };
-            const response = await this.httpService.call(common_lib_1.HttpMethod.DELETE, KeycloakConsants_1.KEYCLOAK_SERVICE_URL, pathDeleteUser, headers);
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: pathDeleteUser,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.DELETE, null, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'response from Keycloak is null');
+                throw new common_1.InternalServerErrorException('Response from Keycloak is null');
             }
             this.logger.log(`User [${user.email}] is deleted`);
         }
@@ -103,18 +115,22 @@ let KeycloakService = class KeycloakService {
             };
             const createUserKeycloakEndpoint = '/users';
             const createUserKeycloakUrl = KeycloakConsants_1.KEYCLOAK_SERVICE_ADMIN_PATH_URI + createUserKeycloakEndpoint;
-            const response = await this.httpService.call(common_lib_1.HttpMethod.POST, KeycloakConsants_1.KEYCLOAK_SERVICE_URL, createUserKeycloakUrl, headers, userRegistry);
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: createUserKeycloakUrl,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.POST, userRegistry, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'response from Keycloak is null');
+                throw new common_1.InternalServerErrorException('Response from Keycloak is null');
             }
             this.logger.log('Created User with Keycloak successfully');
             return response;
         }
         catch (error) {
-            if (error instanceof common_lib_1.ResourceException) {
-                const isConflict = error.getErrorCode === common_lib_1.ErrorMessage.CONFLICT.getCode;
+            if (error instanceof common_2.ResourceException) {
+                const isConflict = error.errorCode === common_2.HttpErrorCode.CONFLICT;
                 if (isConflict) {
-                    throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.CONFLICT.getCode, common_lib_1.ErrorMessage.CONFLICT.getMessage, `User [${userSignUp.email}] is already existed`);
+                    throw new common_2.ConflictException(`User [${userSignUp.email}] is already existed`);
                 }
             }
             throw error;
@@ -141,9 +157,13 @@ let KeycloakService = class KeycloakService {
             const headers = { token };
             const roles = [];
             roles.push(role);
-            const response = await this.httpService.call(common_lib_1.HttpMethod.POST, KeycloakConsants_1.KEYCLOAK_SERVICE_URL, pathAssignRoleToUser, headers, roles);
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: pathAssignRoleToUser,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.POST, roles, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'response from Keycloak is null');
+                throw new common_1.InternalServerErrorException('Response from Keycloak is null');
             }
             this.logger.log(`Assign role [${role.name}] to user [${user.email}] successfully`);
         }
@@ -160,9 +180,13 @@ let KeycloakService = class KeycloakService {
             const headers = {
                 token,
             };
-            const response = await this.httpService.call(common_lib_1.HttpMethod.GET, KeycloakConsants_1.KEYCLOAK_SERVICE_URL, urlFindUserByEmail, headers);
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: urlFindUserByEmail,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.GET, null, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'response from Keycloak is null');
+                throw new common_1.InternalServerErrorException('Response from Keycloak is null');
             }
             this.logger.log(`User [${email}] founded`);
             return response.data[0];
@@ -183,9 +207,13 @@ let KeycloakService = class KeycloakService {
             const headers = {
                 token,
             };
-            const response = await this.httpService.call(common_lib_1.HttpMethod.GET, KeycloakConsants_1.KEYCLOAK_SERVICE_URL, urlFindRoleByNameKC, headers);
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: urlFindRoleByNameKC,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.GET, null, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'response from Keycloak is null');
+                throw new common_1.InternalServerErrorException('Response from Keycloak is null');
             }
             this.logger.log(`Role [${roleName}] founded`);
             return response.data;
@@ -208,7 +236,7 @@ let KeycloakService = class KeycloakService {
         };
         const response = await this.signIn(userAdminSignIn);
         if (!response) {
-            throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'response from Keycloak is null');
+            throw new common_1.InternalServerErrorException('Response from Keycloak is null');
         }
         this.logger.log('Get admin access successfully.');
         this.logger.log('End get admin access.');
@@ -218,7 +246,7 @@ let KeycloakService = class KeycloakService {
 exports.KeycloakService = KeycloakService;
 exports.KeycloakService = KeycloakService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [common_lib_1.HttpServiceFactory,
-        common_lib_1.LoggerFactory])
+    __metadata("design:paramtypes", [http_service_factory_impl_1.HttpServiceFactory,
+        logger_factory_impl_1.LoggerFactory])
 ], KeycloakService);
 //# sourceMappingURL=keycloak.service.js.map

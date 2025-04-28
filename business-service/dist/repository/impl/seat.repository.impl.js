@@ -13,10 +13,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SeatRepository = void 0;
-const seat_entity_1 = require("../../entity/seat.entity");
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
+const seat_entity_1 = require("../../entity/seat.entity");
 let SeatRepository = class SeatRepository {
     constructor(seatModel) {
         this.seatModel = seatModel;
@@ -25,12 +25,12 @@ let SeatRepository = class SeatRepository {
         return await entity.save({ transaction });
     }
     async update(entity, transaction) {
-        return entity.update({ ...entity, updatedAt: new Date(Date.now()) }, { transaction });
+        return await entity.update({ ...entity, updatedAt: new Date(Date.now()) }, { transaction });
     }
     async findById(id) {
         const seat = await this.seatModel.findOne({ where: { id } });
         if (!seat) {
-            throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.NOT_FOUND.getCode, common_lib_1.ErrorMessage.NOT_FOUND.getMessage, `Seat not found with id [${id}]`);
+            throw new common_2.NotFoundException(`Seat not found with id [${id}]`);
         }
         return seat;
     }

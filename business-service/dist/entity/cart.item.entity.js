@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartItem = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const cart_entity_1 = require("./cart.entity");
-const concert_entity_1 = require("./concert.entity");
-const seat_entity_1 = require("./seat.entity");
 const cart_item_status_enum_1 = require("./enum/cart.item.status.enum");
 let CartItem = class CartItem extends sequelize_typescript_1.Model {
 };
@@ -29,47 +27,30 @@ __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => cart_entity_1.Cart),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.UUID,
-        allowNull: false,
     }),
     __metadata("design:type", String)
 ], CartItem.prototype, "cartId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => seat_entity_1.Seat),
-    (0, sequelize_typescript_1.Unique)('unique_seat_per_concert'),
+    (0, sequelize_typescript_1.BelongsTo)(() => cart_entity_1.Cart),
+    __metadata("design:type", cart_entity_1.Cart)
+], CartItem.prototype, "cart", void 0);
+__decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
+        type: sequelize_typescript_1.DataType.ENUM(...Object.values(cart_item_status_enum_1.CartItemStatusEnum)),
+        defaultValue: cart_item_status_enum_1.CartItemStatusEnum.ACTIVE
     }),
     __metadata("design:type", String)
-], CartItem.prototype, "seatId", void 0);
+], CartItem.prototype, "status", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => seat_entity_1.Seat),
-    __metadata("design:type", seat_entity_1.Seat)
-], CartItem.prototype, "seat", void 0);
-__decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => concert_entity_1.Concert),
-    (0, sequelize_typescript_1.Unique)('unique_seat_per_concert'),
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
-    }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.UUID }),
     __metadata("design:type", String)
-], CartItem.prototype, "concertId", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => concert_entity_1.Concert),
-    __metadata("design:type", concert_entity_1.Concert)
-], CartItem.prototype, "concert", void 0);
+], CartItem.prototype, "concertSeatId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
     }),
     __metadata("design:type", Number)
 ], CartItem.prototype, "price", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.ENUM(...Object.values(cart_item_status_enum_1.CartItemStatusEnum)),
-        defaultValue: 'ACTIVE',
-    }),
-    __metadata("design:type", String)
-], CartItem.prototype, "status", void 0);
 __decorate([
     sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
@@ -80,7 +61,7 @@ __decorate([
 ], CartItem.prototype, "updatedAt", void 0);
 exports.CartItem = CartItem = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: 'cart_items',
+        tableName: 'cart_items'
     })
 ], CartItem);
 //# sourceMappingURL=cart.item.entity.js.map

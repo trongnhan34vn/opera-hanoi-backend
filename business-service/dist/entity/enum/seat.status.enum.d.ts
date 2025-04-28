@@ -1,4 +1,4 @@
-export declare enum SeatStatusName {
+export declare enum SeatStatusEnum {
     AVAILABLE = "AVAILABLE",
     RESERVED = "RESERVED",
     CANCELED = "CANCELED",

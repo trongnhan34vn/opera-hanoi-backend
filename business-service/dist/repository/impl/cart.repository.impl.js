@@ -13,35 +13,40 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartRepository = void 0;
+const common_1 = require("@nestjs/common");
 const cart_entity_1 = require("../../entity/cart.entity");
 const sequelize_1 = require("@nestjs/sequelize");
-const common_lib_1 = require("common-lib");
-const common_1 = require("@nestjs/common");
+const common_2 = require("common");
 let CartRepository = class CartRepository {
-    constructor(cartModel, logger) {
-        this.cartModel = cartModel;
-        this.logger = logger;
+    constructor(cartItemModel) {
+        this.cartItemModel = cartItemModel;
     }
     async create(entity, transaction) {
         return await entity.save({ transaction });
     }
-    update(entity, transaction) {
-        throw new Error('Method not implemented.');
+    async update(entity, transaction) {
+        return await entity.update({ ...entity, updatedAt: new Date(Date.now()) }, { transaction });
     }
-    findById(id) {
-        throw new Error('Method not implemented.');
+    async findById(id) {
+        const cart = await this.cartItemModel.findOne({ where: { id } });
+        if (!cart)
+            throw new common_2.NotFoundException(`Cart [${id}] Not Found`);
+        return cart;
     }
-    remove(id) {
-        throw new Error('Method not implemented.');
+    async remove(id) {
+        const cart = await this.findById(id);
+        if (!cart)
+            throw new common_2.NotFoundException(`Cart [${id}] Not Found`);
+        await cart.destroy();
     }
-    findAll() {
-        throw new Error('Method not implemented.');
+    async findAll() {
+        return await this.cartItemModel.findAll();
     }
 };
 exports.CartRepository = CartRepository;
 exports.CartRepository = CartRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, sequelize_1.InjectModel)(cart_entity_1.Cart)),
-    __metadata("design:paramtypes", [Object, common_lib_1.LoggerFactory])
+    __metadata("design:paramtypes", [Object])
 ], CartRepository);
 //# sourceMappingURL=cart.repository.impl.js.map

@@ -1,13 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import {
-  ErrorMessage,
-  HttpContentType,
-  HttpHeaders,
-  HttpMethod,
-  HttpServiceFactory,
-  LoggerFactory,
-  ResourceException,
-} from 'common-lib';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+
 import {
   KeycloakRequest,
   UserKeycloakRegistry,
@@ -24,6 +16,15 @@ import { UserSignInDto } from '../dto/request/UserSignIn.dto';
 import { RoleKC } from '../dto/response/RoleKC.dto';
 import { UserKc } from '../dto/response/UserKc.dto';
 import { KeycloakTokenResponse } from '../dto/response/KeycloakTokenResponse.dto';
+import { HttpServiceFactory } from 'common/dist/factory/impl/http.service.factory.impl';
+import { LoggerFactory } from 'common/dist/factory/impl/logger.factory.impl';
+import {
+  HttpEndpoint,
+  HttpHeaders,
+} from 'common/dist/factory/http.service.factory.interface';
+import { HttpContentType } from 'common/dist/enum/http.content.enum';
+import { HttpMethod } from 'common/dist/enum/http.method.enum';
+import { ConflictException, HttpErrorCode, ResourceException } from 'common';
 
 @Injectable()
 export class KeycloakService {
@@ -52,19 +53,21 @@ export class KeycloakService {
         contentType: HttpContentType.FORM_URLENCODED,
       };
 
-      const response = await this.httpService.call<KeycloakTokenResponse>(
+      const endpoint: HttpEndpoint = {
+        baseURL: KEYCLOAK_SERVICE_URL,
+        path: KEYCLOAK_PROVIDER_TOKEN_URI_PATH,
+      };
+
+      const response = await this.httpService.call(
+        endpoint,
         HttpMethod.POST,
-        KEYCLOAK_SERVICE_URL,
-        KEYCLOAK_PROVIDER_TOKEN_URI_PATH,
-        headers,
         keycloakRequest,
+        headers,
       );
       // response is null
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-          'response from Keycloak is null',
+        throw new InternalServerErrorException(
+          'Response from Keycloak is null',
         );
       }
 
@@ -134,18 +137,21 @@ export class KeycloakService {
         token,
       };
 
+      const endpoint: HttpEndpoint = {
+        baseURL: KEYCLOAK_SERVICE_URL,
+        path: pathDeleteUser,
+      };
+
       const response = await this.httpService.call(
+        endpoint,
         HttpMethod.DELETE,
-        KEYCLOAK_SERVICE_URL,
-        pathDeleteUser,
+        null,
         headers,
       );
 
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-          'response from Keycloak is null',
+        throw new InternalServerErrorException(
+          'Response from Keycloak is null',
         );
       }
 
@@ -187,19 +193,22 @@ export class KeycloakService {
       const createUserKeycloakEndpoint = '/users';
       const createUserKeycloakUrl =
         KEYCLOAK_SERVICE_ADMIN_PATH_URI + createUserKeycloakEndpoint;
-      const response = await this.httpService.call<boolean>(
+
+      const endpoint: HttpEndpoint = {
+        baseURL: KEYCLOAK_SERVICE_URL,
+        path: createUserKeycloakUrl,
+      };
+
+      const response = await this.httpService.call(
+        endpoint,
         HttpMethod.POST,
-        KEYCLOAK_SERVICE_URL,
-        createUserKeycloakUrl,
-        headers,
         userRegistry,
+        headers,
       );
       // response is null
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-          'response from Keycloak is null',
+        throw new InternalServerErrorException(
+          'Response from Keycloak is null',
         );
       }
 
@@ -208,11 +217,9 @@ export class KeycloakService {
     } catch (error) {
       if (error instanceof ResourceException) {
         // User signed up is already existed
-        const isConflict = error.getErrorCode === ErrorMessage.CONFLICT.getCode;
+        const isConflict = error.errorCode === HttpErrorCode.CONFLICT;
         if (isConflict) {
-          throw new ResourceException(
-            ErrorMessage.CONFLICT.getCode,
-            ErrorMessage.CONFLICT.getMessage,
+          throw new ConflictException(
             `User [${userSignUp.email}] is already existed`,
           );
         }
@@ -269,20 +276,22 @@ export class KeycloakService {
       const roles: RoleKC[] = [];
       roles.push(role);
 
-      const response = await this.httpService.call<boolean>(
+      const endpoint: HttpEndpoint = {
+        baseURL: KEYCLOAK_SERVICE_URL,
+        path: pathAssignRoleToUser,
+      };
+
+      const response = await this.httpService.call(
+        endpoint,
         HttpMethod.POST,
-        KEYCLOAK_SERVICE_URL,
-        pathAssignRoleToUser,
-        headers,
         roles,
+        headers,
       );
 
       // response is null
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-          'response from Keycloak is null',
+        throw new InternalServerErrorException(
+          'Response from Keycloak is null',
         );
       }
 
@@ -311,18 +320,21 @@ export class KeycloakService {
         token,
       };
 
-      const response = await this.httpService.call<UserKc>(
+      const endpoint: HttpEndpoint = {
+        baseURL: KEYCLOAK_SERVICE_URL,
+        path: urlFindUserByEmail,
+      };
+
+      const response = await this.httpService.call(
+        endpoint,
         HttpMethod.GET,
-        KEYCLOAK_SERVICE_URL,
-        urlFindUserByEmail,
+        null,
         headers,
       );
 
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-          'response from Keycloak is null',
+        throw new InternalServerErrorException(
+          'Response from Keycloak is null',
         );
       }
       this.logger.log(`User [${email}] founded`);
@@ -351,19 +363,22 @@ export class KeycloakService {
         token,
       };
 
-      const response = await this.httpService.call<RoleKC>(
+      const endpoint: HttpEndpoint = {
+        baseURL: KEYCLOAK_SERVICE_URL,
+        path: urlFindRoleByNameKC,
+      };
+
+      const response = await this.httpService.call(
+        endpoint,
         HttpMethod.GET,
-        KEYCLOAK_SERVICE_URL,
-        urlFindRoleByNameKC,
+        null,
         headers,
       );
 
       // response from Keycloak is null
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-          'response from Keycloak is null',
+        throw new InternalServerErrorException(
+          'Response from Keycloak is null',
         );
       }
       this.logger.log(`Role [${roleName}] founded`);
@@ -395,10 +410,8 @@ export class KeycloakService {
 
     // response from Keycloak is null
     if (!response) {
-      throw new ResourceException(
-        ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-        ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
-        'response from Keycloak is null',
+      throw new InternalServerErrorException(
+        'Response from Keycloak is null',
       );
     }
 

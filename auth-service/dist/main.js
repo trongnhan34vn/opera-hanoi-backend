@@ -35,36 +35,30 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
-const common_lib_1 = require("common-lib");
+const common_1 = require("common");
 const auth_error_controller_1 = require("./controller/auth.error.controller");
 const dotenv = __importStar(require("dotenv"));
 const path = __importStar(require("node:path"));
 const process = __importStar(require("node:process"));
-const common_1 = require("@nestjs/common");
-const envFilePath = '../../env/.env.local';
+const common_2 = require("@nestjs/common");
+const envFilePath = '../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 async function bootstrap() {
-    const logger = new common_lib_1.LoggerFactory('default');
+    const logger = new common_1.LoggerFactory('default');
     logger.log('Starting Nest application...');
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useLogger(logger);
     logger.log('App successfully configured Logger');
-    app.useGlobalFilters(new auth_error_controller_1.AuthErrorController(app.get(common_lib_1.HttpResponseFactory)));
+    app.useGlobalFilters(new auth_error_controller_1.AuthErrorController(app.get(common_1.HttpResponseFactory)));
     logger.log('App successfully configured Filters');
-    app.useGlobalInterceptors(new common_lib_1.LogAspectInterceptor());
+    app.useGlobalInterceptors(new common_1.LogAspectInterceptor());
     logger.log('App successfully configured Interceptors');
     logger.log(`Nest app started with port [${process.env.AUTH_SERVICE_PORT}]`);
-    app.useGlobalPipes(new common_1.ValidationPipe({
+    app.useGlobalPipes(new common_2.ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,
         transform: true,
     }));
-    app.enableCors({
-        origin: ['http://localhost:3000'],
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        credentials: true,
-        allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
-    });
     await app.listen(process.env.AUTH_SERVICE_PORT);
 }
 bootstrap();

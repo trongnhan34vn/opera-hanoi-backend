@@ -8,7 +8,7 @@ export interface ConcertServiceInterface
 
   findUpcomingConcerts(page: Pagination): Promise<any>;
 
-  findByCategoryId(categoryId: string): Promise<any>;
+  findByGenreId(genreId: string): Promise<any>;
 
   findByShowTimes(startStringTime: string, endStringTime: string): Promise<any>;
 }

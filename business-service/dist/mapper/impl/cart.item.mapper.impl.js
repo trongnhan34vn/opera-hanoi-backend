@@ -7,28 +7,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartItemMapper = void 0;
+const common_1 = require("@nestjs/common");
 const cart_item_dto_1 = require("../../dto/request/cart.item.dto");
 const cart_item_entity_1 = require("../../entity/cart.item.entity");
-const common_1 = require("@nestjs/common");
 const uuid_1 = require("uuid");
 let CartItemMapper = class CartItemMapper {
     toDto(entity) {
         const cartItemDto = new cart_item_dto_1.CartItemDto();
         cartItemDto.id = entity.id;
-        cartItemDto.cartId = entity.cartId;
-        cartItemDto.concertId = entity.concertId;
         cartItemDto.price = entity.price;
-        cartItemDto.seatId = entity.seatId;
+        cartItemDto.concertSeatId = entity.concertSeatId;
+        cartItemDto.cartId = entity.cartId;
         return cartItemDto;
     }
     toEntity(dto) {
         const cartItem = new cart_item_entity_1.CartItem();
-        cartItem.id = dto.id ?? (0, uuid_1.v4)();
-        cartItem.seatId = dto.seatId;
+        cartItem.id = dto.id ? dto.id : (0, uuid_1.v4)();
         cartItem.cartId = dto.cartId;
         cartItem.price = dto.price;
-        cartItem.concertId = dto.concertId;
+        cartItem.concertSeatId = dto.concertSeatId;
         return cartItem;
+    }
+    toDtos(entities) {
+        const cartItemDtos = [];
+        for (const entity of entities) {
+            const cartItemDto = this.toDto(entity);
+            cartItemDtos.push(cartItemDto);
+        }
+        return cartItemDtos;
     }
     toEntities(dtos) {
         const cartItems = [];
@@ -37,14 +43,6 @@ let CartItemMapper = class CartItemMapper {
             cartItems.push(cartItem);
         }
         return cartItems;
-    }
-    toDtos(entities) {
-        const cartItemDtos = [];
-        for (const entity of entities) {
-            const cartItem = this.toDto(entity);
-            cartItemDtos.push(cartItem);
-        }
-        return cartItemDtos;
     }
 };
 exports.CartItemMapper = CartItemMapper;

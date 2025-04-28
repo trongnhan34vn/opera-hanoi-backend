@@ -11,8 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AccountService = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
 const ServiceConstant_1 = require("../constants/ServiceConstant");
+const http_service_factory_impl_1 = require("common/dist/factory/impl/http.service.factory.impl");
+const logger_factory_impl_1 = require("common/dist/factory/impl/logger.factory.impl");
+const http_content_enum_1 = require("common/dist/enum/http.content.enum");
+const common_2 = require("common");
 let AccountService = class AccountService {
     constructor(httpService, logger) {
         this.httpService = httpService;
@@ -22,17 +25,21 @@ let AccountService = class AccountService {
         try {
             this.logger.log(`Start save user [${userDto.email}] to account service...`);
             const headers = {
-                contentType: common_lib_1.HttpContentType.JSON,
+                contentType: http_content_enum_1.HttpContentType.JSON,
                 apiKey: ServiceConstant_1.API_KEY,
             };
-            const response = await this.httpService.call(common_lib_1.HttpMethod.POST, ServiceConstant_1.ACCOUNT_SERVICE_BASEURL, ServiceConstant_1.ACCOUNT_SERVICE_PATH + ServiceConstant_1.ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS, headers, userDto);
+            const endpoint = {
+                baseURL: ServiceConstant_1.ACCOUNT_SERVICE_BASEURL,
+                path: ServiceConstant_1.ACCOUNT_SERVICE_PATH + ServiceConstant_1.ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS,
+            };
+            const response = await this.httpService.call(endpoint, common_2.HttpMethod.POST, userDto, headers);
             if (!response) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'Response from account-service is null');
+                throw new common_1.InternalServerErrorException('Response from account-service is null');
             }
             const successResponse = response.data;
             const createdUser = successResponse.data;
             if (!createdUser) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'Data response from account-service is null');
+                throw new common_1.InternalServerErrorException('Data response from account-service is null');
             }
             this.logger.log(`Saved user [${userDto.email}] successfully!`);
             return createdUser.id;
@@ -49,7 +56,7 @@ let AccountService = class AccountService {
 exports.AccountService = AccountService;
 exports.AccountService = AccountService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [common_lib_1.HttpServiceFactory,
-        common_lib_1.LoggerFactory])
+    __metadata("design:paramtypes", [http_service_factory_impl_1.HttpServiceFactory,
+        logger_factory_impl_1.LoggerFactory])
 ], AccountService);
 //# sourceMappingURL=account.service.js.map

@@ -9,7 +9,7 @@ services:
     depends_on:
       - account-service-db
     env_file:
-      - .env.dev
+      - .env.local
     environment:
       DB_HOST: account-service-db
       DB_PORT: 5432

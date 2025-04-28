@@ -1,11 +1,9 @@
-import { CartRepositoryInterface } from '../cart.repository.interface';
-import { Cart } from '../../entity/cart.entity';
-import { LoggerFactory } from 'common-lib';
+import { ICartRepository } from '../cart.repository.interface';
 import { Transaction } from 'sequelize';
-export declare class CartRepository implements CartRepositoryInterface {
-    private readonly cartModel;
-    private readonly logger;
-    constructor(cartModel: typeof Cart, logger: LoggerFactory);
+import { Cart } from 'src/entity/cart.entity';
+export declare class CartRepository implements ICartRepository {
+    private readonly cartItemModel;
+    constructor(cartItemModel: typeof Cart);
     create(entity: Cart, transaction?: Transaction): Promise<Cart>;
     update(entity: Cart, transaction?: Transaction): Promise<Cart>;
     findById(id: string): Promise<Cart>;

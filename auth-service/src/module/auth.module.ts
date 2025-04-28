@@ -5,7 +5,7 @@ import {
   HttpResponseFactory,
   HttpServiceModule,
   LoggerFactory,
-} from 'common-lib';
+} from 'common';
 import { KeycloakModule } from './keycloak.module';
 import { AccountModule } from './account.module';
 import { ConcertModule } from './concert.module';

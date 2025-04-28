@@ -8,19 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AccountModule = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
 const account_service_1 = require("../service/account.service");
 let AccountModule = class AccountModule {
 };
 exports.AccountModule = AccountModule;
 exports.AccountModule = AccountModule = __decorate([
     (0, common_1.Module)({
-        imports: [common_lib_1.HttpServiceModule],
+        imports: [common_2.HttpServiceModule],
         providers: [
-            common_lib_1.HttpResponseFactory,
+            common_2.HttpResponseFactory,
             {
-                provide: common_lib_1.LoggerFactory,
-                useFactory: () => new common_lib_1.LoggerFactory('account-service'),
+                provide: common_2.LoggerFactory,
+                useFactory: () => new common_2.LoggerFactory('account-service'),
             },
             account_service_1.AccountService,
         ],

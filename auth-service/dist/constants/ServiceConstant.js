@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.API_KEY = exports.CONCERT_SERVICE_CREATE_CART_ENDPOINT = exports.CONCERT_SERVICE_PATH = exports.CONCERT_SERVICE_BASEURL = exports.CONCERT_SERVICE_PORT = exports.CONCERT_SERVICE_HOST = exports.ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS = exports.ACCOUNT_SERVICE_PATH = exports.ACCOUNT_SERVICE_BASEURL = exports.ACCOUNT_SERVICE_PORT = exports.ACCOUNT_SERVICE_HOST = void 0;
+exports.API_KEY = exports.BUSINESS_SERVICE_CREATE_CART_ENDPOINT = exports.BUSINESS_SERVICE_PATH = exports.BUSINESS_SERVICE_BASEURL = exports.BUSINESS_SERVICE_PORT = exports.BUSINESS_SERVICE_HOST = exports.ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS = exports.ACCOUNT_SERVICE_PATH = exports.ACCOUNT_SERVICE_BASEURL = exports.ACCOUNT_SERVICE_PORT = exports.ACCOUNT_SERVICE_HOST = void 0;
 const process = __importStar(require("node:process"));
 const dotenv = __importStar(require("dotenv"));
 const path = __importStar(require("path"));
@@ -44,10 +44,10 @@ exports.ACCOUNT_SERVICE_PORT = process.env.ACCOUNT_SERVICE_PORT;
 exports.ACCOUNT_SERVICE_BASEURL = `http://${exports.ACCOUNT_SERVICE_HOST}:${exports.ACCOUNT_SERVICE_PORT}`;
 exports.ACCOUNT_SERVICE_PATH = '/api/v1/account';
 exports.ACCOUNT_SERVICE_CREATE_USER_ENDPOINTS = '/users';
-exports.CONCERT_SERVICE_HOST = process.env.CONCERT_SERVICE_HOST;
-exports.CONCERT_SERVICE_PORT = process.env.CONCERT_SERVICE_PORT;
-exports.CONCERT_SERVICE_BASEURL = `http://${exports.CONCERT_SERVICE_HOST}:${exports.CONCERT_SERVICE_PORT}`;
-exports.CONCERT_SERVICE_PATH = '/api/v1/business';
-exports.CONCERT_SERVICE_CREATE_CART_ENDPOINT = '/carts';
+exports.BUSINESS_SERVICE_HOST = process.env.BUSINESS_SERVICE_HOST;
+exports.BUSINESS_SERVICE_PORT = process.env.BUSINESS_SERVICE_PORT;
+exports.BUSINESS_SERVICE_BASEURL = `http://${exports.BUSINESS_SERVICE_HOST}:${exports.BUSINESS_SERVICE_PORT}`;
+exports.BUSINESS_SERVICE_PATH = '/api/v1/business';
+exports.BUSINESS_SERVICE_CREATE_CART_ENDPOINT = '/carts';
 exports.API_KEY = process.env.API_KEY;
 //# sourceMappingURL=ServiceConstant.js.map

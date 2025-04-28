@@ -1,11 +1,10 @@
 import { Model } from 'sequelize-typescript';
-import { SeatStatusName } from '../enum/seat.status.enum';
+import { SeatStatusEnum } from '../enum/seat.status.enum';
 export declare class ConcertSeat extends Model<ConcertSeat> {
     id: string;
     concertId: string;
-    seatId: string;
-    status: SeatStatusName;
-    price: number;
+    seatId: number;
+    status: SeatStatusEnum;
     createdAt: Date;
     updatedAt: Date;
 }

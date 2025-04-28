@@ -1,4 +1,4 @@
-import { HttpServiceFactory, LoggerFactory } from 'common-lib';
+import { HttpServiceFactory, LoggerFactory } from 'common';
 export declare class CartService {
     private readonly httpService;
     private readonly logger;

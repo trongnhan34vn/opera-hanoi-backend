@@ -20,13 +20,12 @@ services:
     networks:
       - opera-house-network
 
-
   business-service-db:
     image: postgres:latest
     container_name: business-service-db
     restart: always
     env_file:
-      - .env.dev
+      - .env.local
     ports:
       - "5435:5432"
     environment:
@@ -35,7 +34,8 @@ services:
       POSTGRES_PASSWORD: Nhantic1998@
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/01_init.sql
+      - ./concert_sql_function_migrate.sql:/docker-entrypoint-initdb.d/02_concert_sql_function_migrate.sql
     networks:
       - opera-house-network
 

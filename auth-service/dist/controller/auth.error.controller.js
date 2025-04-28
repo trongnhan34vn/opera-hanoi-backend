@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthErrorController = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
 let AuthErrorController = class AuthErrorController {
     constructor(responseFactory) {
         this.responseFactory = responseFactory;
@@ -19,55 +19,27 @@ let AuthErrorController = class AuthErrorController {
     catch(error, host) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
-        if (error instanceof common_lib_1.ResourceException) {
-            const resourceError = error;
-            const status = this.getStatus(error);
-            return this.responseFactory.sendErrorResponse(response, status, resourceError.getErrorCode, resourceError.message, resourceError.details);
-        }
-        return this.responseFactory.sendErrorResponse(response, error['status'] ??
-            this.getStatus(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode), this.getErrorMessage(error['status']).getCode, this.getErrorMessage(error['status']).getMessage, error.message);
-    }
-    getErrorMessage(status) {
+        const resourceError = error;
+        const status = resourceError.getStatus();
         switch (status) {
-            case 503:
-                return common_lib_1.ErrorMessage.SERVICE_UNAVAILABLE;
-            case 404:
-                return common_lib_1.ErrorMessage.NOT_FOUND;
             case 400:
-                return common_lib_1.ErrorMessage.BAD_REQUEST;
-            case 409:
-                return common_lib_1.ErrorMessage.CONFLICT;
+                return this.responseFactory.sendBadRequestErrorResponse(response, resourceError.getMessage, resourceError.getDetails);
             case 401:
-                return common_lib_1.ErrorMessage.UNAUTHORIZED;
+                return this.responseFactory.sendUnauthorizedErrorResponse(response, resourceError.getMessage, resourceError.getDetails);
+            case 409:
+                return this.responseFactory.sendConflictErrorResponse(response, resourceError.getMessage, resourceError.getDetails);
             case 403:
-                return common_lib_1.ErrorMessage.FORBIDDEN;
+                return this.responseFactory.sendFobbidenErrorResponse(response, resourceError.getMessage, resourceError.getDetails);
+            case 404:
+                return this.responseFactory.sendNotFoundErrorResponse(response, resourceError.getMessage, resourceError.getDetails);
             default:
-                return common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR;
-        }
-    }
-    getStatus(error) {
-        const code = error.getErrorCode;
-        switch (code) {
-            case common_lib_1.ErrorMessage.SERVICE_UNAVAILABLE.getCode:
-                return common_1.HttpStatus.SERVICE_UNAVAILABLE;
-            case common_lib_1.ErrorMessage.BAD_REQUEST.getCode:
-                return common_1.HttpStatus.BAD_REQUEST;
-            case common_lib_1.ErrorMessage.UNAUTHORIZED.getCode:
-                return common_1.HttpStatus.UNAUTHORIZED;
-            case common_lib_1.ErrorMessage.CONFLICT.getCode:
-                return common_1.HttpStatus.CONFLICT;
-            case common_lib_1.ErrorMessage.FORBIDDEN.getCode:
-                return common_1.HttpStatus.FORBIDDEN;
-            case common_lib_1.ErrorMessage.NOT_FOUND.getCode:
-                return common_1.HttpStatus.NOT_FOUND;
-            default:
-                return common_1.HttpStatus.INTERNAL_SERVER_ERROR;
+                return this.responseFactory.sendInternalServerErrorResponse(response, resourceError.getMessage, resourceError.getDetails);
         }
     }
 };
 exports.AuthErrorController = AuthErrorController;
 exports.AuthErrorController = AuthErrorController = __decorate([
     (0, common_1.Catch)(),
-    __metadata("design:paramtypes", [common_lib_1.HttpResponseFactory])
+    __metadata("design:paramtypes", [common_2.HttpResponseFactory])
 ], AuthErrorController);
 //# sourceMappingURL=auth.error.controller.js.map

@@ -1,14 +1,14 @@
-import { HttpResponseFactory } from 'common-lib';
+import { HttpResponseFactory } from 'common';
 import { Response } from 'express';
-import { CartDto } from '../dto/request/cart.dto';
-import { CartService } from '../service/impl/cart.service.impl';
-import { CartItemDto } from '../dto/request/cart.item.dto';
-import { CartItemService } from '../service/impl/cart.item.service.impl';
+import { CartDto } from 'src/dto/request/cart.dto';
+import { CartItemDto } from 'src/dto/request/cart.item.dto';
+import { ICartItemService } from 'src/service/cart.item.service.interface';
+import { ICartService } from 'src/service/cart.service.interface';
 export declare class CartController {
     private readonly cartService;
-    private readonly cartItemService;
-    private readonly httpResponseFactory;
-    constructor(cartService: CartService, cartItemService: CartItemService, httpResponseFactory: HttpResponseFactory);
+    private readonly carItemService;
+    private readonly responseFactory;
+    constructor(cartService: ICartService, carItemService: ICartItemService, responseFactory: HttpResponseFactory);
     createCart(res: Response, cartDto: CartDto): Promise<Response<any, Record<string, any>>>;
     addToCart(res: Response, cartItemDto: CartItemDto): Promise<Response<any, Record<string, any>>>;
 }

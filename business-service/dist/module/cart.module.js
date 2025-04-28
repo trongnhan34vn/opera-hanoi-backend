@@ -8,42 +8,57 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartModule = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
 const sequelize_1 = require("@nestjs/sequelize");
+const common_2 = require("common");
+const symbol_1 = require("../constants/symbol");
+const cart_controller_1 = require("../controller/cart.controller");
 const cart_entity_1 = require("../entity/cart.entity");
 const cart_item_entity_1 = require("../entity/cart.item.entity");
-const cart_service_impl_1 = require("../service/impl/cart.service.impl");
-const cart_item_service_impl_1 = require("../service/impl/cart.item.service.impl");
-const cart_repository_impl_1 = require("../repository/impl/cart.repository.impl");
-const cart_item_repository_impl_1 = require("../repository/impl/cart.item.repository.impl");
-const cart_mapper_impl_1 = require("../mapper/impl/cart.mapper.impl");
 const cart_item_mapper_impl_1 = require("../mapper/impl/cart.item.mapper.impl");
-const cart_controller_1 = require("../controller/cart.controller");
+const cart_mapper_impl_1 = require("../mapper/impl/cart.mapper.impl");
+const cart_item_repository_impl_1 = require("../repository/impl/cart.item.repository.impl");
+const cart_repository_impl_1 = require("../repository/impl/cart.repository.impl");
+const cart_item_service_impl_1 = require("../service/impl/cart.item.service.impl");
+const cart_service_impl_1 = require("../service/impl/cart.service.impl");
 let CartModule = class CartModule {
 };
 exports.CartModule = CartModule;
 exports.CartModule = CartModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            common_lib_1.LogModule,
-            common_lib_1.HttpServiceModule,
-            sequelize_1.SequelizeModule.forFeature([cart_entity_1.Cart, cart_item_entity_1.CartItem]),
+        imports: [sequelize_1.SequelizeModule.forFeature([cart_entity_1.Cart, cart_item_entity_1.CartItem])],
+        providers: [
+            {
+                provide: symbol_1.ICartRepositoryToken,
+                useClass: cart_repository_impl_1.CartRepository,
+            },
+            {
+                provide: symbol_1.ICartServiceToken,
+                useClass: cart_service_impl_1.CartService,
+            },
+            {
+                provide: symbol_1.ICartMapperToken,
+                useClass: cart_mapper_impl_1.CartMapper,
+            },
+            {
+                provide: symbol_1.ICartItemRepositoryToken,
+                useClass: cart_item_repository_impl_1.CartItemRepository,
+            },
+            {
+                provide: symbol_1.ICartItemServiceToken,
+                useClass: cart_item_service_impl_1.CartItemService,
+            },
+            {
+                provide: symbol_1.ICartItemMapperToken,
+                useClass: cart_item_mapper_impl_1.CartItemMapper,
+            },
+            {
+                provide: common_2.LoggerFactory,
+                useFactory: () => new common_2.LoggerFactory('cart-service'),
+            },
+            common_2.HttpResponseFactory,
         ],
         controllers: [cart_controller_1.CartController],
-        providers: [
-            cart_service_impl_1.CartService,
-            cart_item_service_impl_1.CartItemService,
-            cart_repository_impl_1.CartRepository,
-            cart_mapper_impl_1.CartMapper,
-            cart_item_mapper_impl_1.CartItemMapper,
-            cart_item_repository_impl_1.CartItemRepository,
-            common_lib_1.HttpResponseFactory,
-            {
-                provide: common_lib_1.LoggerFactory,
-                useFactory: () => new common_lib_1.LoggerFactory('cart-service'),
-            },
-        ],
-        exports: [cart_service_impl_1.CartService],
+        exports: [symbol_1.ICartItemServiceToken, symbol_1.ICartServiceToken],
     })
 ], CartModule);
 //# sourceMappingURL=cart.module.js.map

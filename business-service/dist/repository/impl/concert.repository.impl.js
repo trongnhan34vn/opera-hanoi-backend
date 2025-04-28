@@ -13,31 +13,41 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConcertRepository = void 0;
-const concert_entity_1 = require("../../entity/concert.entity");
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
 const sequelize_1 = require("@nestjs/sequelize");
+const common_2 = require("common");
+const moment = require("moment-timezone");
 const sequelize_2 = require("sequelize");
+const artist_entity_1 = require("../../entity/artist.entity");
+const concert_entity_1 = require("../../entity/concert.entity");
+const director_entity_1 = require("../../entity/director.entity");
+const price_enity_1 = require("../../entity/price.enity");
+const genre_entity_1 = require("../../entity/genre.entity");
 const image_entity_1 = require("../../entity/image.entity");
 const show_time_entity_1 = require("../../entity/show.time.entity");
-const sequelize_typescript_1 = require("sequelize-typescript");
-const category_entity_1 = require("../../entity/category.entity");
-const moment_timezone_1 = require("moment-timezone");
 let ConcertRepository = class ConcertRepository {
-    constructor(concertModel, logger, sequelize) {
+    constructor(concertModel) {
         this.concertModel = concertModel;
-        this.logger = logger;
-        this.sequelize = sequelize;
     }
     async create(entity, transaction) {
         const createdConcert = await entity.save({ transaction });
         const imageCreations = entity.images.map((image) => image.get());
-        await image_entity_1.Image.bulkCreate(imageCreations, { transaction });
+        const artistCreations = entity.artists.map((artist) => artist.get());
+        const directorCreations = entity.directors.map((director) => director.get());
         const showTimeCreations = entity.showTimes.map((showTime) => showTime.get());
+        const priceCreations = entity.prices.map((price) => price.get());
+        await artist_entity_1.Artist.bulkCreate(artistCreations, { transaction });
+        await director_entity_1.Director.bulkCreate(directorCreations, { transaction });
+        await image_entity_1.Image.bulkCreate(imageCreations, { transaction });
         await show_time_entity_1.ShowTime.bulkCreate(showTimeCreations, { transaction });
+        await price_enity_1.Price.bulkCreate(priceCreations, { transaction });
+        await createdConcert.$add('artists', entity.artists, { transaction });
+        await createdConcert.$add('directors', entity.directors, { transaction });
         await createdConcert.$add('images', entity.images, { transaction });
-        await createdConcert.$add('categories', entity.categories, { transaction });
         await createdConcert.$add('showTimes', entity.showTimes, { transaction });
+        await createdConcert.$add('prices', entity.prices, { transaction });
+        await createdConcert.$add('genres', entity.genres, { transaction });
+        await createdConcert.$add('seats', entity.seats, { transaction });
         return createdConcert;
     }
     async update(entity, transaction) {
@@ -46,34 +56,51 @@ let ConcertRepository = class ConcertRepository {
     async findById(id) {
         const concert = await this.concertModel.findOne({ where: { id } });
         if (!concert)
-            throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.NOT_FOUND.getCode, common_lib_1.ErrorMessage.NOT_FOUND.getMessage, `Concert not found with id [${id}]`);
+            throw new common_2.NotFoundException(`Concert not found with id [${id}]`);
         return concert;
     }
     async findByShowTimeWithInTwoWeeks(page) {
         const limit = page.size ?? 2;
         const currentPage = page.page ?? 1;
         const offset = (currentPage - 1) * limit;
-        const total = await this.sequelize.query('select *\n' + 'from count_concerts_within_2_weeks();', { raw: true, type: sequelize_2.QueryTypes.SELECT });
-        if (total.length <= 0) {
-            throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.NOT_FOUND.getCode, common_lib_1.ErrorMessage.NOT_FOUND.getMessage, 'Count record errors');
-        }
-        const concerts = await this.sequelize.query('Select * from get_concerts_within_2_weeks(?, ?)', {
-            replacements: [limit, offset],
-            raw: true,
-            type: sequelize_2.QueryTypes.SELECT,
+        const result = await this.concertModel.findAndCountAll({
+            include: [
+                {
+                    model: show_time_entity_1.ShowTime,
+                    where: {
+                        startTime: {
+                            [sequelize_2.Op.between]: [
+                                moment().tz('Asia/Ho_Chi_Minh').format(),
+                                moment()
+                                    .tz('Asia/Ho_Chi_Minh')
+                                    .clone()
+                                    .add(2, 'weeks')
+                                    .format(),
+                            ],
+                        },
+                    },
+                    attributes: ['startTime', 'endTime'],
+                },
+                {
+                    model: artist_entity_1.Artist,
+                    attributes: ['name'],
+                },
+                {
+                    model: director_entity_1.Director,
+                    attributes: ['name'],
+                },
+            ],
+            limit: limit,
+            offset: offset,
         });
-        return {
-            total: total[0]['count_concerts_within_2_weeks'],
-            page: currentPage,
-            concerts,
-        };
+        return result;
     }
-    async findByCategoryId(categoryId) {
+    async findByGenreId(genreId) {
         return await concert_entity_1.Concert.findAndCountAll({
             include: [
                 {
-                    model: category_entity_1.Category,
-                    where: { id: categoryId },
+                    model: genre_entity_1.Genre,
+                    where: { id: genreId },
                     required: true,
                 },
                 {
@@ -91,10 +118,10 @@ let ConcertRepository = class ConcertRepository {
     async findByShowTime(startStringTime, endStringTime) {
         const TIMEZONE = 'Asia/Ho_Chi_Minh';
         const TIME_PATTERN = 'yyyy/MM/dd HH:mm:ss';
-        const startTime = (0, moment_timezone_1.default)(startStringTime, TIME_PATTERN)
+        const startTime = moment(startStringTime, TIME_PATTERN)
             .tz(TIMEZONE)
             .toDate();
-        const endTime = (0, moment_timezone_1.default)(endStringTime, TIME_PATTERN).tz(TIMEZONE).toDate();
+        const endTime = moment(endStringTime, TIME_PATTERN).tz(TIMEZONE).toDate();
         return await concert_entity_1.Concert.findAndCountAll({
             include: [
                 {
@@ -114,6 +141,39 @@ let ConcertRepository = class ConcertRepository {
             distinct: true,
         });
     }
+    async findAllConcertPagination(pagination) {
+        const page = pagination.page ?? 1;
+        const size = pagination.size ?? 5;
+        const sortBy = pagination.sortBy ?? 'id';
+        const orderBy = pagination.orderBy ?? 'ASC';
+        const offset = (page - 1) * size;
+        const limit = size;
+        const { count, rows } = await this.concertModel.findAndCountAll({
+            include: [
+                {
+                    model: show_time_entity_1.ShowTime,
+                    attributes: ['startTime', 'endTime'],
+                },
+                {
+                    model: artist_entity_1.Artist,
+                    attributes: ['name'],
+                },
+                {
+                    model: director_entity_1.Director,
+                    attributes: ['name'],
+                },
+            ],
+            limit,
+            offset,
+            order: [[sortBy, orderBy]],
+        });
+        return {
+            items: count,
+            pages: Math.ceil(count / size),
+            currentPage: page,
+            data: rows,
+        };
+    }
     async remove(id) {
         const concert = await this.findById(id);
         await concert.destroy();
@@ -126,7 +186,6 @@ exports.ConcertRepository = ConcertRepository;
 exports.ConcertRepository = ConcertRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, sequelize_1.InjectModel)(concert_entity_1.Concert)),
-    __metadata("design:paramtypes", [Object, common_lib_1.LoggerFactory,
-        sequelize_typescript_1.Sequelize])
+    __metadata("design:paramtypes", [Object])
 ], ConcertRepository);
 //# sourceMappingURL=concert.repository.impl.js.map

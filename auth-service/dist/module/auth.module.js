@@ -10,7 +10,7 @@ exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("../service/auth.service");
 const auth_controller_1 = require("../controller/auth.controller");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
 const keycloak_module_1 = require("./keycloak.module");
 const account_module_1 = require("./account.module");
 const concert_module_1 = require("./concert.module");
@@ -19,13 +19,13 @@ let AuthModule = class AuthModule {
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [common_lib_1.HttpServiceModule, keycloak_module_1.KeycloakModule, account_module_1.AccountModule, concert_module_1.ConcertModule],
+        imports: [common_2.HttpServiceModule, keycloak_module_1.KeycloakModule, account_module_1.AccountModule, concert_module_1.ConcertModule],
         providers: [
             auth_service_1.AuthService,
-            common_lib_1.HttpResponseFactory,
+            common_2.HttpResponseFactory,
             {
-                provide: common_lib_1.LoggerFactory,
-                useFactory: () => new common_lib_1.LoggerFactory('auth-service'),
+                provide: common_2.LoggerFactory,
+                useFactory: () => new common_2.LoggerFactory('auth-service'),
             },
         ],
         controllers: [auth_controller_1.AuthController],

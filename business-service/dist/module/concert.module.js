@@ -8,14 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConcertModule = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
 const sequelize_1 = require("@nestjs/sequelize");
-const category_mapper_impl_1 = require("../mapper/impl/category.mapper.impl");
+const genre_mapper_impl_1 = require("../mapper/impl/genre.mapper.impl");
 const concert_service_impl_1 = require("../service/impl/concert.service.impl");
 const concert_mapper_impl_1 = require("../mapper/impl/concert.mapper.impl");
 const concert_controller_1 = require("../controller/concert.controller");
 const concert_entity_1 = require("../entity/concert.entity");
-const category_module_1 = require("./category.module");
+const genre_module_1 = require("./genre.module");
 const concert_repository_impl_1 = require("../repository/impl/concert.repository.impl");
 let ConcertModule = class ConcertModule {
 };
@@ -23,21 +23,21 @@ exports.ConcertModule = ConcertModule;
 exports.ConcertModule = ConcertModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            common_lib_1.LogModule,
-            common_lib_1.HttpServiceModule,
-            category_module_1.CategoryModule,
+            common_2.LogModule,
+            common_2.HttpServiceModule,
+            genre_module_1.GenreModule,
             sequelize_1.SequelizeModule.forFeature([concert_entity_1.Concert]),
         ],
         controllers: [concert_controller_1.ConcertController],
         providers: [
             concert_service_impl_1.ConcertService,
             concert_repository_impl_1.ConcertRepository,
-            category_mapper_impl_1.CategoryMapper,
+            genre_mapper_impl_1.GenreMapper,
             concert_mapper_impl_1.ConcertMapper,
-            common_lib_1.HttpResponseFactory,
+            common_2.HttpResponseFactory,
             {
-                provide: common_lib_1.LoggerFactory,
-                useFactory: () => new common_lib_1.LoggerFactory('concert-service'),
+                provide: common_2.LoggerFactory,
+                useFactory: () => new common_2.LoggerFactory('concert-service'),
             },
         ],
         exports: [concert_service_impl_1.ConcertService],

@@ -1,26 +1,26 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import {
+  GlobalAuthGuard,
   HttpResponseFactory,
   LoggerFactory,
   LogModule,
   MiddlewareModule,
-} from 'common-lib';
-import { AuthController } from './controller/auth.controller';
-import { AuthModule } from './module/auth.module';
-import { ConfigModule } from '@nestjs/config';
-import * as path from 'node:path';
+  SkipAuthGuard,
+} from 'common';
 import {
   AuthGuard,
   KeycloakConnectModule,
   ResourceGuard,
   RoleGuard,
 } from 'nest-keycloak-connect';
-import { KeycloakConfig } from './config/KeycloakConfig';
-import { GlobalAuthGuard } from './config/GlobalAuthGuard';
-import { APP_GUARD } from '@nestjs/core';
-import { SkipAuthGuard } from './config/SkipAuthGuard';
+import * as path from 'node:path';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { KeycloakConfig } from './config/keycloak.config';
+import { AuthController } from './controller/auth.controller';
+import { AuthModule } from './module/auth.module';
 import { ConcertModule } from './module/concert.module';
 
 const envFilePath = '../.env.local';

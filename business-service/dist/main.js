@@ -5,28 +5,44 @@ const app_module_1 = require("./app.module");
 const dotenv = require("dotenv");
 const path = require("node:path");
 const process = require("node:process");
-const common_lib_1 = require("common-lib");
-const common_1 = require("@nestjs/common");
-const error_controller_1 = require("./controller/error.controller");
-const envFilePath = '../.env.dev';
+const common_1 = require("common");
+const common_2 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
+const exception_controller_1 = require("./controller/exception.controller");
+const envFilePath = '../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 async function bootstrap() {
-    const logger = new common_lib_1.LoggerFactory('default');
-    logger.log('Starting Nest application...');
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    const logger = new common_1.LoggerFactory('default');
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, {
+        logger: logger,
+        bufferLogs: true,
+    });
     app.useLogger(logger);
     logger.log('App successfully configured Logger');
-    app.useGlobalFilters(new error_controller_1.ErrorController(app.get(common_lib_1.HttpResponseFactory)));
+    app.useGlobalFilters(new exception_controller_1.ExceptionController(app.get(common_1.HttpResponseFactory)));
     logger.log('App successfully configured Filter Exception Controller');
-    app.useGlobalInterceptors(new common_lib_1.LogAspectInterceptor());
+    app.useGlobalInterceptors(new common_1.LogAspectInterceptor());
     logger.log('App successfully configured Interceptors');
-    logger.log(`Nest app started with port [${process.env.CONCERT_SERVICE_PORT}]`);
-    app.useGlobalPipes(new common_1.ValidationPipe({
+    logger.log(`Nest app started with port [${process.env.BUSINESS_SERVICE_PORT}]`);
+    app.useGlobalPipes(new common_2.ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: false,
         transform: true,
     }));
-    await app.listen(process.env.CONCERT_SERVICE_PORT || 3000);
+    const config = new swagger_1.DocumentBuilder()
+        .setTitle('Concert API')
+        .setDescription('The concert management API')
+        .setVersion('1.0')
+        .addTag('concerts')
+        .addApiKey({
+        type: 'apiKey',
+        name: 'x-api-key',
+        in: 'header',
+    }, 'x-api-key')
+        .build();
+    const document = swagger_1.SwaggerModule.createDocument(app, config);
+    swagger_1.SwaggerModule.setup('api/docs', app, document);
+    await app.listen(process.env.BUSINESS_SERVICE_PORT || 3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

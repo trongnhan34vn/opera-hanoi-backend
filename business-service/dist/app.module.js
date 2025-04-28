@@ -8,48 +8,58 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
+const core_1 = require("@nestjs/core");
+const sequelize_1 = require("@nestjs/sequelize");
+const common_2 = require("common");
+const nest_keycloak_connect_1 = require("nest-keycloak-connect");
+const path = require("node:path");
+const process = require("node:process");
+const dotenv = require("dotenv");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const common_lib_1 = require("common-lib");
-const config_1 = require("@nestjs/config");
-const path = require("node:path");
-const nest_keycloak_connect_1 = require("nest-keycloak-connect");
-const KeycloakConsants_1 = require("./constants/KeycloakConsants");
-const sequelize_1 = require("@nestjs/sequelize");
-const core_1 = require("@nestjs/core");
-const GlobalAuthGuard_1 = require("./config/GlobalAuthGuard");
-const SkipAuthGuard_1 = require("./config/SkipAuthGuard");
+const keycloak_config_1 = require("./config/keycloak.config");
+const artist_entity_1 = require("./entity/artist.entity");
 const concert_entity_1 = require("./entity/concert.entity");
-const category_entity_1 = require("./entity/category.entity");
+const director_entity_1 = require("./entity/director.entity");
+const floor_entity_1 = require("./entity/floor.entity");
+const genre_entity_1 = require("./entity/genre.entity");
 const image_entity_1 = require("./entity/image.entity");
+const room_entity_1 = require("./entity/room.entity");
+const seat_category_1 = require("./entity/seat.category");
 const seat_entity_1 = require("./entity/seat.entity");
-const seat_category_entity_1 = require("./entity/seat.category.entity");
-const concert_category_sub_entity_1 = require("./entity/sub/concert.category.sub.entity");
-const concert_seat_sub_entity_1 = require("./entity/sub/concert.seat.sub.entity");
 const show_time_entity_1 = require("./entity/show.time.entity");
-const category_module_1 = require("./module/category.module");
+const concert_genre_sub_entity_1 = require("./entity/sub/concert.genre.sub.entity");
+const concert_seat_sub_entity_1 = require("./entity/sub/concert.seat.sub.entity");
+const zone_entity_1 = require("./entity/zone.entity");
 const concert_module_1 = require("./module/concert.module");
-const process = require("node:process");
+const genre_module_1 = require("./module/genre.module");
+const seat_category_module_1 = require("./module/seat.category.module");
+const s3_module_1 = require("./module/s3.module");
+const cart_module_1 = require("./module/cart.module");
 const cart_entity_1 = require("./entity/cart.entity");
 const cart_item_entity_1 = require("./entity/cart.item.entity");
-const cart_module_1 = require("./module/cart.module");
+const price_enity_1 = require("./entity/price.enity");
 const envFilePath = '../.env.local';
+dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            category_module_1.CategoryModule,
+            genre_module_1.GenreModule,
             concert_module_1.ConcertModule,
+            seat_category_module_1.SeatCategoryModule,
             cart_module_1.CartModule,
-            common_lib_1.LogModule,
+            s3_module_1.S3Module,
+            common_2.LogModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 envFilePath: path.resolve(__dirname, envFilePath),
             }),
-            nest_keycloak_connect_1.KeycloakConnectModule.register(common_lib_1.KeycloakConfig.getKeycloakConfig(KeycloakConsants_1.KEYCLOAK_SERVICE_URL, KeycloakConsants_1.KEYCLOAK_REALM || 'test', KeycloakConsants_1.KEYCLOAK_CLIENT_ID || 'test', KeycloakConsants_1.KEYCLOAK_CLIENT_SECRET)),
-            common_lib_1.MiddlewareModule,
+            nest_keycloak_connect_1.KeycloakConnectModule.register(keycloak_config_1.KeycloakConfig.getKeycloakConfig()),
+            common_2.MiddlewareModule,
             sequelize_1.SequelizeModule.forRoot({
                 dialect: 'postgres',
                 host: process.env.BUSINESS_SERVICE_DB_HOST,
@@ -59,15 +69,21 @@ exports.AppModule = AppModule = __decorate([
                 database: process.env.BUSINESS_SERVICE_DB_DATABASE,
                 schema: process.env.BUSINESS_SERVICE_DB_SCHEMA,
                 models: [
+                    artist_entity_1.Artist,
+                    director_entity_1.Director,
                     concert_entity_1.Concert,
-                    category_entity_1.Category,
-                    image_entity_1.Image,
-                    show_time_entity_1.ShowTime,
-                    seat_entity_1.Seat,
-                    seat_category_entity_1.SeatCategory,
-                    concert_category_sub_entity_1.ConcertCategory,
                     cart_entity_1.Cart,
                     cart_item_entity_1.CartItem,
+                    genre_entity_1.Genre,
+                    image_entity_1.Image,
+                    show_time_entity_1.ShowTime,
+                    concert_genre_sub_entity_1.ConcertGenre,
+                    seat_entity_1.Seat,
+                    floor_entity_1.Floor,
+                    price_enity_1.Price,
+                    seat_category_1.SeatCategory,
+                    room_entity_1.Room,
+                    zone_entity_1.Zone,
                     concert_seat_sub_entity_1.ConcertSeat,
                 ],
                 define: {
@@ -85,19 +101,19 @@ exports.AppModule = AppModule = __decorate([
         controllers: [app_controller_1.AppController],
         providers: [
             app_service_1.AppService,
-            common_lib_1.HttpResponseFactory,
+            common_2.HttpResponseFactory,
             {
-                provide: common_lib_1.LoggerFactory,
-                useFactory: () => new common_lib_1.LoggerFactory('default'),
+                provide: common_2.LoggerFactory,
+                useFactory: () => new common_2.LoggerFactory('default'),
             },
             {
                 provide: core_1.APP_GUARD,
-                useClass: GlobalAuthGuard_1.GlobalAuthGuard,
+                useClass: common_2.GlobalAuthGuard,
             },
             nest_keycloak_connect_1.AuthGuard,
             nest_keycloak_connect_1.ResourceGuard,
             nest_keycloak_connect_1.RoleGuard,
-            SkipAuthGuard_1.SkipAuthGuard,
+            common_2.SkipAuthGuard,
         ],
     })
 ], AppModule);

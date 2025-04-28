@@ -3,7 +3,7 @@ import {
   HttpResponseFactory,
   HttpServiceModule,
   LoggerFactory,
-} from 'common-lib';
+} from 'common';
 import { KeycloakService } from '../service/keycloak.service';
 
 @Module({

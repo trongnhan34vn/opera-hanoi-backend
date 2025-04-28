@@ -1,3 +1,4 @@
+
 import {
   Column,
   CreatedAt,
@@ -9,21 +10,20 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Concert } from '../concert.entity';
+import { SeatStatusEnum } from '../enum/seat.status.enum';
 import { Seat } from '../seat.entity';
-import { SeatStatusName } from '../enum/seat.status.enum';
 
 @Table({
-  tableName: 'concert_seats',
+  tableName: 'concert_seat',
 })
 export class ConcertSeat extends Model<ConcertSeat> {
-  // PK ID
   @PrimaryKey
   @Column({
     type: DataType.UUID,
+    defaultValue: DataType.UUIDV4
   })
   id: string;
 
-  // FKs
   @ForeignKey(() => Concert)
   @Column({
     type: DataType.UUID,
@@ -32,24 +32,16 @@ export class ConcertSeat extends Model<ConcertSeat> {
 
   @ForeignKey(() => Seat)
   @Column({
-    type: DataType.UUID,
-  })
-  seatId: string;
-
-  // STATUS
-  @Column({
-    type: DataType.ENUM(...Object.values(SeatStatusName)),
-    defaultValue: 'AVAILABLE',
-  })
-  status: SeatStatusName;
-
-  // PRICE
-  @Column({
     type: DataType.INTEGER,
   })
-  price: number;
+  seatId: number;
 
-  // CREATE AND UPDATE TIME
+  @Column({
+    type: DataType.ENUM(...Object.values(SeatStatusEnum)),
+    defaultValue: SeatStatusEnum.AVAILABLE,
+  })
+  status: SeatStatusEnum;
+
   @CreatedAt
   createdAt: Date;
 

@@ -24,7 +24,7 @@ export class Cart extends Model<Cart> {
     type: DataType.UUID,
   })
   userId: string;
-
+  
   @HasMany(() => CartItem)
   cartItems: CartItem[];
 

@@ -11,26 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConcertService = void 0;
 const common_1 = require("@nestjs/common");
-const concert_repository_impl_1 = require("../../repository/impl/concert.repository.impl");
-const concert_mapper_impl_1 = require("../../mapper/impl/concert.mapper.impl");
-const common_lib_1 = require("common-lib");
-const category_service_impl_1 = require("./category.service.impl");
-const category_mapper_impl_1 = require("../../mapper/impl/category.mapper.impl");
-const image_entity_1 = require("../../entity/image.entity");
-const show_time_entity_1 = require("../../entity/show.time.entity");
+const common_2 = require("common");
 const moment = require("moment-timezone");
 const sequelize_typescript_1 = require("sequelize-typescript");
-const concert_seat_sub_entity_1 = require("../../entity/sub/concert.seat.sub.entity");
-const seat_entity_1 = require("../../entity/seat.entity");
-const uuid_1 = require("uuid");
 const concert_entity_1 = require("../../entity/concert.entity");
-const seat_category_entity_1 = require("../../entity/seat.category.entity");
+const concert_mapper_impl_1 = require("../../mapper/impl/concert.mapper.impl");
+const concert_repository_impl_1 = require("../../repository/impl/concert.repository.impl");
 let ConcertService = class ConcertService {
-    constructor(concertRepository, concertMapper, categoryService, categoryMapper, logger, sequelize) {
+    constructor(concertRepository, concertMapper, logger, sequelize) {
         this.concertRepository = concertRepository;
         this.concertMapper = concertMapper;
-        this.categoryService = categoryService;
-        this.categoryMapper = categoryMapper;
         this.logger = logger;
         this.sequelize = sequelize;
         this.DATE_PATTERN = 'YYYY/MM/DD HH:mm:ss';
@@ -39,73 +29,9 @@ let ConcertService = class ConcertService {
     async create(dto) {
         const transaction = await this.sequelize.transaction();
         try {
-            const concert = this.concertMapper.toEntity(dto);
+            const concert = await this.concertMapper.toEntity(dto);
             this.logger.log('Start create operation...');
-            const categoryIds = dto.categories;
-            const categories = [];
-            for (const categoryId of categoryIds) {
-                const categoryDto = await this.categoryService.findById(categoryId);
-                const category = this.categoryMapper.toEntity(categoryDto);
-                categories.push(category);
-            }
-            concert.categories = categories;
-            this.logger.log('Set categories of concert');
-            const imageUrls = dto.images;
-            const images = [];
-            for (const stringUrl of imageUrls) {
-                const image = new image_entity_1.Image();
-                image.id = (0, uuid_1.v4)();
-                image.concertId = concert.id;
-                image.url = stringUrl;
-                image.concert = concert;
-                images.push(image);
-            }
-            concert.images = images;
-            this.logger.log('Set images of concert');
-            const isShowTimesInPast = this.isShowTimesInPast(dto.showTimes);
-            if (isShowTimesInPast) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.BAD_REQUEST.getCode, common_lib_1.ErrorMessage.BAD_REQUEST.getMessage, 'Show times is invalid. Show times cannot be in the past');
-            }
-            const showTimes = [];
-            const stringShowTimes = dto.showTimes;
-            for (const stringShowTime of stringShowTimes) {
-                const showTime = new show_time_entity_1.ShowTime();
-                showTime.id = (0, uuid_1.v4)();
-                showTime.concertId = concert.id;
-                showTime.startTime = moment(stringShowTime.startTime, this.DATE_PATTERN)
-                    .tz(this.TIMEZONE)
-                    .toDate();
-                showTime.endTime = moment(stringShowTime.endTime, this.DATE_PATTERN)
-                    .tz(this.TIMEZONE)
-                    .toDate();
-                showTimes.push(showTime);
-            }
-            const isConcertDuplicated = await this.isShowTimesOfConcertDuplicated(dto.showTimes);
-            if (isConcertDuplicated) {
-                throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.CONFLICT.getCode, common_lib_1.ErrorMessage.CONFLICT.getMessage, 'Time slot conflict');
-            }
-            concert.showTimes = showTimes;
-            this.logger.log('Set show times of concert');
-            const createdConcert = await this.concertRepository.create(concert);
-            const seats = await seat_entity_1.Seat.findAll({ include: [seat_category_entity_1.SeatCategory] });
-            const concertSeats = [];
-            for (const seat of seats) {
-                if (!seat.seatCategory) {
-                    throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getCode, common_lib_1.ErrorMessage.INTERNAL_SERVER_ERROR.getMessage, 'Error occurred when query seat category of seat');
-                }
-                const seatCategoryPrice = dto.seatCategoriesPrice.find((scp) => scp.seatCategoryName === seat.seatCategory.name.toString());
-                if (!seatCategoryPrice) {
-                    throw new common_lib_1.ResourceException(common_lib_1.ErrorMessage.NOT_FOUND.getCode, common_lib_1.ErrorMessage.NOT_FOUND.getMessage, 'Error occurred when set price for seat of concert');
-                }
-                const concertSeat = new concert_seat_sub_entity_1.ConcertSeat();
-                concertSeat.id = (0, uuid_1.v4)();
-                concertSeat.concertId = concert.id;
-                concertSeat.seatId = seat.id;
-                concertSeat.price = seatCategoryPrice.price;
-                concertSeats.push(concertSeat.get());
-            }
-            await concert_seat_sub_entity_1.ConcertSeat.bulkCreate(concertSeats, { transaction });
-            this.logger.log('Set the number of seats for the concert');
+            const createdConcert = await this.concertRepository.create(concert, transaction);
             await transaction.commit();
             this.logger.log(`Concert created id [${createdConcert.id}]`);
             return this.concertMapper.toDto(createdConcert);
@@ -152,23 +78,16 @@ let ConcertService = class ConcertService {
     async findUpcomingConcerts(page) {
         try {
             const result = await this.concertRepository.findByShowTimeWithInTwoWeeks(page);
-            const concerts = result.concerts;
-            const dtoConcerts = [];
-            for (const concert of concerts) {
-                const concertDto = this.concertMapper.toDto(concert);
-                concertDto.showTimes = concert['show_times'] ?? [];
-                dtoConcerts.push(concertDto);
-            }
-            return { ...result, dtoConcerts };
+            return result;
         }
         catch (error) {
             this.logger.error(error);
             throw error;
         }
     }
-    async findByCategoryId(categoryId) {
+    async findByGenreId(genreId) {
         try {
-            const result = await this.concertRepository.findByCategoryId(categoryId);
+            const result = await this.concertRepository.findByGenreId(genreId);
             const concerts = result.rows;
             const concertDtos = this.concertMapper.toDtos(concerts);
             this.logger.log('Concert founded');
@@ -190,6 +109,9 @@ let ConcertService = class ConcertService {
             this.logger.error(error);
             throw error;
         }
+    }
+    async findAllConcertPagination(page) {
+        return await this.concertRepository.findAllConcertPagination(page);
     }
     save(dto) {
         throw new Error('Method not implemented.');
@@ -216,9 +138,7 @@ exports.ConcertService = ConcertService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [concert_repository_impl_1.ConcertRepository,
         concert_mapper_impl_1.ConcertMapper,
-        category_service_impl_1.CategoryService,
-        category_mapper_impl_1.CategoryMapper,
-        common_lib_1.LoggerFactory,
+        common_2.LoggerFactory,
         sequelize_typescript_1.Sequelize])
 ], ConcertService);
 //# sourceMappingURL=concert.service.impl.js.map

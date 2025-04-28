@@ -9,12 +9,16 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { Category } from './category.entity';
-import { ConcertCategory } from './sub/concert.category.sub.entity';
+import { ConcertStatusEnum } from './enum/concert.status.enum';
+import { Genre } from './genre.entity';
 import { Image } from './image.entity';
-import { ShowTime } from './show.time.entity';
+import { Price } from './price.enity';
 import { Seat } from './seat.entity';
+import { ShowTime } from './show.time.entity';
+import { ConcertGenre } from './sub/concert.genre.sub.entity';
 import { ConcertSeat } from './sub/concert.seat.sub.entity';
+import { Artist } from './artist.entity';
+import { Director } from './director.entity';
 
 @Table({
   tableName: 'concerts',
@@ -28,22 +32,26 @@ export class Concert extends Model<Concert> {
   id: string;
 
   // ART
-  @Column({
-    type: DataType.STRING,
-  })
-  art: string;
+  // @Column({
+  //   type: DataType.STRING,
+  // })
+  // art: string;
+  @HasMany(() => Artist)
+  artists: Artist[];
+
+  // DIRECTOR
+  // @Column({
+  //   type: DataType.STRING,
+  // })
+  // director: string;
+  @HasMany(() => Director)
+  directors: Director[];
 
   // CODE
   @Column({
     type: DataType.STRING,
   })
   code: string;
-
-  // DIRECTOR
-  @Column({
-    type: DataType.STRING,
-  })
-  director: string;
 
   // TITLE
   @Column({
@@ -57,6 +65,13 @@ export class Concert extends Model<Concert> {
   })
   description: string;
 
+  // STATUS
+  @Column({
+    type: DataType.ENUM(...Object.values(ConcertStatusEnum)),
+    defaultValue: ConcertStatusEnum.ON_SALE,
+  })
+  status: ConcertStatusEnum;
+
   // CREATE AND UPDATE TIME
   @CreatedAt
   createdAt: Date;
@@ -67,8 +82,8 @@ export class Concert extends Model<Concert> {
   // RELATIONS //
 
   // N CONCERT - N CATEGORIES
-  @BelongsToMany(() => Category, () => ConcertCategory)
-  categories: Category[];
+  @BelongsToMany(() => Genre, () => ConcertGenre)
+  genres: Genre[];
 
   // 1 CONCERT - N IMAGES
   @HasMany(() => Image)
@@ -78,9 +93,10 @@ export class Concert extends Model<Concert> {
   @HasMany(() => ShowTime)
   showTimes: ShowTime[];
 
-  // N CONCERT - N SEAT
+  // RELATIONS //
+  @HasMany(() => Price)
+  prices: Price[];
+
   @BelongsToMany(() => Seat, () => ConcertSeat)
   seats: Seat[];
-
-  // RELATIONS //
 }

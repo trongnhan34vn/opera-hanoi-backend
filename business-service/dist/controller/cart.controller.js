@@ -14,31 +14,28 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartController = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
+const symbol_1 = require("../constants/symbol");
 const cart_dto_1 = require("../dto/request/cart.dto");
-const cart_service_impl_1 = require("../service/impl/cart.service.impl");
 const cart_item_dto_1 = require("../dto/request/cart.item.dto");
-const SkipAuthGuardAnnotationConfig_1 = require("../config/SkipAuthGuardAnnotationConfig");
-const cart_item_service_impl_1 = require("../service/impl/cart.item.service.impl");
 let CartController = class CartController {
-    constructor(cartService, cartItemService, httpResponseFactory) {
+    constructor(cartService, carItemService, responseFactory) {
         this.cartService = cartService;
-        this.cartItemService = cartItemService;
-        this.httpResponseFactory = httpResponseFactory;
+        this.carItemService = carItemService;
+        this.responseFactory = responseFactory;
     }
     async createCart(res, cartDto) {
-        const cart = await this.cartService.create(cartDto);
-        return this.httpResponseFactory.sendSuccessResponse(res, common_1.HttpStatus.CREATED, common_lib_1.SuccessMessage.CREATED.getCode, `New cart is created [${cart.id}]`, cart);
+        const cart = await this.cartService.save(cartDto);
+        return this.responseFactory.sendCreatedResponse(res, `Cart [${cart.id}] is created`, cart);
     }
     async addToCart(res, cartItemDto) {
-        const cartItem = await this.cartItemService.addToCart(cartItemDto);
-        return this.httpResponseFactory.sendSuccessResponse(res, common_1.HttpStatus.CREATED, common_lib_1.SuccessMessage.CREATED.getCode, `Added to cart [${cartItem.id}]`, cartItem);
+        const createdCartItem = await this.carItemService.save(cartItemDto);
+        return this.responseFactory.sendCreatedResponse(res, `Cart Item [${createdCartItem.id}] is created`, createdCartItem);
     }
 };
 exports.CartController = CartController;
 __decorate([
-    (0, common_1.Post)('/'),
-    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    (0, common_1.Post)(),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -47,7 +44,6 @@ __decorate([
 ], CartController.prototype, "createCart", null);
 __decorate([
     (0, common_1.Post)('/add-to-cart'),
-    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -56,8 +52,8 @@ __decorate([
 ], CartController.prototype, "addToCart", null);
 exports.CartController = CartController = __decorate([
     (0, common_1.Controller)('/api/v1/business/carts'),
-    __metadata("design:paramtypes", [cart_service_impl_1.CartService,
-        cart_item_service_impl_1.CartItemService,
-        common_lib_1.HttpResponseFactory])
+    __param(0, (0, common_1.Inject)(symbol_1.ICartServiceToken)),
+    __param(1, (0, common_1.Inject)(symbol_1.ICartItemServiceToken)),
+    __metadata("design:paramtypes", [Object, Object, common_2.HttpResponseFactory])
 ], CartController);
 //# sourceMappingURL=cart.controller.js.map

@@ -7,24 +7,27 @@ import {
   HttpResponseFactory,
   LogAspectInterceptor,
   LoggerFactory,
-} from 'common-lib';
+} from 'common';
 import { ValidationPipe } from '@nestjs/common';
-import { ErrorController } from './controller/error.controller';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ExceptionController } from './controller/exception.controller';
 
 const envFilePath = '../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 
 async function bootstrap() {
   const logger = new LoggerFactory('default');
-  logger.log('Starting Nest application...');
 
   // config log
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: logger,
+    bufferLogs: true,
+  });
   app.useLogger(logger);
   logger.log('App successfully configured Logger');
 
   // config controller exception
-  app.useGlobalFilters(new ErrorController(app.get(HttpResponseFactory)));
+  app.useGlobalFilters(new ExceptionController(app.get(HttpResponseFactory)));
   logger.log('App successfully configured Filter Exception Controller');
 
   // config interceptors
@@ -44,6 +47,26 @@ async function bootstrap() {
       transform: true, // Tự động chuyển đổi payload sang DTO
     }),
   );
+
+  // swagger
+  const config = new DocumentBuilder()
+    .setTitle('Concert API')
+    .setDescription('The concert management API')
+    .setVersion('1.0')
+    .addTag('concerts') // optional
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'x-api-key', // header name
+        in: 'header',
+      },
+      'x-api-key',
+    )
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
   await app.listen(process.env.BUSINESS_SERVICE_PORT || 3000);
 }
 

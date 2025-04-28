@@ -9,10 +9,7 @@ export class CartItemDto {
   cartId: string;
 
   @IsString()
-  seatId: string;
-
-  @IsString()
-  concertId: string;
+  concertSeatId: string;
 
   @IsString()
   @IsOptional()

@@ -1,18 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import {
-  ErrorMessage,
-  HttpHeaders,
-  HttpMethod,
-  HttpServiceFactory,
-  LoggerFactory,
-  ResourceException,
-} from 'common-lib';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import {
   API_KEY,
   BUSINESS_SERVICE_BASEURL,
   BUSINESS_SERVICE_CREATE_CART_ENDPOINT,
   BUSINESS_SERVICE_PATH,
 } from '../constants/ServiceConstant';
+import { HttpMethod, HttpServiceFactory, LoggerFactory } from 'common';
+import {
+  HttpEndpoint,
+  HttpHeaders,
+} from 'common/dist/factory/http.service.factory.interface';
 
 @Injectable()
 export class CartService {
@@ -30,18 +27,20 @@ export class CartService {
       const headers: HttpHeaders = {
         apiKey: API_KEY,
       };
+      const endpoint: HttpEndpoint = {
+        baseURL: BUSINESS_SERVICE_BASEURL,
+        path: BUSINESS_SERVICE_PATH + BUSINESS_SERVICE_CREATE_CART_ENDPOINT,
+      };
+
       const response = await this.httpService.call(
+        endpoint,
         HttpMethod.POST,
-        BUSINESS_SERVICE_BASEURL,
-        BUSINESS_SERVICE_PATH + BUSINESS_SERVICE_CREATE_CART_ENDPOINT,
-        headers,
         cart,
+        headers,
       );
 
       if (!response) {
-        throw new ResourceException(
-          ErrorMessage.INTERNAL_SERVER_ERROR.getCode,
-          ErrorMessage.INTERNAL_SERVER_ERROR.getMessage,
+        throw new InternalServerErrorException(
           'Error occurred when creating cart for user',
         );
       }

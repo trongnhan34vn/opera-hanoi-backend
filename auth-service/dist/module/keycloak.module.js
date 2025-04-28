@@ -8,19 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeycloakModule = void 0;
 const common_1 = require("@nestjs/common");
-const common_lib_1 = require("common-lib");
+const common_2 = require("common");
 const keycloak_service_1 = require("../service/keycloak.service");
 let KeycloakModule = class KeycloakModule {
 };
 exports.KeycloakModule = KeycloakModule;
 exports.KeycloakModule = KeycloakModule = __decorate([
     (0, common_1.Module)({
-        imports: [common_lib_1.HttpServiceModule],
+        imports: [common_2.HttpServiceModule],
         providers: [
-            common_lib_1.HttpResponseFactory,
+            common_2.HttpResponseFactory,
             {
-                provide: common_lib_1.LoggerFactory,
-                useFactory: () => new common_lib_1.LoggerFactory('keycloak-service'),
+                provide: common_2.LoggerFactory,
+                useFactory: () => new common_2.LoggerFactory('keycloak-service'),
             },
             keycloak_service_1.KeycloakService,
         ],

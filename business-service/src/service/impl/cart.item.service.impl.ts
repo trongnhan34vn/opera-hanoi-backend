@@ -1,92 +1,55 @@
-import { Injectable } from '@nestjs/common';
-import { ErrorMessage, LoggerFactory, ResourceException } from 'common-lib';
-import { CartItemRepository } from '../../repository/impl/cart.item.repository.impl';
-import { CartItemServiceInterface } from '../cart.item.service.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { ICartItemService } from '../cart.item.service.interface';
+import { CartItemDto } from 'src/dto/request/cart.item.dto';
+import { ICartItemRepository } from 'src/repository/cart.item.repository.interface';
+import { ICartItemMapper } from 'src/mapper/cart.item.mapper.interface';
 import { CartItem } from 'src/entity/cart.item.entity';
-import { CartItemDto } from '../../dto/request/cart.item.dto';
-import { CartItemMapper } from '../../mapper/impl/cart.item.mapper.impl';
+import {
+  ICartItemRepositoryToken,
+  ICartMapperToken,
+} from 'src/constants/symbol';
 import { Sequelize } from 'sequelize-typescript';
-import { ConcertSeat } from '../../entity/sub/concert.seat.sub.entity';
-import { SeatStatusName } from '../../entity/enum/seat.status.enum';
-import * as moment from 'moment-timezone';
 
 @Injectable()
-export class CartItemService implements CartItemServiceInterface {
+export class CartItemService implements ICartItemService {
   constructor(
-    private readonly logger: LoggerFactory,
-    private readonly cartItemMapper: CartItemMapper,
-    private readonly cartItemRepository: CartItemRepository,
+    @Inject(ICartItemRepositoryToken)
+    private readonly cartItemRepository: ICartItemRepository,
+    @Inject(ICartMapperToken)
+    private readonly cartItemMapper: ICartItemMapper,
     private readonly sequelize: Sequelize,
   ) {}
 
-  async addToCart(dto: CartItemDto) {
-    const transaction = await this.sequelize.transaction();
+  async save(dto: CartItemDto): Promise<CartItemDto> {
     try {
-      const cartItem = this.cartItemMapper.toEntity(dto);
-      // no price -> set price
-      const seatId = dto.seatId;
-      const concertSeat = await ConcertSeat.findOne({
-        where: { seatId: seatId },
-      });
-
-      // seat not found on sub table
-      if (!concertSeat) {
-        this.logger.error('Seat not found');
-        throw new ResourceException(
-          ErrorMessage.NOT_FOUND.getCode,
-          ErrorMessage.NOT_FOUND.getMessage,
-          `ConcertSeat not found with id [${seatId}]`,
+      const transaction = await this.sequelize.transaction();
+      const cartItem = this.cartItemMapper.toEntity(dto) as CartItem;
+      if (!dto.id) {
+        // create operation <=> id == null
+        const createdCartItem = await this.cartItemRepository.create(
+          cartItem,
+          transaction,
         );
+        return this.cartItemMapper.toDto(createdCartItem);
       }
-
-      // seat is reserved
-      if (concertSeat.status === SeatStatusName.RESERVED) {
-        this.logger.error('Seat is RESERVED');
-        throw new ResourceException(
-          ErrorMessage.CONFLICT.getCode,
-          ErrorMessage.CONFLICT.getMessage,
-          'Seat is RESERVED',
-        );
-      }
-      cartItem.price = concertSeat.price;
-
-      // create
-      const createdCartItem = await this.cartItemRepository.create(
+      const updatedCart = await this.cartItemRepository.update(
         cartItem,
         transaction,
       );
-      this.logger.log(`Cart created [${createdCartItem.id}]`);
-
-      // set seat of concert status
-      await concertSeat.update({
-        status: SeatStatusName.RESERVED,
-        updatedAt: moment(new Date(Date.now())).tz('Asia/Ho_Chi_Minh').toDate(),
-      });
-
-      this.logger.log("Set status of concert 'seat");
-
-      await transaction.commit();
-      return this.cartItemMapper.toDto(createdCartItem);
+      return this.cartItemMapper.toDto(updatedCart);
     } catch (error) {
-      await transaction.rollback();
-      this.logger.error(error);
       throw error;
     }
   }
-
-  save(dto: CartItem): Promise<CartItem> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<CartItemDto[]> {
+    const cartItems = await this.cartItemRepository.findAll();
+    return this.cartItemMapper.toDtos(cartItems);
   }
-
-  findAll(): Promise<CartItem[]> {
-    throw new Error('Method not implemented.');
+  async findById(id: string): Promise<CartItemDto> {
+    const cartItem = await this.cartItemRepository.findById(id);
+    return this.cartItemMapper.toDto(cartItem);
   }
-
-  findById(id: string): Promise<CartItem> {
-    throw new Error('Method not implemented.');
-  }
-
-  remove(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async remove(id: string): Promise<void> {
+    await this.cartItemRepository.remove(id);
   }
 }

@@ -1,4 +1,4 @@
-import { GenericServiceInterface } from './generic.service.interface';
-import { CartItemDto } from '../dto/request/cart.item.dto';
-export interface CartItemServiceInterface extends GenericServiceInterface<CartItemDto> {
+import { CartItemDto } from "src/dto/request/cart.item.dto";
+import { GenericServiceInterface } from "./generic.service.interface";
+export interface ICartItemService extends GenericServiceInterface<CartItemDto> {
 }
