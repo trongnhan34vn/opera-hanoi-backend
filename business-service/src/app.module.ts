@@ -76,6 +76,7 @@ dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 
     // import middleware api key
     MiddlewareModule,
+    
 
     // DATABASES
     SequelizeModule.forRoot({
