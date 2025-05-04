@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   Post,
   Put,
@@ -11,12 +10,13 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { GenreService } from '../service/impl/genre.service.impl';
 import { HttpResponseFactory } from 'common';
 import { Response } from 'express';
-import { GenreDto } from '../dto/request/genre.dto';
 import { AuthGuard, RoleGuard, Roles } from 'nest-keycloak-connect';
 import { Pagination } from 'src/dto/request/pagination.dto';
+import { GenreDto } from '../dto/request/genre.dto';
+import { GenreService } from '../service/impl/genre.service.impl';
+import { KeycloakRoleEnum } from 'src/enum/keycloak.role.enum';
 
 @Controller('/api/v1/business/genres')
 @UseGuards(AuthGuard, RoleGuard)
@@ -37,7 +37,13 @@ export class GenreController {
   }
 
   @Get('/page')
-  @Roles({ roles: ['ADMIN'] })
+  @Roles({
+    roles: [
+      KeycloakRoleEnum.FULL_ACCESS_GENRE_ROLE,
+      KeycloakRoleEnum.FULL_ACCESS_ROLE,
+      KeycloakRoleEnum.VIEW_GENRE_ROLE,
+    ],
+  })
   async findAllPagination(@Res() res: Response, @Query() query: Pagination) {
     const genres = await this.genreService.findAllPagination(query);
     return this.httpResponseFactory.sendOKResponse(
@@ -48,21 +54,26 @@ export class GenreController {
   }
 
   @Get('/:genreId')
-  @Roles({ roles: ['ADMIN'] })
-  async findById(
-    @Res() res: Response,
-    @Param('genreId') genreId: string,
-  ) {
+  @Roles({
+    roles: [
+      KeycloakRoleEnum.FULL_ACCESS_GENRE_ROLE,
+      KeycloakRoleEnum.FULL_ACCESS_ROLE,
+      KeycloakRoleEnum.VIEW_GENRE_ROLE,
+    ],
+  })
+  async findById(@Res() res: Response, @Param('genreId') genreId: string) {
     const genre = await this.genreService.findById(genreId);
-    return this.httpResponseFactory.sendOKResponse(
-      res,
-      'Genre founded',
-      genre,
-    );
+    return this.httpResponseFactory.sendOKResponse(res, 'Genre founded', genre);
   }
 
   @Post('/')
-  @Roles({ roles: ['ADMIN'] })
+  @Roles({
+    roles: [
+      KeycloakRoleEnum.FULL_ACCESS_GENRE_ROLE,
+      KeycloakRoleEnum.FULL_ACCESS_ROLE,
+      KeycloakRoleEnum.PUT_GENRE_ROLE,
+    ],
+  })
   async save(@Res() res: Response, @Body() genreDto: GenreDto) {
     const genre = await this.genreService.save(genreDto);
     return this.httpResponseFactory.sendCreatedResponse(
@@ -73,7 +84,13 @@ export class GenreController {
   }
 
   @Delete('/:genreId')
-  @Roles({ roles: ['ADMIN'] })
+  @Roles({
+    roles: [
+      KeycloakRoleEnum.DELETE_GENRE_ROLE,
+      KeycloakRoleEnum.FULL_ACCESS_ROLE,
+      KeycloakRoleEnum.FULL_ACCESS_GENRE_ROLE,
+    ],
+  })
   async delete(@Res() res: Response, @Param('genreId') genreId: string) {
     await this.genreService.remove(genreId);
     return this.httpResponseFactory.sendOKResponse(
@@ -84,7 +101,13 @@ export class GenreController {
   }
 
   @Put()
-  @Roles({ roles: ['ADMIN'] })
+  @Roles({
+    roles: [
+      KeycloakRoleEnum.FULL_ACCESS_GENRE_ROLE,
+      KeycloakRoleEnum.FULL_ACCESS_ROLE,
+      KeycloakRoleEnum.PUT_GENRE_ROLE,
+    ],
+  })
   async update(@Res() res: Response, @Body() genreDto: GenreDto) {
     const updatedGenre = await this.genreService.save(genreDto);
     return this.httpResponseFactory.sendOKResponse(
@@ -93,6 +116,4 @@ export class GenreController {
       updatedGenre,
     );
   }
-
-
 }

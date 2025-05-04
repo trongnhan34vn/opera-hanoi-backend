@@ -6,6 +6,7 @@ import { Roles } from 'nest-keycloak-connect';
 import { ConcertDto } from '../dto/request/concert.dto';
 import { Pagination } from '../dto/request/pagination.dto';
 import { ConcertService } from '../service/impl/concert.service.impl';
+import { KeycloakRoleEnum } from 'src/enum/keycloak.role.enum';
 
 @ApiTags('concerts')
 @Controller('/api/v1/business/concerts')
@@ -111,14 +112,18 @@ export class ConcertController {
   }
 
   @Post('/')
-  @SkipAuth()
+  @Roles({roles: [
+    KeycloakRoleEnum.PUT_CONCERT_ROLE,
+    KeycloakRoleEnum.FULL_ACCESS_CONCERT_ROLE,
+    KeycloakRoleEnum.FULL_ACCESS_ROLE
+  ]})
   @ApiResponse({
     status: 200,
     description: 'Create Concert',
     // type: [ConcertDto],
   })
   async create(@Res() res: Response, @Body() concertDto: ConcertDto) {
-    const concert = await this.concertService.create(concertDto);
+    const concert = await this.concertService.save(concertDto);
     return this.httpResponseFactory.sendCreatedResponse(
       res,
       `Concert created [${concert.id}]`,
@@ -130,7 +135,7 @@ export class ConcertController {
   @SkipAuth()
   async bulkCreate(@Res() res: Response, @Body() concertDtos: ConcertDto[]) {
     for (const concertDto of concertDtos) {
-      await this.concertService.create(concertDto);
+      await this.concertService.save(concertDto);
     }
 
     return this.httpResponseFactory.sendCreatedResponse(
@@ -141,7 +146,7 @@ export class ConcertController {
   }
 
   @Get('/:id')
-  @Roles({ roles: ['ADMIN'] })
+  @SkipAuth()
   async findConcertById(@Res() res: Response, @Param('id') id: string) {
     const concert = await this.concertService.findById(id);
     return this.httpResponseFactory.sendOKResponse(

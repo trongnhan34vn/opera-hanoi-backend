@@ -1,25 +1,85 @@
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AxiosError, AxiosResponse } from 'axios';
+import { getInstance } from 'src/config/axios.instance.config';
 import { HttpMethod } from 'src/enum/http.method.enum';
+import { BadRequestException } from 'src/exception/bad.request.exception';
+import { ConflictException } from 'src/exception/confilct.exception';
+import { ForbiddenException } from 'src/exception/forbidden.exception';
+import { NotFoundException } from 'src/exception/not.found.exception';
+import { ServiceUnavailableException } from 'src/exception/service.unavailable.exception';
+import { UnauthorizedException } from 'src/exception/unauthorized.exception';
 import {
   HttpEndpoint,
   HttpHeaders,
-  IHttpService,
+  IHttpServiceFactory,
 } from '../http.service.factory.interface';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { LoggerFactory } from './logger.factory.impl';
-import { BadRequestException } from 'src/exception/bad.request.exception';
-import { getInstance } from 'src/config/axios.instance.config';
-import { ServiceUnavailableException } from 'src/exception/service.unavailable.exception';
-import { UnauthorizedException } from 'src/exception/unauthorized.exception';
-import { ForbiddenException } from 'src/exception/forbidden.exception';
-import { ConflictException } from 'src/exception/confilct.exception';
-import { NotFoundException } from 'src/exception/not.found.exception';
 
 @Injectable()
-export class HttpServiceFactory implements IHttpService {
+export class HttpServiceFactory implements IHttpServiceFactory {
   constructor(private readonly logger: LoggerFactory) {}
+  async delete(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+  ): Promise<AxiosResponse> {
+    const endpoint: HttpEndpoint = {
+      baseURL,
+      path,
+    };
+    return await this.sendRequest(endpoint, HttpMethod.DELETE, null, headers);
+  }
 
-  async call(
+  async get(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+  ): Promise<AxiosResponse> {
+    const endpoint: HttpEndpoint = {
+      baseURL,
+      path,
+    };
+    return await this.sendRequest(endpoint, HttpMethod.GET, null, headers);
+  }
+
+  async post(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+    data?: any,
+  ): Promise<AxiosResponse> {
+    const endpoint: HttpEndpoint = {
+      baseURL,
+      path,
+    };
+    return await this.sendRequest(endpoint, HttpMethod.POST, data, headers);
+  }
+  async put(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+    data?: any,
+  ): Promise<AxiosResponse> {
+    const endpoint: HttpEndpoint = {
+      baseURL,
+      path,
+    };
+    return await this.sendRequest(endpoint, HttpMethod.PUT, data, headers);
+  }
+  async patch(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+    data?: any,
+  ): Promise<AxiosResponse> {
+    const endpoint: HttpEndpoint = {
+      baseURL,
+      path,
+    };
+    return await this.sendRequest(endpoint, HttpMethod.PATCH, data, headers);
+  }
+
+  private async sendRequest(
     endpoint: HttpEndpoint,
     method: HttpMethod,
     data?: any,
@@ -34,8 +94,8 @@ export class HttpServiceFactory implements IHttpService {
 
     this.logger.log(
       `[API_CALL:START] ${method} ${baseURL}${path} | Trace-ID: ${traceId}\n` +
-        `Headers: ${this.sanitize(headers)}\n` +
-        `Data: ${this.sanitize(data)}`,
+        `Headers: ${this.sanitize(headers) ?? 'N/A'}\n` +
+        `Data: ${this.sanitize(data) ?? 'N/A'}`,
     );
 
     let response: AxiosResponse<any> | undefined;
@@ -64,12 +124,13 @@ export class HttpServiceFactory implements IHttpService {
         throw new InternalServerErrorException('Server Response error');
       }
       const responseBody = response.data;
+
       const result = this.sanitize(responseBody);
 
       this.logger.log(
         `[API_CALL:SUCCESS] ${method} ${baseURL}${path} | Trace-ID: ${traceId}\n` +
           `Status: ${response.status}\n` +
-          `Response: ${result}`,
+          `Response: ${result ?? 'N/A'}`,
       );
       return response;
     } catch (error) {
@@ -78,7 +139,7 @@ export class HttpServiceFactory implements IHttpService {
           `Message: ${error.message}\n` +
           `Code: ${error.code ?? 'N/A'}\n` +
           `Status: ${error.response?.status ?? 'N/A'}\n` +
-          `Respones: ${this.sanitize(error.response.data) ?? 'N/A'}\n` +
+          `Respones: ${this.sanitize(error.response?.data) ?? 'N/A'}\n` +
           `Stack: ${error.stack}`,
       );
       throw this.handleAxiosError(error);
@@ -99,7 +160,9 @@ export class HttpServiceFactory implements IHttpService {
       'authorization',
       'access_token',
       'refresh_token',
+      'token',
       'password',
+      'apiKey',
     ],
   ): any {
     if (!obj || typeof obj !== 'object') return obj;
@@ -125,10 +188,16 @@ export class HttpServiceFactory implements IHttpService {
 
     if (!statusError) {
       if (error.code === 'ECONNREFUSED') {
-        throw new ServiceUnavailableException('Service Unavailable');
+        throw new ServiceUnavailableException(
+          'Service Unavailable',
+          'Service Unavailable',
+        );
       }
 
-      throw new InternalServerErrorException('Error undefined');
+      throw new InternalServerErrorException(
+        'Error undefined',
+        'Error undefined',
+      );
     }
 
     switch (statusError) {

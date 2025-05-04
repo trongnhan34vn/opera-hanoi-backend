@@ -14,8 +14,10 @@ export declare class KeycloakService {
     private deleteUser;
     private createUser;
     private mappingRoleToUser;
+    findAllRoles(token: string): Promise<any>;
     private assignRoleToUser;
     private findUserByEmail;
+    private findMyClient;
     private findRoleByName;
-    private getAdminAccess;
+    getAdminAccess(): Promise<string>;
 }

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
-const SkipAuthGuardAnnotationConfig_1 = require("./config/SkipAuthGuardAnnotationConfig");
+const common_2 = require("common");
 let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
@@ -24,7 +24,7 @@ let AppController = class AppController {
 exports.AppController = AppController;
 __decorate([
     (0, common_1.Get)('/actuator/health'),
-    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    (0, common_2.SkipAuth)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)

@@ -16,16 +16,18 @@ dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 
 async function bootstrap() {
   const logger = new LoggerFactory('default');
-  logger.log('Starting Nest application...');
 
   // config log
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: logger,
+    bufferLogs: true,
+  });
   app.useLogger(logger);
   logger.log('App successfully configured Logger');
 
   // config controller exception
   app.useGlobalFilters(
-    new ExceptionController(app.get(HttpResponseFactory)),
+    new ExceptionController(app.get(HttpResponseFactory), app.get(LoggerFactory)),
     // new UnhandledExceptionFilter(app.get(HttpResponseFactory)),
   );
   logger.log('App successfully configured Filters');

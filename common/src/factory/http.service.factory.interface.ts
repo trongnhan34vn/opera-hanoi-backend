@@ -1,13 +1,38 @@
-import { HttpMethod } from '../enum/http.method.enum';
 import { AxiosResponse } from 'axios';
 
-export interface IHttpService {
-  call: (
-    endpoint: HttpEndpoint,
-    method: HttpMethod,
+export interface IHttpServiceFactory {
+  get(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+  ): Promise<AxiosResponse>;
+
+  post(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
     data?: any,
-    headers?: HttpHeaders,
-  ) => Promise<AxiosResponse<any>>;
+  ): Promise<AxiosResponse>;
+
+  put(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+    data?: any,
+  ): Promise<AxiosResponse>;
+
+  patch(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+    data?: any,
+  ): Promise<AxiosResponse>;
+
+  delete(
+    baseURL: string,
+    path: string,
+    headers: HttpHeaders,
+  ): Promise<AxiosResponse>;
 }
 
 export interface HttpHeaders {
@@ -17,6 +42,6 @@ export interface HttpHeaders {
 }
 
 export interface HttpEndpoint {
-    baseURL: string,
-    path: string,
+  baseURL: string;
+  path: string;
 }

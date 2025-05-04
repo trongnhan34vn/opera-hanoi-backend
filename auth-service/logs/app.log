@@ -62,3 +62,28 @@
 [2025-04-06 20:24:36.016] [INFO] [default] - Mapped {/api/v1/auth/sign-up, POST} route
 [2025-04-06 20:24:36.016] [INFO] [default] - Mapped {/api/v1/auth/sign-in-admin, POST} route
 [2025-04-06 20:24:36.024] [INFO] [default] - Nest application successfully started
+[2025-04-30 19:51:06.806] [INFO] [default] - App successfully configured Logger
+[2025-04-30 19:51:06.807] [INFO] [default] - App successfully configured Filters
+[2025-04-30 19:51:06.807] [INFO] [default] - App successfully configured Interceptors
+[2025-04-30 19:51:06.808] [INFO] [default] - Nest app started with port [8090]
+[2025-04-30 19:51:06.814] [INFO] [default] - Starting Nest application...
+[2025-04-30 19:51:06.814] [WARN] [default] - Option 'logLevels' will be deprecated in the future. It is recommended to override or extend NestJS logger instead.
+[2025-04-30 19:51:06.814] [INFO] [default] - LogModule dependencies initialized
+[2025-04-30 19:51:06.814] [INFO] [default] - KeycloakConnectModule dependencies initialized
+[2025-04-30 19:51:06.814] [INFO] [default] - HttpServiceModule dependencies initialized
+[2025-04-30 19:51:06.814] [INFO] [default] - ConfigHostModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - KeycloakModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - ConcertModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - AccountModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - ConfigModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - ConfigModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - MiddlewareModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - AppModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - AuthModule dependencies initialized
+[2025-04-30 19:51:06.815] [INFO] [default] - AppController {/}:
+[2025-04-30 19:51:06.815] [INFO] [default] - Mapped {/actuator/health, GET} route
+[2025-04-30 19:51:06.815] [INFO] [default] - AuthController {/api/v1/auth}:
+[2025-04-30 19:51:06.815] [INFO] [default] - Mapped {/api/v1/auth/sign-in, POST} route
+[2025-04-30 19:51:06.815] [INFO] [default] - Mapped {/api/v1/auth/sign-up, POST} route
+[2025-04-30 19:51:06.815] [INFO] [default] - Mapped {/api/v1/auth/sign-in-admin, POST} route
+[2025-04-30 19:51:06.815] [INFO] [default] - Nest application successfully started

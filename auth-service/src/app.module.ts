@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, Reflector } from '@nestjs/core';
 import {
   GlobalAuthGuard,
   HttpResponseFactory,
@@ -16,23 +16,38 @@ import {
   RoleGuard,
 } from 'nest-keycloak-connect';
 import * as path from 'node:path';
+import * as process from 'node:process';
+import * as dotenv from 'dotenv';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { KeycloakConfig } from './config/keycloak.config';
-import { AuthController } from './controller/auth.controller';
-import { AuthModule } from './module/auth.module';
+import { AccountModule } from './module/account.module';
+import { KeycloakModule } from './module/keycloak.module';
 import { ConcertModule } from './module/concert.module';
+import { AuthModule } from './module/auth.module';
 
 const envFilePath = '../.env.local';
+dotenv.config({ path: path.resolve(__dirname, envFilePath) });
+
+// console.log('🚀 DB config:', {
+//   host: process.env.BUSINESS_SERVICE_DB_HOST,
+//   port: process.env.BUSINESS_SERVICE_DB_PORT,
+//   user: process.env.BUSINESS_SERVICE_DB_USERNAME,
+//   pass: process.env.BUSINESS_SERVICE_DB_PASSWORD,
+//   schema: process.env.BUSINESS_SERVICE_DB_SCHEMA,
+//   database: process.env.BUSINESS_SERVICE_DB_DATABASE
+// });
 
 @Module({
   imports: [
-    // import auth module
-    AuthModule,
+    // import modules
+    AccountModule, 
+    KeycloakModule,
     ConcertModule,
+    AuthModule,
     // import config interceptor
     LogModule,
-    // import config .env.dev
+    // import config .env.local
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: path.resolve(__dirname, envFilePath),
@@ -42,35 +57,18 @@ const envFilePath = '../.env.local';
 
     // import middleware api key
     MiddlewareModule,
+    
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController],
   providers: [
     AppService,
     // provide http response factory
     HttpResponseFactory,
-    // LOGGER
+    // provide config log
     {
       provide: LoggerFactory,
       useFactory: () => new LoggerFactory('default'), // Cung cấp category và level mặc định
     },
-    // LOGGER
-    // CONSUL
-    // {
-    //   provide: ConsulService,
-    //   useFactory: () =>
-    //     new ConsulService(new LoggerFactory('default'), {
-    //       host: 'localhost',
-    //       port: 8500,
-    //       service: {
-    //         id: 'consul-auth-service',
-    //         name: 'auth-service',
-    //         host: 'localhost',
-    //         port: 8090,
-    //         healthCheckPath: '/actuator/health',
-    //       },
-    //     }),
-    // },
-    // CONSUL
     // START SECURITY PROVIDER
     {
       provide: APP_GUARD,

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# KEYCLOAK_SERVICE_COMPOSE_FILE_PATH="keycloak-service/docker-compose.yml"
+KEYCLOAK_SERVICE_COMPOSE_FILE_PATH="keycloak-service/docker-compose.yml"
 AUTH_SERVICE_COMPOSE_FILE_PATH="auth-service/docker-compose.yml"
 AUTH_SERVICE_CONTAINER="auth-service"
 ACCOUNT_SERVICE_COMPOSE_FILE_PATH="account-service/docker-compose.yml"
@@ -35,7 +35,7 @@ check_service() {
 echo "[1] Start copy env"
 cp env/.env.local business-service/.env.local
 cp env/.env.local auth-service/.env.local
-cp env/.env.local account-service-v2/.env.local
+cp env/.env.local account-service/.env.local
 echo "[1] End copy env. [Success]"
 echo "Wait start [2]..."
 sleep 5
@@ -46,20 +46,20 @@ npm run build && npm pack
 cd ..
 cp common/common-0.0.1.tgz business-service/common-0.0.1.tgz
 cp common/common-0.0.1.tgz auth-service/common-0.0.1.tgz
-cp common/common-0.0.1.tgz account-service-v2/common-0.0.1.tgz
+cp common/common-0.0.1.tgz account-service/common-0.0.1.tgz
 echo "[2] End apply common. [Success]"
 echo "Wait start [3]..."
 sleep 10
 
 echo "[3] Start deploy"
 
-echo "[3-1] Remove existing service"
-docker-compose -f $KONG_COMPOSE_FILE_PATH down -v
-# docker-compose -f $KEYCLOAK_SERVICE_COMPOSE_FILE_PATH down -v
-docker-compose -f $AUTH_SERVICE_COMPOSE_FILE_PATH down -v
-docker-compose -f $BUSINESS_SERVICE_COMPOSE_FILE_PATH down -v
-docker-compose -f $ACCOUNT_SERVICE_COMPOSE_FILE_PATH down -v
-echo "[3-1] Remove existing service successfully"
+# echo "[3-1] Remove existing service"
+# # docker-compose -f $KONG_COMPOSE_FILE_PATH down -v
+# # docker-compose -f $KEYCLOAK_SERVICE_COMPOSE_FILE_PATH down -v
+# # docker-compose -f $AUTH_SERVICE_COMPOSE_FILE_PATH down -v
+# # docker-compose -f $BUSINESS_SERVICE_COMPOSE_FILE_PATH down -v
+# # docker-compose -f $ACCOUNT_SERVICE_COMPOSE_FILE_PATH down -v
+# echo "[3-1] Remove existing service successfully"
 
 sleep 10
 

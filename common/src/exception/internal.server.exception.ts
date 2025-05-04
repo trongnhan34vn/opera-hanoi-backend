@@ -10,5 +10,6 @@ export class InternalServerException extends ResourceException {
       message,
       details,
     );
+    Object.setPrototypeOf(this, new.target.prototype); 
   }
 }

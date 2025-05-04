@@ -1,12 +1,13 @@
 import { UserDto } from 'src/dto/request/user.dto';
 import { User } from 'src/entity/user.entity';
-import { IUserMapper } from '../interface/user.interface';
+
 import { Injectable } from '@nestjs/common';
 import { parse } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
+import { IUserMapper } from './user.mapper.interface';
 
 @Injectable()
-export class UserMapper implements IUserMapper {
+export class UserMapperImpl implements IUserMapper {
   toDto(user: User): UserDto {
     const userDto = new UserDto();
     userDto.id = user.id;

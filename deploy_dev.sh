@@ -53,11 +53,11 @@ sleep 10
 echo "[3] Start deploy"
 
 echo "[3-1] Remove existing service"
-docker-compose -f $KONG_COMPOSE_FILE_PATH down -v
+# docker-compose -f $KONG_COMPOSE_FILE_PATH down -v
 # docker-compose -f $KEYCLOAK_SERVICE_COMPOSE_FILE_PATH down -v
-docker-compose -f $AUTH_SERVICE_COMPOSE_FILE_PATH down -v
-docker-compose -f $BUSINESS_SERVICE_COMPOSE_FILE_PATH down -v
-docker-compose -f $ACCOUNT_SERVICE_COMPOSE_FILE_PATH down -v
+# docker-compose -f $AUTH_SERVICE_COMPOSE_FILE_PATH down -v
+# docker-compose -f $BUSINESS_SERVICE_COMPOSE_FILE_PATH down -v
+# docker-compose -f $ACCOUNT_SERVICE_COMPOSE_FILE_PATH down -v
 echo "[3-1] Remove existing service successfully"
 
 sleep 10
@@ -67,8 +67,8 @@ echo "[3-2-1] Building kong-service... "
 KONG_DATABASE=postgres docker-compose -f $KONG_COMPOSE_FILE_PATH --profile database up -d
 # sleep 5
 
-# echo "Building keycloak-service... "
-# docker-compose -f $KEYCLOAK_SERVICE_COMPOSE_FILE_PATH up -d
+echo "Building keycloak-service... "
+docker-compose -f $KEYCLOAK_SERVICE_COMPOSE_FILE_PATH up -d
 sleep 10
 
 echo "[3-2-2] Building auth-service... "

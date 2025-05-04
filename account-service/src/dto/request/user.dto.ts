@@ -10,6 +10,7 @@ export class UserDto {
   email: string;
 
   @IsString()
+  @IsOptional()
   phone: string;
 
   @IsString()
@@ -30,4 +31,12 @@ export class UserDto {
 
   @IsString()
   keycloakId: string;
+
+  @IsString()
+  @IsOptional()
+  createdAt?: string;
+
+  @IsString()
+  @IsOptional()
+  updatedAt?: string;
 }

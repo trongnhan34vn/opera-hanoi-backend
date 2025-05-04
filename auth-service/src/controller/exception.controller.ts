@@ -1,13 +1,14 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
 import {
   HttpResponseFactory,
+  LoggerFactory,
   ResourceException,
 } from 'common';
 import { Response } from 'express';
 
 @Catch()
 export class ExceptionController implements ExceptionFilter {
-  constructor(private readonly responseFactory: HttpResponseFactory) {}
+  constructor(private readonly responseFactory: HttpResponseFactory, private readonly logger: LoggerFactory) {}
 
   /**
    * catch resource exception
@@ -16,9 +17,10 @@ export class ExceptionController implements ExceptionFilter {
    * @return ErrorResponse
    */
   catch(error: Error, host: ArgumentsHost) {
+    this.logger.error(error);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    if (error instanceof ResourceException) {
+    if (error instanceof ResourceException || error instanceof HttpException) {
       const resourceError = error as ResourceException;
     
       const status = resourceError.getStatus();

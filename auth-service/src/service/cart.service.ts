@@ -1,15 +1,14 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpServiceFactory, LoggerFactory } from 'common';
+import {
+  HttpHeaders
+} from 'common/dist/factory/http.service.factory.interface';
 import {
   API_KEY,
   BUSINESS_SERVICE_BASEURL,
   BUSINESS_SERVICE_CREATE_CART_ENDPOINT,
   BUSINESS_SERVICE_PATH,
 } from '../constants/ServiceConstant';
-import { HttpMethod, HttpServiceFactory, LoggerFactory } from 'common';
-import {
-  HttpEndpoint,
-  HttpHeaders,
-} from 'common/dist/factory/http.service.factory.interface';
 
 @Injectable()
 export class CartService {
@@ -27,17 +26,13 @@ export class CartService {
       const headers: HttpHeaders = {
         apiKey: API_KEY,
       };
-      const endpoint: HttpEndpoint = {
-        baseURL: BUSINESS_SERVICE_BASEURL,
-        path: BUSINESS_SERVICE_PATH + BUSINESS_SERVICE_CREATE_CART_ENDPOINT,
-      };
 
-      const response = await this.httpService.call(
-        endpoint,
-        HttpMethod.POST,
-        cart,
+      const response = await this.httpService.post(
+        BUSINESS_SERVICE_BASEURL,
+        BUSINESS_SERVICE_PATH + BUSINESS_SERVICE_CREATE_CART_ENDPOINT,
         headers,
-      );
+        cart
+      )
 
       if (!response) {
         throw new InternalServerErrorException(

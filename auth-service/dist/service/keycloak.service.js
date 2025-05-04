@@ -141,22 +141,51 @@ let KeycloakService = class KeycloakService {
     }
     async mappingRoleToUser(token, userDto) {
         const roles = userDto.roles;
+        let targetAssignRoles = [];
+        const allRoles = (await this.findAllRoles(token));
+        const defaultRole = 'CustomerRole';
+        const targetRoleDefault = await this.findRoleByName(defaultRole, token);
         if (roles && roles.size !== 0) {
-            return;
+            const arrayRole = Array.from(roles);
+            const filterRoles = allRoles.filter((role) => arrayRole.includes(role.name));
+            targetAssignRoles = filterRoles;
         }
-        const defaultRole = 'USER';
-        const role = await this.findRoleByName(defaultRole, token);
+        else {
+            targetAssignRoles.push(targetRoleDefault);
+        }
         const userCreated = await this.findUserByEmail(userDto.email, token);
-        await this.assignRoleToUser(userCreated, role, token);
+        await this.assignRoleToUser(userCreated, targetAssignRoles, token);
     }
-    async assignRoleToUser(user, role, token) {
+    async findAllRoles(token) {
         try {
-            this.logger.log(`Start assign role [${role.getName}] to user [${user.email}]`);
+            this.logger.log('Start find all roles');
+            const myClient = await this.findMyClient(token);
+            const findAllRolesEndponit = `/clients/${myClient.id}/roles`;
+            const urlFindRoleByNameKC = KeycloakConsants_1.KEYCLOAK_SERVICE_ADMIN_PATH_URI + findAllRolesEndponit;
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: urlFindRoleByNameKC,
+            };
+            const headers = {
+                token,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.GET, null, headers);
+            if (!response) {
+                throw new common_1.InternalServerErrorException('Response from Keycloak is null');
+            }
+            this.logger.log(`Roles founded`);
+            return response.data;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async assignRoleToUser(user, roles, token) {
+        try {
+            this.logger.log(`Start assign roles to user [${user.email}]`);
             const endpointAssignRoleToUser = `/users/${user.id}/role-mappings/realm`;
             const pathAssignRoleToUser = KeycloakConsants_1.KEYCLOAK_SERVICE_ADMIN_PATH_URI + endpointAssignRoleToUser;
             const headers = { token };
-            const roles = [];
-            roles.push(role);
             const endpoint = {
                 baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
                 path: pathAssignRoleToUser,
@@ -165,7 +194,7 @@ let KeycloakService = class KeycloakService {
             if (!response) {
                 throw new common_1.InternalServerErrorException('Response from Keycloak is null');
             }
-            this.logger.log(`Assign role [${role.name}] to user [${user.email}] successfully`);
+            this.logger.log(`Assign roles to user [${user.email}] successfully`);
         }
         catch (error) {
             this.logger.error(error);
@@ -197,6 +226,29 @@ let KeycloakService = class KeycloakService {
         }
         finally {
             this.logger.log('End find user by email.');
+        }
+    }
+    async findMyClient(token) {
+        try {
+            this.logger.log('Start find my client');
+            const headers = { token };
+            const endpointFindAllClients = KeycloakConsants_1.KEYCLOAK_SERVICE_ADMIN_PATH_URI + '/clients';
+            const endpoint = {
+                baseURL: KeycloakConsants_1.KEYCLOAK_SERVICE_URL,
+                path: endpointFindAllClients,
+            };
+            const response = await this.httpService.call(endpoint, http_method_enum_1.HttpMethod.GET, null, headers);
+            const clients = response.data;
+            const myClient = clients.find((client) => client.clientId === KeycloakConsants_1.KEYCLOAK_CLIENT_ID);
+            if (!myClient)
+                throw new common_2.NotFoundException('Client Not Found', 'Client Not Found');
+            return myClient;
+        }
+        catch (error) {
+            throw error;
+        }
+        finally {
+            this.logger.log('End find my client');
         }
     }
     async findRoleByName(roleName, token) {

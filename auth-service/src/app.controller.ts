@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { SkipAuth } from './config/SkipAuthGuardAnnotationConfig';
+import { SkipAuth } from 'common';
 
 @Controller()
 export class AppController {

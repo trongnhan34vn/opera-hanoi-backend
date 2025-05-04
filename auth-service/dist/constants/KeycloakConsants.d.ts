@@ -8,3 +8,4 @@ export declare const KEYCLOAK_SERVICE_ADMIN_PATH_URI: string;
 export declare const KEYCLOAK_REALM: string;
 export declare const KEYCLOAK_PROVIDER_ISSUE_URI: string;
 export declare const KEYCLOAK_ADMIN_URI: string;
+export declare const KEYCLOAK_CLIENT_UUID: string;

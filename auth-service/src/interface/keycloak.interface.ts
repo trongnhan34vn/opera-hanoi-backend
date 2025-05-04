@@ -18,3 +18,8 @@ export interface Credential {
   type: 'password';
   value: string;
 }
+
+export interface Clients {
+  id: string;
+  name: string;
+}

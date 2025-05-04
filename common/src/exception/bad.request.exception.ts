@@ -5,5 +5,6 @@ import { HttpErrorCode } from 'src/enum/http.error.code.enum';
 export class BadRequestException extends ResourceException {
   constructor(message: string, details?: any) {
     super(HttpStatus.BAD_REQUEST, HttpErrorCode.BAD_REQUEST, message, details);
+    Object.setPrototypeOf(this, new.target.prototype); 
   }
 }

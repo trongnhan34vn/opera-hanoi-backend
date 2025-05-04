@@ -8,11 +8,11 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 
-@Table({ modelName: 'users' })
+@Table({ tableName: 'users' })
 export class User extends Model<User> {
   @PrimaryKey
-  @Column(DataType.UUID)
-  declare id?: string;
+  @Column({ type: DataType.UUID })
+  id: string;
 
   @Column({
     type: DataType.STRING,
@@ -28,12 +28,18 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
   })
   phone: string;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: true })
   isActive: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  isAdmin: boolean;
 
   @Column({
     type: DataType.STRING,
@@ -60,10 +66,8 @@ export class User extends Model<User> {
   lastName: string;
 
   @CreatedAt
-  @Column({ field: 'created_at', type: DataType.DATE })
-  declare createdAt: Date;
+  createdAt: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_at', type: DataType.DATE })
-  declare updatedAt: Date;
+  updatedAt: Date;
 }

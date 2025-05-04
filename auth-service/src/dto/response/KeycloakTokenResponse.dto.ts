@@ -17,4 +17,5 @@ export class KeycloakTokenResponse {
   tokenType: string;
 
   email?: string;
+  isResetPassword?: boolean;
 }

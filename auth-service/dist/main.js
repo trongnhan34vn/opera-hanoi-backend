@@ -36,20 +36,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const common_1 = require("common");
-const auth_error_controller_1 = require("./controller/auth.error.controller");
 const dotenv = __importStar(require("dotenv"));
 const path = __importStar(require("node:path"));
 const process = __importStar(require("node:process"));
 const common_2 = require("@nestjs/common");
+const exception_controller_1 = require("./controller/exception.controller");
 const envFilePath = '../.env.local';
 dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 async function bootstrap() {
     const logger = new common_1.LoggerFactory('default');
-    logger.log('Starting Nest application...');
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, {
+        logger: logger,
+        bufferLogs: true,
+    });
     app.useLogger(logger);
     logger.log('App successfully configured Logger');
-    app.useGlobalFilters(new auth_error_controller_1.AuthErrorController(app.get(common_1.HttpResponseFactory)));
+    app.useGlobalFilters(new exception_controller_1.ExceptionController(app.get(common_1.HttpResponseFactory)));
     logger.log('App successfully configured Filters');
     app.useGlobalInterceptors(new common_1.LogAspectInterceptor());
     logger.log('App successfully configured Interceptors');

@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
 import {
   HttpResponseFactory,
   ResourceException,
@@ -18,7 +18,7 @@ export class ExceptionController implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    if (error instanceof ResourceException) {
+    if (error instanceof ResourceException || error instanceof HttpException) {
       const resourceError = error as ResourceException;
     
       const status = resourceError.getStatus();

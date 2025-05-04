@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UserSignUpDto {
   @IsString()
@@ -16,6 +16,10 @@ export class UserSignUpDto {
   @IsString()
   @IsOptional()
   phone?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isAdmin: boolean;
 
   @IsString()
   @IsOptional()

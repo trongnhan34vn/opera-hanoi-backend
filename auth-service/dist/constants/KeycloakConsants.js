@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KEYCLOAK_ADMIN_URI = exports.KEYCLOAK_PROVIDER_ISSUE_URI = exports.KEYCLOAK_REALM = exports.KEYCLOAK_SERVICE_ADMIN_PATH_URI = exports.KEYCLOAK_CLIENT_SECRET = exports.KEYCLOAK_CLIENT_ID = exports.KEYCLOAK_PROVIDER_TOKEN_URI_PATH = exports.KEYCLOAK_SERVICE_URL = exports.KEYCLOAK_SERVICE_PORT = exports.KEYCLOAK_SERVICE_HOST = void 0;
+exports.KEYCLOAK_CLIENT_UUID = exports.KEYCLOAK_ADMIN_URI = exports.KEYCLOAK_PROVIDER_ISSUE_URI = exports.KEYCLOAK_REALM = exports.KEYCLOAK_SERVICE_ADMIN_PATH_URI = exports.KEYCLOAK_CLIENT_SECRET = exports.KEYCLOAK_CLIENT_ID = exports.KEYCLOAK_PROVIDER_TOKEN_URI_PATH = exports.KEYCLOAK_SERVICE_URL = exports.KEYCLOAK_SERVICE_PORT = exports.KEYCLOAK_SERVICE_HOST = void 0;
 const process = __importStar(require("node:process"));
 const dotenv = __importStar(require("dotenv"));
 const path = __importStar(require("path"));
@@ -49,4 +49,5 @@ exports.KEYCLOAK_SERVICE_ADMIN_PATH_URI = process.env.KEYCLOAK_ADMIN_PATH_URI;
 exports.KEYCLOAK_REALM = process.env.KEYCLOAK_REALM;
 exports.KEYCLOAK_PROVIDER_ISSUE_URI = process.env.KEYCLOAK_PROVIDER_ISSUE_URI;
 exports.KEYCLOAK_ADMIN_URI = process.env.KEYCLOAK_ADMIN_URI;
+exports.KEYCLOAK_CLIENT_UUID = process.env.KEYCLOAK_CLIENT_UUID;
 //# sourceMappingURL=KeycloakConsants.js.map

@@ -4,8 +4,6 @@ import { Pagination } from '../dto/request/pagination.dto';
 
 export interface ConcertServiceInterface
   extends GenericServiceInterface<ConcertDto> {
-  create(dto: ConcertDto): Promise<ConcertDto>;
-
   findUpcomingConcerts(page: Pagination): Promise<any>;
 
   findByGenreId(genreId: string): Promise<any>;

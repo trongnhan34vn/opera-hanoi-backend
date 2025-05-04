@@ -49,7 +49,7 @@ let AccountService = class AccountService {
             throw error;
         }
         finally {
-            this.logger.log('End saved user.');
+            this.logger.log('End save user.');
         }
     }
 };

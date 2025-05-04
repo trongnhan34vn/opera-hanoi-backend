@@ -41,38 +41,40 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
+const core_1 = require("@nestjs/core");
+const common_2 = require("common");
+const nest_keycloak_connect_1 = require("nest-keycloak-connect");
+const path = __importStar(require("node:path"));
+const dotenv = __importStar(require("dotenv"));
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const common_2 = require("common");
-const auth_controller_1 = require("./controller/auth.controller");
-const auth_module_1 = require("./module/auth.module");
-const config_1 = require("@nestjs/config");
-const path = __importStar(require("node:path"));
-const nest_keycloak_connect_1 = require("nest-keycloak-connect");
-const KeycloakConfig_1 = require("./config/KeycloakConfig");
-const GlobalAuthGuard_1 = require("./config/GlobalAuthGuard");
-const core_1 = require("@nestjs/core");
-const SkipAuthGuard_1 = require("./config/SkipAuthGuard");
+const keycloak_config_1 = require("./config/keycloak.config");
+const account_module_1 = require("./module/account.module");
+const keycloak_module_1 = require("./module/keycloak.module");
 const concert_module_1 = require("./module/concert.module");
-const auth_error_controller_1 = require("./controller/auth.error.controller");
+const auth_module_1 = require("./module/auth.module");
 const envFilePath = '../.env.local';
+dotenv.config({ path: path.resolve(__dirname, envFilePath) });
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            auth_module_1.AuthModule,
+            account_module_1.AccountModule,
+            keycloak_module_1.KeycloakModule,
             concert_module_1.ConcertModule,
+            auth_module_1.AuthModule,
             common_2.LogModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 envFilePath: path.resolve(__dirname, envFilePath),
             }),
-            nest_keycloak_connect_1.KeycloakConnectModule.register(KeycloakConfig_1.KeycloakConfig.getKeycloakConfig()),
+            nest_keycloak_connect_1.KeycloakConnectModule.register(keycloak_config_1.KeycloakConfig.getKeycloakConfig()),
             common_2.MiddlewareModule,
         ],
-        controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
+        controllers: [app_controller_1.AppController],
         providers: [
             app_service_1.AppService,
             common_2.HttpResponseFactory,
@@ -82,16 +84,12 @@ exports.AppModule = AppModule = __decorate([
             },
             {
                 provide: core_1.APP_GUARD,
-                useClass: GlobalAuthGuard_1.GlobalAuthGuard,
-            },
-            {
-                provide: core_1.APP_FILTER,
-                useClass: auth_error_controller_1.AuthErrorController,
+                useClass: common_2.GlobalAuthGuard,
             },
             nest_keycloak_connect_1.AuthGuard,
             nest_keycloak_connect_1.ResourceGuard,
             nest_keycloak_connect_1.RoleGuard,
-            SkipAuthGuard_1.SkipAuthGuard,
+            common_2.SkipAuthGuard,
         ],
     })
 ], AppModule);

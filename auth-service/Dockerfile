@@ -11,10 +11,10 @@ COPY package.json package-lock.json ./
 COPY common-0.0.1.tgz ./
 
 # Cài đặt thư viện common từ file `.tgz`
-RUN npm install ./common-0.0.1.tgz
+RUN npm install ./common-0.0.1.tgz -f
 
 # Cài đặt dependencies
-RUN npm install
+RUN npm install -f
 
 # Sao chép toàn bộ mã nguồn vào container
 COPY . .

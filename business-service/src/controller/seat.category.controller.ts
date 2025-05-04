@@ -4,6 +4,7 @@ import { HttpResponseFactory } from 'common';
 import { Response } from 'express';
 import { Roles } from 'nest-keycloak-connect';
 import { ISeatCateogoryServiceToken } from 'src/constants/symbol';
+import { KeycloakRoleEnum } from 'src/enum/keycloak.role.enum';
 import { ISeatCategoryService } from 'src/service/seat.category.service.interface';
 
 @ApiTags('seat-categories')
@@ -16,7 +17,11 @@ export class SeatCategoryController {
   ) {}
 
   @Get('/')
-  @Roles({ roles: ['ADMIN'] })
+  @Roles({ roles: [
+    KeycloakRoleEnum.PUT_CONCERT_ROLE,
+    KeycloakRoleEnum.FULL_ACCESS_CONCERT_ROLE,
+    KeycloakRoleEnum.FULL_ACCESS_ROLE
+  ] })
   async findAll(@Res() res: Response) {
     const seatCategories = await this.seatCategoryService.findAll();
     return this.httpResponseFactory.sendOKResponse(

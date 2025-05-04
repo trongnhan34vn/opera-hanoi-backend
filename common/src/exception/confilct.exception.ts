@@ -5,5 +5,6 @@ import { HttpErrorCode } from 'src/enum/http.error.code.enum';
 export class ConflictException extends ResourceException {
   constructor(message: string, details?: any) {
     super(HttpStatus.CONFLICT, HttpErrorCode.CONFLICT, message, details);
+    Object.setPrototypeOf(this, new.target.prototype); 
   }
 }

@@ -15,14 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("common");
-const SkipAuthGuardAnnotationConfig_1 = require("../config/SkipAuthGuardAnnotationConfig");
+const common_3 = require("common");
 const UserSignIn_dto_1 = require("../dto/request/UserSignIn.dto");
 const UserSignUp_dto_1 = require("../dto/request/UserSignUp.dto");
 const auth_service_1 = require("../service/auth.service");
+const keycloak_service_1 = require("../service/keycloak.service");
+const nest_keycloak_connect_1 = require("nest-keycloak-connect");
 let AuthController = class AuthController {
-    constructor(responseFactory, authService) {
+    constructor(responseFactory, authService, keycloakService) {
         this.responseFactory = responseFactory;
         this.authService = authService;
+        this.keycloakService = keycloakService;
     }
     async signIn(res, userSignInDto) {
         const response = await this.authService.signIn(userSignInDto);
@@ -36,11 +39,26 @@ let AuthController = class AuthController {
         const response = await this.authService.signInAdmin(userDto);
         return this.responseFactory.sendOKResponse(res, 'Sign in successfully', response);
     }
+    async findAllRoles(res) {
+        const token = await this.keycloakService.getAdminAccess();
+        const roles = await this.keycloakService.findAllRoles(token);
+        const stringRoles = [];
+        for (const role of roles) {
+            if (role.name.includes('uma'))
+                continue;
+            stringRoles.push(role.name);
+        }
+        return this.responseFactory.sendOKResponse(res, 'Roles are founded', stringRoles);
+    }
+    async createAdminAccount(res, adminAccountDto) {
+        const created = await this.authService.createAdminAccount(adminAccountDto);
+        return this.responseFactory.sendCreatedResponse(res, 'User created', created);
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('/sign-in'),
-    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    (0, common_2.SkipAuth)(),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -49,7 +67,7 @@ __decorate([
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, common_1.Post)('/sign-up'),
-    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    (0, common_2.SkipAuth)(),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -58,16 +76,40 @@ __decorate([
 ], AuthController.prototype, "signUp", null);
 __decorate([
     (0, common_1.Post)('/sign-in-admin'),
-    (0, SkipAuthGuardAnnotationConfig_1.SkipAuth)(),
+    (0, common_2.SkipAuth)(),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, UserSignIn_dto_1.UserSignInDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signInAdmin", null);
+__decorate([
+    (0, common_1.Get)('/roles'),
+    (0, common_2.SkipAuth)(),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "findAllRoles", null);
+__decorate([
+    (0, common_1.Post)('/users'),
+    (0, nest_keycloak_connect_1.Roles)({
+        roles: [
+            common_3.KeycloakRoleEnum.FULL_ACCESS_ADMIN_ACCOUNT_ROLE,
+            common_3.KeycloakRoleEnum.FULL_ACCESS_ROLE,
+            common_3.KeycloakRoleEnum.PUT_ADMIN_ACCOUNT_ROLE,
+        ],
+    }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, UserSignUp_dto_1.UserSignUpDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "createAdminAccount", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('/api/v1/auth'),
     __metadata("design:paramtypes", [common_2.HttpResponseFactory,
-        auth_service_1.AuthService])
+        auth_service_1.AuthService,
+        keycloak_service_1.KeycloakService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

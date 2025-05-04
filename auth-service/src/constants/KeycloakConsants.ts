@@ -19,3 +19,4 @@ export const KEYCLOAK_REALM = process.env.KEYCLOAK_REALM;
 export const KEYCLOAK_PROVIDER_ISSUE_URI =
   process.env.KEYCLOAK_PROVIDER_ISSUE_URI;
 export const KEYCLOAK_ADMIN_URI = process.env.KEYCLOAK_ADMIN_URI;
+export const KEYCLOAK_CLIENT_UUID = process.env.KEYCLOAK_CLIENT_UUID;
